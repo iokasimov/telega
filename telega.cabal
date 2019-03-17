@@ -1,0 +1,25 @@
+name:                telega
+version:             0.1.0
+synopsis:            ...
+description:         ...
+homepage:            https://github.com/iokasimov/telega
+license:             MIT
+license-file:        LICENSE
+extra-source-files:  CHANGELOG.md
+author:              Murat Kasimov
+maintainer:          Murat Kasimov <iokasimov.m@gmail.com>
+copyright:           Copyright (c) 2019 Murat Kasimov
+category:            Data, Control
+build-type:          Simple
+cabal-version:       >= 1.10
+
+source-repository head
+  type: git
+  location: https://github.com/iokasimov/telega.git
+
+library
+  exposed-modules: Network.Telegram.API
+  build-depends: base == 4.*, async, transformers, text, warp, servant, http-client, http-client-tls
+  default-extensions: BangPatterns, DeriveDataTypeable, DeriveGeneric, GeneralizedNewtypeDeriving,
+    OverloadedStrings, RecordWildCards, ApplicativeDo, MultiParamTypeClasses, FlexibleInstances, TypeApplications,
+    ScopedTypeVariables, TypeOperators, DataKinds, GADTs, FlexibleContexts, ViewPatterns, LambdaCase, PackageImports
