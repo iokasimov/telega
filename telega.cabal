@@ -18,6 +18,10 @@ source-repository head
   location: https://github.com/iokasimov/telega.git
 
 library
-  exposed-modules: Network.Telegram.API.Bot
+  exposed-modules:
+    Network.Telegram.API.Bot
+    Network.Telegram.API.Bot.Chat
+    Network.Telegram.API.Bot.From
+    Network.Telegram.API.Bot.Message
   build-depends: base == 4.*, aeson, text, warp, http-client, http-client-tls
   default-extensions: PackageImports
