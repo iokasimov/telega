@@ -23,5 +23,5 @@ library
     Network.Telegram.API.Bot.Chat
     Network.Telegram.API.Bot.From
     Network.Telegram.API.Bot.Message
-  build-depends: base == 4.*, aeson, text, warp, http-client, http-client-tls
-  default-extensions: LambdaCase, OverloadedStrings, PackageImports, ScopedTypeVariables
+  build-depends: base == 4.*, transformers, aeson, text, warp, http-client, http-client-tls, servant, servant-client
+  default-extensions: GeneralizedNewtypeDeriving, LambdaCase, OverloadedStrings, PackageImports, ScopedTypeVariables
