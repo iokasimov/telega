@@ -1,22 +1,35 @@
-module Network.Telegram.API.Bot.Keyboard (Button (..), Keyboard (..)) where
+module Network.Telegram.API.Bot.Keyboard (Keyboard (..), Button (..), Pressed (..)) where
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), Value (Object), (.:), (.:?))
+import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON)
+	, Value (Object), object, (.:), (.:?), (.=))
 import "aeson" Data.Aeson.Types (Parser)
 import "base" Control.Applicative (Alternative ((<|>)))
-import "base" Data.Functor ((<&>))
 import "text" Data.Text (Text)
 
 data Keyboard
 	= Inline [[Button]]
+	deriving Show
 
 instance FromJSON Keyboard where
-	parseJSON (Object v) = Inline <$> v .: "inline_keyboard"
+	parseJSON (Object v) = Inline
+		<$> v .: "inline_keyboard"
+
+instance ToJSON Keyboard where
+	toJSON (Inline buttons) = object
+		["inline_keyboard" .= buttons]
 
 data Button = Button Text Pressed
 	deriving Show
 
 instance FromJSON Button where
-	parseJSON (Object v) = Button <$> v .: "text" <*> parseJSON (Object v)
+	parseJSON (Object v) = Button
+		<$> v .: "text" <*> parseJSON (Object v)
+
+instance ToJSON Button where
+	toJSON (Button text (Open url)) = object
+		["text" .= text, "url" .= url]
+	toJSON (Button text (Callback cbd)) = object
+		["text" .= text, "callback_data" .= cbd]
 
 data Pressed
 	= Open Text
@@ -30,7 +43,3 @@ instance FromJSON Pressed where
 		is_open, is_callback :: Parser (Maybe Pressed)
 		is_open = (fmap . fmap) Open $ v .:? "url"
 		is_callback = (fmap . fmap) Callback $ v .:? "callback_data"
-
--- instance ToJSON
--- 	toJSON (Person name age) =
--- 		object ["name" .= name, "age" .= age]
