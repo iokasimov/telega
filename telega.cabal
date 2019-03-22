@@ -20,6 +20,8 @@ source-repository head
 library
   exposed-modules:
     Network.Telegram.API.Bot
+    Network.Telegram.API.Bot.Core
+    Network.Telegram.API.Bot.Deliverable
     Network.Telegram.API.Bot.Object
     Network.Telegram.API.Bot.Object.Chat
     Network.Telegram.API.Bot.Object.From
