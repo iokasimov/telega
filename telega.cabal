@@ -22,8 +22,11 @@ library
     Network.Telegram.API.Bot
     Network.Telegram.API.Bot.Chat
     Network.Telegram.API.Bot.From
+    Network.Telegram.API.Bot.Keyboard
     Network.Telegram.API.Bot.Message
     Network.Telegram.API.Bot.Update
   build-depends: base == 4.*, transformers, aeson, text,
     warp, http-client, http-client-tls, servant, servant-client
   default-extensions: GeneralizedNewtypeDeriving, LambdaCase, OverloadedStrings, PackageImports, ScopedTypeVariables
+  default-language: Haskell2010
+  ghc-options: -fno-warn-tabs
