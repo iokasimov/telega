@@ -21,7 +21,9 @@ library
   exposed-modules:
     Network.Telegram.API.Bot
     Network.Telegram.API.Bot.Core
-    Network.Telegram.API.Bot.Deliverable
+    Network.Telegram.API.Bot.Capacity
+    Network.Telegram.API.Bot.Capacity.Deliverable
+    Network.Telegram.API.Bot.Capacity.Postable
     Network.Telegram.API.Bot.Object
     Network.Telegram.API.Bot.Object.Chat
     Network.Telegram.API.Bot.Object.From
@@ -30,6 +32,13 @@ library
     Network.Telegram.API.Bot.Object.Update
   build-depends: base == 4.*, transformers, aeson, text,
     warp, http-client, http-client-tls, servant, servant-client
-  default-extensions: GeneralizedNewtypeDeriving, LambdaCase, OverloadedStrings, PackageImports, ScopedTypeVariables
+  default-extensions:
+    AllowAmbiguousTypes
+    GeneralizedNewtypeDeriving
+    LambdaCase
+    OverloadedStrings
+    PackageImports
+    ScopedTypeVariables
+    TypeFamilies
   default-language: Haskell2010
-  ghc-options: -fno-warn-tabs
+  ghc-options: -Wall -fno-warn-tabs
