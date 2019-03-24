@@ -1,9 +1,24 @@
 module Network.Telegram.API.Bot.Capacity.Postable (Postable (..)) where
 
-import "aeson" Data.Aeson (FromJSON, Value)
-import "text" Data.Text (Text)
+import "aeson" Data.Aeson (FromJSON, Value, decode)
+import "base" Control.Exception (SomeException, try)
+import "base" Data.Maybe (fromJust)
+import "http-client" Network.HTTP.Client (Response (responseBody))
+import "text" Data.Text (Text, unpack)
+import "transformers" Control.Monad.Trans.Class (lift)
+import "transformers" Control.Monad.Trans.Except (ExceptT (ExceptT))
+import "transformers" Control.Monad.Trans.Reader (ask)
+import qualified "wreq" Network.Wreq as Wreq (post)
+
+import Network.Telegram.API.Bot.Core (Telegram, Token (Token))
 
 class FromJSON a => Postable a where
-	type Payload a
+	{-# MINIMAL payload, endpoint #-}
+	data Payload a :: *
 	payload :: Payload a -> Value
-	endpoing :: Text
+	endpoint :: Payload a -> String
+
+	post :: Payload a -> Telegram e a
+	post x = ask >>= \(Token token, _) -> lift . ExceptT . try
+		. fmap (fromJust . decode . responseBody) . flip Wreq.post (payload x) $
+			"https://api.telegram.org/" <> unpack token <> "/" <> endpoint x
