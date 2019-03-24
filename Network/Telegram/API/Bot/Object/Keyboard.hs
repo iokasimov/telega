@@ -1,7 +1,7 @@
 module Network.Telegram.API.Bot.Object.Keyboard (Keyboard (..), Button (..), Pressed (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON)
-	, Value (Object), object, (.:), (.:?), (.=))
+	, Object, Value (Object), object, withObject, (.:), (.:?), (.=))
 import "aeson" Data.Aeson.Types (Parser)
 import "base" Control.Applicative (Alternative ((<|>)))
 import "text" Data.Text (Text)
@@ -11,8 +11,8 @@ data Keyboard
 	deriving Show
 
 instance FromJSON Keyboard where
-	parseJSON (Object v) = Inline
-		<$> v .: "inline_keyboard"
+	parseJSON = withObject "Inline" $ \v ->
+		Inline <$> v .: "inline_keyboard"
 
 instance ToJSON Keyboard where
 	toJSON (Inline buttons) = object
@@ -22,8 +22,8 @@ data Button = Button Text Pressed
 	deriving Show
 
 instance FromJSON Button where
-	parseJSON (Object v) = Button
-		<$> v .: "text" <*> parseJSON (Object v)
+	parseJSON = withObject "Button" $ \v ->
+		Button <$> v .: "text" <*> parseJSON (Object v)
 
 instance ToJSON Button where
 	toJSON (Button text (Open url)) = object
@@ -37,9 +37,10 @@ data Pressed
 	deriving Show
 
 instance FromJSON Pressed where
-	parseJSON (Object v) = (is_open <|> is_callback) >>= maybe
-		(fail "Action on pressing isn't set") return where
+	parseJSON = withObject "Pressed" $ \v ->
+		(is_open v <|> is_callback v) >>= maybe
+			(fail "Action on pressing isn't set") return where
 
-		is_open, is_callback :: Parser (Maybe Pressed)
-		is_open = (fmap . fmap) Open $ v .:? "url"
-		is_callback = (fmap . fmap) Callback $ v .:? "callback_data"
+		is_open, is_callback :: Object -> Parser (Maybe Pressed)
+		is_open v = (fmap . fmap) Open $ v .:? "url"
+		is_callback v = (fmap . fmap) Callback $ v .:? "callback_data"

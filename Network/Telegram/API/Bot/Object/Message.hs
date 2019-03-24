@@ -1,6 +1,6 @@
 module Network.Telegram.API.Bot.Object.Message (Message) where
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), Value (Object), object, (.:), (.=))
+import "aeson" Data.Aeson (FromJSON (parseJSON), object, withObject, (.:), (.=))
 import "text" Data.Text (Text)
 
 import Network.Telegram.API.Bot.Capacity.Postable (Postable (..))
@@ -11,11 +11,9 @@ data Message = Message Int Chat From Text
 	deriving Show
 
 instance FromJSON Message where
-	parseJSON (Object v) = Message
-		<$> v .: "message_id"
-		<*> v .: "chat"
-		<*> v .: "from"
-		<*> v .: "text"
+	parseJSON = withObject "Message" $ \v ->
+		Message <$> v .: "message_id" <*> v .: "chat"
+			<*> v .: "from" <*> v .: "text"
 
 instance Postable Message where
 	data Payload Message = Msg (Int, Text)

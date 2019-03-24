@@ -1,6 +1,6 @@
 module Network.Telegram.API.Bot.Object.Chat (Chat (..)) where
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), Value (Object), (.:))
+import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Data.Int (Int64)
 import "text" Data.Text (Text)
 
@@ -12,7 +12,7 @@ data Chat
 	deriving Show
 
 instance FromJSON Chat where
-	parseJSON (Object v) = v .: "type" >>= \case
+	parseJSON = withObject "Chat" $ \v -> v .: "type" >>= \case
 		("private" :: Text) -> Private <$> v .: "id"
 		("group" :: Text) -> Group <$> v .: "id" <*> v .: "title"
 		("supergroup" :: Text) -> Supergroup <$> v .: "id" <*> v .: "title"
