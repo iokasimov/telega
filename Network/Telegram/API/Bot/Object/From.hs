@@ -1,7 +1,6 @@
 module Network.Telegram.API.Bot.Object.From (From (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:), (.:?))
-import "base" Data.Int (Int64)
 import "text" Data.Text (Text)
 
 data From

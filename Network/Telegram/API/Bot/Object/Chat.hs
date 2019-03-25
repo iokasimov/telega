@@ -17,3 +17,4 @@ instance FromJSON Chat where
 		("group" :: Text) -> Group <$> v .: "id" <*> v .: "title"
 		("supergroup" :: Text) -> Supergroup <$> v .: "id" <*> v .: "title"
 		("channel" :: Text) -> Channel <$> v .: "id" <*> v .: "title"
+		_ -> fail "Type of chat is not defined"

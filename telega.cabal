@@ -30,12 +30,10 @@ library
     Network.Telegram.API.Bot.Object.Keyboard
     Network.Telegram.API.Bot.Object.Message
     Network.Telegram.API.Bot.Object.Update
-  build-depends: base == 4.*, transformers, aeson, text, wreq,
-    warp, http-client, http-client-tls, servant, servant-client
+  build-depends: base == 4.*, transformers, aeson,
+    text, http-client, http-client-tls, wreq
   default-extensions:
-    AllowAmbiguousTypes
     DataKinds
-    GeneralizedNewtypeDeriving
     LambdaCase
     OverloadedStrings
     PackageImports
@@ -43,6 +41,5 @@ library
     TypeApplications
     TypeFamilies
     TypeOperators
-    PolyKinds
   default-language: Haskell2010
   ghc-options: -Wall -fno-warn-tabs

@@ -1,6 +1,7 @@
 module Network.Telegram.API.Bot.Object.Message (Message) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), object, withObject, (.:), (.=))
+import "base" Data.Int (Int64)
 import "text" Data.Text (Text)
 
 import Network.Telegram.API.Bot.Capacity.Postable (Postable (..))
@@ -16,6 +17,6 @@ instance FromJSON Message where
 			<*> v .: "from" <*> v .: "text"
 
 instance Postable Message where
-	data Payload Message = Msg (Int, Text)
-	payload (Msg (chat_id, text)) = object ["chat_id" .= chat_id, "text" .= text]
+	data Payload Message = Msg Int64 Text
+	payload (Msg chat_id text) = object ["chat_id" .= chat_id, "text" .= text]
 	endpoint _ = "sendMessage"
