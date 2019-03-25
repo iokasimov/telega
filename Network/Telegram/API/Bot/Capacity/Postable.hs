@@ -1,7 +1,8 @@
-module Network.Telegram.API.Bot.Capacity.Postable (Postable (..), Payload (..)) where
+module Network.Telegram.API.Bot.Capacity.Postable (Ok (..), Postable (..), Payload) where
 
-import "aeson" Data.Aeson (FromJSON, Value, decode)
+import "aeson" Data.Aeson (FromJSON (parseJSON), Value, decode, withObject, (.:))
 import "base" Control.Exception (try)
+import "base" Control.Monad (join)
 import "base" Data.Maybe (fromJust)
 import "http-client" Network.HTTP.Client (Response (responseBody))
 import "text" Data.Text (unpack)
@@ -21,5 +22,16 @@ class FromJSON a => Postable a where
 
 	post :: Payload a -> Telegram e a
 	post x = ask >>= \(_, (session, Token token)) -> lift . ExceptT . try
-		. fmap (fromJust . decode . responseBody) . flip (Wreq.post session) (payload x) $
+		. fmap (fromJust . join . fmap result . decode @(Ok a) . responseBody) . flip (Wreq.post session) (payload x) $
 			"https://api.telegram.org/" <> unpack token <> "/" <> endpoint x
+
+data Ok a = Ok Bool a
+	deriving Show
+
+result :: Ok a -> Maybe a
+result (Ok True x) = Just x
+result (Ok False _ ) = Nothing
+
+instance FromJSON a => FromJSON (Ok a) where
+	parseJSON = withObject "Ok" $ \v ->
+		Ok <$> v .: "ok" <*> v .: "result"
