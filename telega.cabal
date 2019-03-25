@@ -23,7 +23,9 @@ library
     Network.Telegram.API.Bot.Core
     Network.Telegram.API.Bot.Capacity
     Network.Telegram.API.Bot.Capacity.Deliverable
+    Network.Telegram.API.Bot.Capacity.Editable
     Network.Telegram.API.Bot.Capacity.Postable
+    Network.Telegram.API.Bot.Capacity.Purgeable
     Network.Telegram.API.Bot.Object
     Network.Telegram.API.Bot.Object.Chat
     Network.Telegram.API.Bot.Object.From
