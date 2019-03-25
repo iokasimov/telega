@@ -8,7 +8,8 @@ import "text" Data.Text (unpack)
 import "transformers" Control.Monad.Trans.Class (lift)
 import "transformers" Control.Monad.Trans.Except (ExceptT (ExceptT))
 import "transformers" Control.Monad.Trans.Reader (ask)
-import qualified "wreq" Network.Wreq as Wreq (post)
+
+import qualified "wreq" Network.Wreq.Session as Wreq (post)
 
 import Network.Telegram.API.Bot.Core (Telegram, Token (Token))
 
@@ -19,6 +20,6 @@ class FromJSON a => Postable a where
 	endpoint :: Payload a -> String
 
 	post :: Payload a -> Telegram e a
-	post x = ask >>= \(Token token, _) -> lift . ExceptT . try
-		. fmap (fromJust . decode . responseBody) . flip Wreq.post (payload x) $
+	post x = ask >>= \(_, (session, Token token)) -> lift . ExceptT . try
+		. fmap (fromJust . decode . responseBody) . flip (Wreq.post session) (payload x) $
 			"https://api.telegram.org/" <> unpack token <> "/" <> endpoint x
