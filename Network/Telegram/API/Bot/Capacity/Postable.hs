@@ -1,4 +1,4 @@
-module Network.Telegram.API.Bot.Capacity.Postable (Postable (..)) where
+module Network.Telegram.API.Bot.Capacity.Postable (Postable (..), Payload (..)) where
 
 import "aeson" Data.Aeson (FromJSON, Value, decode)
 import "base" Control.Exception (try)
