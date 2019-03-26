@@ -1,4 +1,4 @@
-module Network.Telegram.API.Bot.Capacity.Postable (Ok (..), Postable (..), Payload) where
+module Network.Telegram.API.Bot.Capacity.Postable (Ok (..), Postable (..), Initial) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), Value, decode, withObject, (.:))
 import "base" Control.Exception (try)
@@ -14,16 +14,18 @@ import qualified "wreq" Network.Wreq.Session as Wreq (post)
 
 import Network.Telegram.API.Bot.Core (Telegram, Token (Token))
 
+type family Initial a = r | r -> a
+
 class FromJSON a => Postable a where
 	{-# MINIMAL payload, endpoint #-}
-	data Payload a :: *
-	payload :: Payload a -> Value
-	endpoint :: Payload a -> String
+	payload :: Initial a -> Value
+	endpoint :: Initial a -> String
 
-	post :: Payload a -> Telegram e a
-	post x = ask >>= \(_, (session, Token token)) -> lift . ExceptT . try
-		. fmap (fromJust . join . fmap result . decode @(Ok a) . responseBody) . flip (Wreq.post session) (payload x) $
-			"https://api.telegram.org/" <> unpack token <> "/" <> endpoint x
+	post :: Initial a -> Telegram e a
+	post x = snd <$> ask >>= \(session, Token token) -> lift . ExceptT . try
+		. fmap (fromJust . join . fmap result . decode @(Ok a) . responseBody)
+			. flip (Wreq.post session) (payload x) $
+				"https://api.telegram.org/" <> unpack token <> "/" <> endpoint x
 
 data Ok a = Ok Bool a
 	deriving Show
