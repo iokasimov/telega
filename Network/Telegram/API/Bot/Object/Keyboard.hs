@@ -31,10 +31,7 @@ instance ToJSON Button where
 	toJSON (Button text (Callback cbd)) = object
 		["text" .= text, "callback_data" .= cbd]
 
-data Pressed
-	= Open Text
-	| Callback Text
-	deriving Show
+data Pressed = Open Text | Callback Text deriving Show
 
 instance FromJSON Pressed where
 	parseJSON = withObject "Pressed" $ \v ->

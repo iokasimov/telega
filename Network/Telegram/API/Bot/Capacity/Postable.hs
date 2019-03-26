@@ -17,15 +17,15 @@ import Network.Telegram.API.Bot.Core (Telegram, Token (Token))
 type family Initial a = r | r -> a
 
 class FromJSON a => Postable a where
-	{-# MINIMAL payload, endpoint #-}
-	payload :: Initial a -> Value
-	endpoint :: Initial a -> String
+	{-# MINIMAL initial_value, post_endpoint #-}
+	initial_value :: Initial a -> Value
+	post_endpoint :: Initial a -> String
 
 	post :: Initial a -> Telegram e a
 	post x = snd <$> ask >>= \(session, Token token) -> lift . ExceptT . try
 		. fmap (fromJust . join . fmap result . decode @(Ok a) . responseBody)
-			. flip (Wreq.post session) (payload x) $
-				"https://api.telegram.org/" <> unpack token <> "/" <> endpoint x
+			. flip (Wreq.post session) (initial_value x) $
+				"https://api.telegram.org/" <> unpack token <> "/" <> post_endpoint x
 
 data Ok a = Ok Bool a
 	deriving Show
