@@ -16,7 +16,7 @@ import Network.Telegram.API.Bot.Object.Keyboard (Keyboard)
 data Message = Message Int Chat From Text deriving Show
 
 type instance Initial Message = (Int64, Text, Maybe Keyboard)
-type instance Marking Message = (Int64, Text)
+type instance Marking Message = (Int64, Int)
 
 instance FromJSON Message where
 	parseJSON = withObject "Message" $ \v ->
@@ -31,6 +31,6 @@ instance Postable Message where
 	post_endpoint _ = "sendMessage"
 
 instance Purgeable Message where
-	marking_value (chat_id, text) =
-		object ["chat_id" .= chat_id, "text" .= text]
+	marking_value (chat_id, message_id) =
+		object ["chat_id" .= chat_id, "message_id" .= message_id]
 	purge_endpoint _ = "deleteMessage"
