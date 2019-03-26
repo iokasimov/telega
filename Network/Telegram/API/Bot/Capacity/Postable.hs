@@ -1,4 +1,4 @@
-module Network.Telegram.API.Bot.Capacity.Postable (Ok (..), Postable (..), Initial) where
+module Network.Telegram.API.Bot.Capacity.Postable (Postable (..), Initial) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), Value, decode, withObject, (.:))
 import "base" Control.Exception (try)
@@ -12,7 +12,7 @@ import "transformers" Control.Monad.Trans.Reader (ask)
 
 import qualified "wreq" Network.Wreq.Session as Wreq (post)
 
-import Network.Telegram.API.Bot.Core (Telegram, Token (Token))
+import Network.Telegram.API.Bot.Core (Telegram, Token (Token), Ok, result)
 
 type family Initial a = r | r -> a
 
@@ -26,14 +26,3 @@ class FromJSON a => Postable a where
 		. fmap (fromJust . join . fmap result . decode @(Ok a) . responseBody)
 			. flip (Wreq.post session) (initial_value x) $
 				"https://api.telegram.org/" <> unpack token <> "/" <> post_endpoint x
-
-data Ok a = Ok Bool a
-	deriving Show
-
-result :: Ok a -> Maybe a
-result (Ok True x) = Just x
-result (Ok False _ ) = Nothing
-
-instance FromJSON a => FromJSON (Ok a) where
-	parseJSON = withObject "Ok" $ \v ->
-		Ok <$> v .: "ok" <*> v .: "result"

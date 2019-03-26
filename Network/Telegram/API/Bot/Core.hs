@@ -1,5 +1,6 @@
-module Network.Telegram.API.Bot.Core (Telegram, ask', Token (..), telegram) where
+module Network.Telegram.API.Bot.Core (Telegram, telegram, ask', Token (..), Ok, result) where
 
+import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Control.Exception (SomeException)
 import "text" Data.Text (Text)
 import "transformers" Control.Monad.Trans.Reader (ReaderT (runReaderT), ask)
@@ -15,3 +16,13 @@ telegram session token env = runExceptT . flip runReaderT (env, (session, token)
 
 ask' :: Telegram e e
 ask' = fst <$> ask
+
+data Ok a = Ok Bool a deriving Show
+
+result :: Ok a -> Maybe a
+result (Ok True x) = Just x
+result (Ok False _ ) = Nothing
+
+instance FromJSON a => FromJSON (Ok a) where
+	parseJSON = withObject "Ok" $ \v ->
+		Ok <$> v .: "ok" <*> v .: "result"
