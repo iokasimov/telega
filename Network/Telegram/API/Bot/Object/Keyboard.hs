@@ -1,14 +1,19 @@
-module Network.Telegram.API.Bot.Object.Keyboard (Keyboard (..), Button (..), Pressed (..)) where
+module Network.Telegram.API.Bot.Object.Keyboard
+	(Keyboard (..), Button (..), Pressed (..), Substitution) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON)
 	, Object, Value (Object), object, withObject, (.:), (.:?), (.=))
 import "aeson" Data.Aeson.Types (Parser)
 import "base" Control.Applicative (Alternative ((<|>)))
+import "base" Data.Int (Int64)
 import "text" Data.Text (Text)
 
-data Keyboard
-	= Inline [[Button]]
-	deriving Show
+import Network.Telegram.API.Bot.Capacity.Editable
+	(Substitution, Editable (substitution_value, edit_endpoint))
+
+data Keyboard = Inline [[Button]] deriving Show
+
+type instance Substitution Keyboard = (Int64, Int, Keyboard)
 
 instance FromJSON Keyboard where
 	parseJSON = withObject "Inline" $ \v ->
@@ -17,6 +22,11 @@ instance FromJSON Keyboard where
 instance ToJSON Keyboard where
 	toJSON (Inline buttons) = object
 		["inline_keyboard" .= buttons]
+
+instance Editable Keyboard where
+	substitution_value (chat_id, message_id, reply_markup) = object
+		["chat_id" .= chat_id, "message_id" .= message_id, "reply_markup" .= reply_markup]
+	edit_endpoint _ = "editMessageReplyMarkup"
 
 data Button = Button Text Pressed
 	deriving Show
