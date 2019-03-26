@@ -1,6 +1,6 @@
 module Network.Telegram.API.Bot.Capacity.Postable (Postable (..), Initial) where
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), Value, decode, withObject, (.:))
+import "aeson" Data.Aeson (FromJSON, Value, decode)
 import "base" Control.Exception (try)
 import "base" Control.Monad (join)
 import "base" Data.Maybe (fromJust)
