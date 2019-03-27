@@ -13,12 +13,10 @@ data Update
 	deriving Show
 
 instance FromJSON Update where
-	parseJSON = withObject "Update" $ \v ->
-		(Query <$> v .: "update_id" <*> query v) <|>
-		(Incoming <$> v .: "update_id" <*> incoming v) where
+	parseJSON = withObject "Update" $ \v -> query v <|> incoming v where
 
-		incoming :: Object -> Parser Message
-		incoming v = v .: "message"
+		query :: Object -> Parser Update
+		query v = Query <$> v .: "update_id" <*> v .: "callback_query"
 
-		query :: Object -> Parser Callback
-		query v = v .: "callback_query"
+		incoming :: Object -> Parser Update
+		incoming v = Incoming <$> v .: "update_id" <*> v .: "message"
