@@ -30,6 +30,7 @@ library
     Network.Telegram.API.Bot.Object.Chat
     Network.Telegram.API.Bot.Object.From
     Network.Telegram.API.Bot.Object.Button
+    Network.Telegram.API.Bot.Object.Callback
     Network.Telegram.API.Bot.Object.Keyboard
     Network.Telegram.API.Bot.Object.Message
     Network.Telegram.API.Bot.Object.Update
