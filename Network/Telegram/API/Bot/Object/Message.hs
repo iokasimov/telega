@@ -46,7 +46,7 @@ instance FromJSON Message where
 				_ -> fail "It's not a bot command"
 
 		extract_command :: Object -> (Int, Int) -> Parser Text
-		extract_command v (ofs, len) = (T.take len . T.drop ofs) <$> v .: "text"
+		extract_command v (ofs, len) = (T.take len . T.drop (ofs + 1)) <$> v .: "text"
 
 instance Postable Message where
 	initial_value (chat_id, text, Nothing) =
