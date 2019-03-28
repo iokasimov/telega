@@ -35,7 +35,7 @@ library
     Network.Telegram.API.Bot.Object.Message
     Network.Telegram.API.Bot.Object.Update
   build-depends: base == 4.*, transformers, aeson,
-    text, http-client, http-client-tls, wreq
+    vector, text, http-client, http-client-tls, wreq
   default-extensions:
     DataKinds
     LambdaCase
