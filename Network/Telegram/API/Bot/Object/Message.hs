@@ -2,7 +2,7 @@ module Network.Telegram.API.Bot.Object.Message
 	(Message (..), Initial, Marking) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), object, withArray, withObject, (.:), (.=))
-import "aeson" Data.Aeson.Types (Array, Object, Parser, Value)
+import "aeson" Data.Aeson.Types (Object, Parser, Value)
 import "base" Control.Applicative (Alternative ((<|>), empty))
 import "base" Data.Int (Int64)
 import "text" Data.Text (Text)

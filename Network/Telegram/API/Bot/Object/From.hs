@@ -12,6 +12,11 @@ data From
 
 type Whom = Int -> Maybe Text -> Text -> Maybe Text -> Maybe Text -> From
 
+instance Eq From where
+	Bot i _ _ _ _ == Bot i' _ _ _ _ = i == i'
+	User i _ _ _ _ == User i' _ _ _ _ = i == i'
+	_ == _ = False
+
 instance FromJSON From where
 	parseJSON = withObject "From" $ \v -> v .: "is_bot"
 		>>= bool (from v User) (from v Bot) where
