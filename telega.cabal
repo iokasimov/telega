@@ -21,10 +21,6 @@ library
   exposed-modules:
     Network.Telegram.API.Bot
     Network.Telegram.API.Bot.Core
-    Network.Telegram.API.Bot.Capacity
-    Network.Telegram.API.Bot.Capacity.Editable
-    Network.Telegram.API.Bot.Capacity.Postable
-    Network.Telegram.API.Bot.Capacity.Purgeable
     Network.Telegram.API.Bot.Object
     Network.Telegram.API.Bot.Object.Chat
     Network.Telegram.API.Bot.Object.From
@@ -33,6 +29,12 @@ library
     Network.Telegram.API.Bot.Object.Keyboard
     Network.Telegram.API.Bot.Object.Message
     Network.Telegram.API.Bot.Object.Update
+    Network.Telegram.API.Bot.Capacity
+    Network.Telegram.API.Bot.Capacity.Editable
+    Network.Telegram.API.Bot.Capacity.Postable
+    Network.Telegram.API.Bot.Capacity.Purgeable
+    Network.Telegram.API.Bot.Property
+    Network.Telegram.API.Bot.Property.Identifiable
   build-depends: base == 4.*, transformers, lens, aeson, text, http-client, wreq
   default-extensions:
     DataKinds
