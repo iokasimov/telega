@@ -9,13 +9,15 @@ import "text" Data.Text (Text)
 
 import qualified "text" Data.Text as T (drop, take)
 
+import Network.Telegram.API.Bot.Object.Chat (Chat)
+import Network.Telegram.API.Bot.Object.From (From)
+import Network.Telegram.API.Bot.Object.Keyboard (Keyboard)
 import Network.Telegram.API.Bot.Capacity.Postable
 	(Initial, Postable (initial_value, post_endpoint))
 import Network.Telegram.API.Bot.Capacity.Purgeable
 	(Marking, Purgeable (marking_value, purge_endpoint))
-import Network.Telegram.API.Bot.Object.Chat (Chat)
-import Network.Telegram.API.Bot.Object.From (From)
-import Network.Telegram.API.Bot.Object.Keyboard (Keyboard)
+import Network.Telegram.API.Bot.Property.Identifiable
+	(Identifiable (identificator), Identificator)
 
 data Message
 	= Textual Int Chat From Text
@@ -24,6 +26,11 @@ data Message
 
 type instance Initial Message = (Int64, Text, Maybe Keyboard)
 type instance Marking Message = (Int64, Int)
+type instance Identificator Message = Int
+
+instance Identifiable Message where
+	identificator (Textual i _ _ _) = i
+	identificator (Command i _ _ _) = i
 
 instance FromJSON Message where
 	parseJSON = withObject "Message" $ \v -> command v <|> textual v where

@@ -6,11 +6,19 @@ import "base" Control.Applicative (Alternative ((<|>)))
 
 import Network.Telegram.API.Bot.Object.Callback (Callback)
 import Network.Telegram.API.Bot.Object.Message (Message)
+import Network.Telegram.API.Bot.Property.Identifiable
+	(Identifiable (identificator), Identificator)
 
 data Update
 	= Incoming Int Message
 	| Query Int Callback
 	deriving Show
+
+type instance Identificator Update = Int
+
+instance Identifiable Update where
+	identificator (Incoming i _) = i
+	identificator (Query i _) = i
 
 instance FromJSON Update where
 	parseJSON = withObject "Update" $ \v -> query v <|> incoming v where
