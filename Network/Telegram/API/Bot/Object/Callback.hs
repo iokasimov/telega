@@ -6,8 +6,8 @@ import "text" Data.Text (Text)
 import Network.Telegram.API.Bot.Object.From (From)
 import Network.Telegram.API.Bot.Object.Message (Message)
 
-data Callback = Datatext From Message Text deriving Show
+data Callback = Datatext Message Text deriving Show
 
 instance FromJSON Callback where
 	parseJSON = withObject "Callback" $ \v ->
-		Datatext <$> v .: "from" <*> v .: "message" <*> v .: "data"
+		Datatext <$> v .: "message" <*> v .: "data"
