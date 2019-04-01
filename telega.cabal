@@ -1,7 +1,7 @@
 name:                telega
 version:             0.1.0
-synopsis:            ...
-description:         ...
+synopsis:            Telegram Bot API binding
+description:         High-level bindings, typed entities, inline mode only
 homepage:            https://github.com/iokasimov/telega
 license:             MIT
 license-file:        LICENSE
