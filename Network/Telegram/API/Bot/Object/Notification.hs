@@ -1,4 +1,4 @@
-module Network.Telegram.API.Bot.Object.Notification (Notification (..)) where
+module Network.Telegram.API.Bot.Object.Notification (Notification) where
 
 import "aeson" Data.Aeson (object, (.=))
 import "text" Data.Text (Text)
@@ -6,7 +6,7 @@ import "text" Data.Text (Text)
 import Network.Telegram.API.Bot.Capacity.Droppable
 	(Drop, Droppable (drop_value, drop_endpoint))
 
-data Notification = Notification Text Text
+data Notification
 
 type instance Drop Notification = (Text, Text)
 
