@@ -21,8 +21,8 @@ class FromJSON a => Editable a where
 	substitution_value :: Substitution a -> Value
 	edit_endpoint :: Substitution a -> String
 
-	edit :: Substitution a -> Telegram e a
+	edit :: Substitution a -> Telegram e ()
 	edit x = snd <$> ask >>= \(session, Token token) -> lift . ExceptT . try
-		. fmap (fromJust . join . fmap result . decode @(Ok a) . responseBody)
+		. fmap (fromJust . join . fmap result . decode @(Ok ()) . responseBody)
 			. flip (Wreq.post session) (substitution_value x) $
 				"https://api.telegram.org/" <> unpack token <> "/" <> edit_endpoint x
