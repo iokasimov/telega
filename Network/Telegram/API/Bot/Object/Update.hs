@@ -36,7 +36,7 @@ chat f (Incoming upd_id (Command msg_id chat_ from cmd)) =
 	(\chat' -> Incoming upd_id (Command msg_id chat' from cmd)) <$> f chat_
 chat f (Incoming upd_id (Textual msg_id chat_ from txt)) =
 	(\chat' -> Incoming upd_id (Textual msg_id chat' from txt)) <$> f chat_
-chat f (Query upd_id (Datatext (Command msg_id chat_ from cmd) dttxt)) =
-	(\chat' -> Query upd_id (Datatext (Command msg_id chat' from cmd) dttxt)) <$> f chat_
-chat f (Query upd_id (Datatext (Textual msg_id chat_ from txt) dttxt)) =
-	(\chat' -> Query upd_id (Datatext (Textual msg_id chat' from txt) dttxt)) <$> f chat_
+chat f (Query upd_id (Datatext cq_id (Command msg_id chat_ from cmd) dttxt)) =
+	(\chat' -> Query upd_id (Datatext cq_id (Command msg_id chat' from cmd) dttxt)) <$> f chat_
+chat f (Query upd_id (Datatext cq_id (Textual msg_id chat_ from txt) dttxt)) =
+	(\chat' -> Query upd_id (Datatext cq_id (Textual msg_id chat' from txt) dttxt)) <$> f chat_
