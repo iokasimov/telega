@@ -31,6 +31,7 @@ library
     Network.Telegram.API.Bot.Object.Notification
     Network.Telegram.API.Bot.Object.Update
     Network.Telegram.API.Bot.Capacity
+    Network.Telegram.API.Bot.Capacity.Droppable
     Network.Telegram.API.Bot.Capacity.Editable
     Network.Telegram.API.Bot.Capacity.Postable
     Network.Telegram.API.Bot.Capacity.Purgeable
