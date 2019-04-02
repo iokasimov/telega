@@ -28,6 +28,7 @@ library
     Network.Telegram.API.Bot.Object.Callback
     Network.Telegram.API.Bot.Object.Keyboard
     Network.Telegram.API.Bot.Object.Message
+    Network.Telegram.API.Bot.Object.Notification
     Network.Telegram.API.Bot.Object.Update
     Network.Telegram.API.Bot.Capacity
     Network.Telegram.API.Bot.Capacity.Editable
