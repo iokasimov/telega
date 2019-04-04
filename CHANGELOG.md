@@ -3,3 +3,6 @@
 * Add string identificator to `Callback` datatype
 * Define `Notification` datatype
 * Define `Droppable` typeclass
+
+# 0.1.2
+* Define `Member` datatype

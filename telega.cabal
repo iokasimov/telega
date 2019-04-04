@@ -38,15 +38,7 @@ library
     Network.Telegram.API.Bot.Property
     Network.Telegram.API.Bot.Property.Identifiable
   build-depends: base == 4.*, transformers, lens, aeson, text, http-client, wreq
-  default-extensions:
-    DataKinds
-    LambdaCase
-    OverloadedStrings
-    PackageImports
-    ScopedTypeVariables
-    TypeApplications
-    TypeFamilies
-    TypeFamilyDependencies
-    TypeOperators
+  default-extensions: DataKinds, LambdaCase, OverloadedStrings, PackageImports, ScopedTypeVariables
+    TypeApplications, TypeFamilies, TypeFamilyDependencies, TypeOperators
   default-language: Haskell2010
   ghc-options: -Wall -fno-warn-tabs
