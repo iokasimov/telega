@@ -33,7 +33,7 @@ instance FromJSON Update where
 		query v = Query <$> v .: "update_id" <*> v .: "callback_query"
 
 		membership :: Object -> Parser Update
-		membership v = Query <$> v .: "update_id" <*> parseJSON (Object v)
+		membership v = Query <$> v .: "update_id" <*> v .: "message"
 
 		incoming :: Object -> Parser Update
 		incoming v = Incoming <$> v .: "update_id" <*> v .: "message"
