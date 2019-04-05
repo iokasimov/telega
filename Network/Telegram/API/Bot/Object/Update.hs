@@ -5,10 +5,10 @@ import "aeson" Data.Aeson.Types (Object, Parser)
 import "base" Control.Applicative (Alternative ((<|>)))
 
 import Network.Telegram.API.Bot.Has (Has (focus))
-import Network.Telegram.API.Bot.Object.Callback (Callback (Datatext))
+import Network.Telegram.API.Bot.Object.Callback (Callback)
 import Network.Telegram.API.Bot.Object.Chat (Chat)
-import Network.Telegram.API.Bot.Object.Member (Member (Gone, Joined))
-import Network.Telegram.API.Bot.Object.Message (Message (Textual, Command))
+import Network.Telegram.API.Bot.Object.Member (Member)
+import Network.Telegram.API.Bot.Object.Message (Message)
 import Network.Telegram.API.Bot.Property.Identifiable
 	(Identifiable (identificator), Identificator)
 
@@ -39,9 +39,6 @@ instance FromJSON Update where
 		incoming v = Incoming <$> v .: "update_id" <*> v .: "message"
 
 instance Has Update Chat where
-	focus f (Incoming upd_id (Command msg_id chat_ from cmd)) = (\chat' -> Incoming upd_id (Command msg_id chat' from cmd)) <$> f chat_
-	focus f (Incoming upd_id (Textual msg_id chat_ from txt)) = (\chat' -> Incoming upd_id (Textual msg_id chat' from txt)) <$> f chat_
-	focus f (Query upd_id (Datatext cq_id (Command msg_id chat_ from cmd) dttxt)) = (\chat' -> Query upd_id (Datatext cq_id (Command msg_id chat' from cmd) dttxt)) <$> f chat_
-	focus f (Query upd_id (Datatext cq_id (Textual msg_id chat_ from txt) dttxt)) = (\chat' -> Query upd_id (Datatext cq_id (Textual msg_id chat' from txt) dttxt)) <$> f chat_
-	focus f (Membership upd_id (Gone chat_ users)) = (\chat' -> Membership upd_id (Gone chat' users)) <$> f chat_
-	focus f (Membership upd_id (Joined chat_ users)) = (\chat' -> Membership upd_id (Joined chat' users)) <$> f chat_
+	focus f (Incoming upd_id msg) = Incoming upd_id <$> focus f msg
+	focus f (Query upd_id cb) = Query upd_id <$> focus f cb
+	focus f (Membership upd_id mmb) = Membership upd_id <$> focus f mmb
