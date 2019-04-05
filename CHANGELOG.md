@@ -9,3 +9,8 @@
 * Add new `Membership` constructor to `Update` datatype
 * Define `Has` typeclass to get access objects within other objects
 * Replace `chat` lens on `Has Update Chat` instance
+
+# 0.1.3
+* Define `Has Member From` instance
+* Define `Has Message Chat` instance
+* Define `Has Message From` instance

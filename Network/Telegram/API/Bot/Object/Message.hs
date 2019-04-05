@@ -9,6 +9,7 @@ import "text" Data.Text (Text)
 
 import qualified "text" Data.Text as T (drop, take)
 
+import Network.Telegram.API.Bot.Has (Has (focus))
 import Network.Telegram.API.Bot.Object.Chat (Chat)
 import Network.Telegram.API.Bot.Object.From (From)
 import Network.Telegram.API.Bot.Object.Keyboard (Keyboard)
@@ -66,3 +67,11 @@ instance Purgeable Message where
 	marking_value (chat_id, message_id) =
 		object ["chat_id" .= chat_id, "message_id" .= message_id]
 	purge_endpoint _ = "deleteMessage"
+
+instance Has Message Chat where
+	focus f (Textual msg_id chat from txt) = (\chat' -> Textual msg_id chat' from txt) <$> f chat
+	focus f (Command msg_id chat from cmd) = (\chat' -> Command msg_id chat' from cmd) <$> f chat
+
+instance Has Message From where
+	focus f (Textual msg_id chat from txt) = (\from' -> Textual msg_id chat from' txt) <$> f from
+	focus f (Command msg_id chat from cmd) = (\from' -> Command msg_id chat from' cmd) <$> f from
