@@ -8,3 +8,4 @@
 * Define `Member` datatype
 * Add new `Membership` constructor to `Update` datatype
 * Define `Has` typeclass to get access objects within other objects
+* Remove `chat` lens from `Update` to `Chat`

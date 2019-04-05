@@ -1,10 +1,11 @@
-module Network.Telegram.API.Bot.Object.Update (Update (..), chat) where
+module Network.Telegram.API.Bot.Object.Update (Update (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser)
 import "base" Control.Applicative (Alternative ((<|>)))
 import "lens" Control.Lens (Lens')
 
+import Network.Telegram.API.Bot.Has (Has (focus))
 import Network.Telegram.API.Bot.Object.Callback (Callback (Datatext))
 import Network.Telegram.API.Bot.Object.Chat (Chat)
 import Network.Telegram.API.Bot.Object.Member (Member (Gone, Joined))
@@ -38,16 +39,16 @@ instance FromJSON Update where
 		incoming :: Object -> Parser Update
 		incoming v = Incoming <$> v .: "update_id" <*> v .: "message"
 
-chat :: Lens' Update Chat
-chat f (Incoming upd_id (Command msg_id chat_ from cmd)) =
-	(\chat' -> Incoming upd_id (Command msg_id chat' from cmd)) <$> f chat_
-chat f (Incoming upd_id (Textual msg_id chat_ from txt)) =
-	(\chat' -> Incoming upd_id (Textual msg_id chat' from txt)) <$> f chat_
-chat f (Query upd_id (Datatext cq_id (Command msg_id chat_ from cmd) dttxt)) =
-	(\chat' -> Query upd_id (Datatext cq_id (Command msg_id chat' from cmd) dttxt)) <$> f chat_
-chat f (Query upd_id (Datatext cq_id (Textual msg_id chat_ from txt) dttxt)) =
-	(\chat' -> Query upd_id (Datatext cq_id (Textual msg_id chat' from txt) dttxt)) <$> f chat_
-chat f (Membership upd_id (Gone chat_ users)) =
-	(\chat' -> Membership upd_id (Gone chat' users)) <$> f chat_
-chat f (Membership upd_id (Joined chat_ users)) =
-	(\chat' -> Membership upd_id (Joined chat' users)) <$> f chat_
+instance Has Update Chat where
+	focus f (Incoming upd_id (Command msg_id chat_ from cmd)) =
+		(\chat' -> Incoming upd_id (Command msg_id chat' from cmd)) <$> f chat_
+	focus f (Incoming upd_id (Textual msg_id chat_ from txt)) =
+		(\chat' -> Incoming upd_id (Textual msg_id chat' from txt)) <$> f chat_
+	focus f (Query upd_id (Datatext cq_id (Command msg_id chat_ from cmd) dttxt)) =
+		(\chat' -> Query upd_id (Datatext cq_id (Command msg_id chat' from cmd) dttxt)) <$> f chat_
+	focus f (Query upd_id (Datatext cq_id (Textual msg_id chat_ from txt) dttxt)) =
+		(\chat' -> Query upd_id (Datatext cq_id (Textual msg_id chat' from txt) dttxt)) <$> f chat_
+	focus f (Membership upd_id (Gone chat_ users)) =
+		(\chat' -> Membership upd_id (Gone chat' users)) <$> f chat_
+	focus f (Membership upd_id (Joined chat_ users)) =
+		(\chat' -> Membership upd_id (Joined chat' users)) <$> f chat_
