@@ -1,7 +1,7 @@
 module Network.Telegram.API.Bot.Object.Update (Update (..), chat) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
-import "aeson" Data.Aeson.Types (Object, Parser, Value (Object))
+import "aeson" Data.Aeson.Types (Object, Parser)
 import "base" Control.Applicative (Alternative ((<|>)))
 import "lens" Control.Lens (Lens')
 

@@ -21,6 +21,7 @@ library
   exposed-modules:
     Network.Telegram.API.Bot
     Network.Telegram.API.Bot.Core
+    Network.Telegram.API.Bot.Has
     Network.Telegram.API.Bot.Object
     Network.Telegram.API.Bot.Object.Chat
     Network.Telegram.API.Bot.Object.From
@@ -39,7 +40,8 @@ library
     Network.Telegram.API.Bot.Property
     Network.Telegram.API.Bot.Property.Identifiable
   build-depends: base == 4.*, transformers, lens, aeson, text, http-client, wreq
-  default-extensions: DataKinds, LambdaCase, OverloadedStrings, PackageImports, ScopedTypeVariables
+  default-extensions: DataKinds, LambdaCase, OverloadedStrings,
+    MultiParamTypeClasses, PackageImports, ScopedTypeVariables,
     TypeApplications, TypeFamilies, TypeFamilyDependencies, TypeOperators
   default-language: Haskell2010
   ghc-options: -Wall -fno-warn-tabs
