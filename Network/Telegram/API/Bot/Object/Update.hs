@@ -7,14 +7,14 @@ import "base" Control.Applicative (Alternative ((<|>)))
 import Network.Telegram.API.Bot.Access (Access (access))
 import Network.Telegram.API.Bot.Object.Callback (Callback)
 import Network.Telegram.API.Bot.Object.Chat (Chat)
-import Network.Telegram.API.Bot.Object.Member (Member)
+import Network.Telegram.API.Bot.Object.Moving (Moving)
 import Network.Telegram.API.Bot.Object.Message (Message)
 import Network.Telegram.API.Bot.Property.Identifiable
 	(Identifiable (identificator), Identificator)
 
 data Update
 	= Query Int Callback
-	| Membership Int Member
+	| Membership Int Moving
 	| Incoming Int Message
 	deriving Show
 

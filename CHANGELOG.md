@@ -12,8 +12,9 @@
 
 # 0.1.3
 * Rename `Has` typeclass to `Access` and swap parameters
-* Define `Access Callback Chat` instance
-* Define `Access Callback From` instance
-* Define `Access Member From` instance
-* Define `Access Message Chat` instance
-* Define `Access Message From` instance
+* Rename `Member` datatype to `Moving`
+* Define `Access Chat Callback` instance
+* Define `Access From Callback` instance
+* Define `Access From Moving` instance
+* Define `Access Chat Message` instance
+* Define `Access From Message` instance
