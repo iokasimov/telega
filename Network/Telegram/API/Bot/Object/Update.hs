@@ -4,7 +4,7 @@ import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser)
 import "base" Control.Applicative (Alternative ((<|>)))
 
-import Network.Telegram.API.Bot.Has (Has (focus))
+import Network.Telegram.API.Bot.Access (Access (access))
 import Network.Telegram.API.Bot.Object.Callback (Callback)
 import Network.Telegram.API.Bot.Object.Chat (Chat)
 import Network.Telegram.API.Bot.Object.Member (Member)
@@ -38,7 +38,7 @@ instance FromJSON Update where
 		incoming :: Object -> Parser Update
 		incoming v = Incoming <$> v .: "update_id" <*> v .: "message"
 
-instance Has Update Chat where
-	focus f (Incoming upd_id msg) = Incoming upd_id <$> focus f msg
-	focus f (Query upd_id cb) = Query upd_id <$> focus f cb
-	focus f (Membership upd_id mmb) = Membership upd_id <$> focus f mmb
+instance Access Chat Update where
+	access f (Incoming upd_id msg) = Incoming upd_id <$> access f msg
+	access f (Query upd_id cb) = Query upd_id <$> access f cb
+	access f (Membership upd_id mmb) = Membership upd_id <$> access f mmb

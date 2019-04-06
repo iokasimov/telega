@@ -4,7 +4,7 @@ import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser)
 import "base" Control.Applicative (Alternative ((<|>)))
 
-import Network.Telegram.API.Bot.Has (Has (focus))
+import Network.Telegram.API.Bot.Access (Access (access))
 import Network.Telegram.API.Bot.Object.Chat (Chat)
 import Network.Telegram.API.Bot.Object.From (From)
 
@@ -19,6 +19,6 @@ instance FromJSON Member where
 		joined :: Object -> Parser Member
 		joined v = Joined <$> v .: "chat" <*> v .: "new_chat_members"
 
-instance Has Member Chat where
-	focus f (Gone chat from) = (\chat' -> Gone chat' from) <$> f chat
-	focus f (Joined chat froms) = (\chat' -> Joined chat' froms) <$> f chat
+instance Access Chat Member where
+	access f (Gone chat from) = (\chat' -> Gone chat' from) <$> f chat
+	access f (Joined chat froms) = (\chat' -> Joined chat' froms) <$> f chat

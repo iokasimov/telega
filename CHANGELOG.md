@@ -8,11 +8,12 @@
 * Define `Member` datatype
 * Add new `Membership` constructor to `Update` datatype
 * Define `Has` typeclass to get access objects within other objects
-* Replace `chat` lens on `Has Update Chat` instance
+* Replace `chat` lens on `Access Update Chat` instance
 
 # 0.1.3
-* Define `Has Callback Chat` instance
-* Define `Has Callback From` instance
-* Define `Has Member From` instance
-* Define `Has Message Chat` instance
-* Define `Has Message From` instance
+* Rename `Has` typeclass to `Access` and swap parameters
+* Define `Access Callback Chat` instance
+* Define `Access Callback From` instance
+* Define `Access Member From` instance
+* Define `Access Message Chat` instance
+* Define `Access Message From` instance
