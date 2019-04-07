@@ -1,12 +1,9 @@
 module Network.Telegram.API.Bot.Object.Callback (Callback (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
-import "base" Data.Int (Int64)
-import "base" Control.Applicative (Applicative (pure, (<*>)), Alternative ((<|>)))
-import "base" Control.Monad (Monad ((>>=)), fail)
-import "base" Data.Function (flip, (.), ($))
-import "base" Data.Functor (Functor (fmap), (<$>))
-import "base" Data.Maybe (Maybe, maybe)
+import "base" Control.Applicative (Applicative ((<*>)))
+import "base" Data.Function (flip, ($))
+import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 

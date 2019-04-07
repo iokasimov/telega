@@ -40,6 +40,8 @@ library
     Network.Telegram.API.Bot.Capacity.Purgeable
     Network.Telegram.API.Bot.Property
     Network.Telegram.API.Bot.Property.Identifiable
+  other-modules:
+    Network.Telegram.API.Bot.Internal
   build-depends: base == 4.*, transformers, lens, aeson, text, time, http-client, wreq
   default-extensions: DataKinds, LambdaCase, OverloadedStrings, NoImplicitPrelude,
     MultiParamTypeClasses, PackageImports, ScopedTypeVariables,
