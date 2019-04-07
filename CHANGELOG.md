@@ -24,3 +24,4 @@
 * No implicit `Prelude` anymore (NoImplicitPrelude)
 * Move HTTP request function into `Internal` module
 * Define `Object` type family
+* Define `Endpoint` typeclass to replace `Capacity`

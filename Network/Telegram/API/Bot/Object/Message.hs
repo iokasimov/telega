@@ -3,13 +3,13 @@ module Network.Telegram.API.Bot.Object.Message
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), object, withArray, withObject, (.:), (.=))
 import "aeson" Data.Aeson.Types (Object, Parser, Value)
-import "base" Control.Applicative (Applicative (pure, (<*>)), Alternative (empty, (<|>)))
+import "base" Control.Applicative (Applicative ((<*>)), Alternative (empty, (<|>)))
 import "base" Control.Monad (Monad ((>>=)), fail)
 import "base" Data.Function ((.), ($))
-import "base" Data.Functor (Functor (fmap), (<$>))
+import "base" Data.Functor ((<$>))
 import "base" Data.Foldable (Foldable (foldr))
 import "base" Data.Int (Int, Int64)
-import "base" Data.Maybe (Maybe (Just, Nothing), maybe)
+import "base" Data.Maybe (Maybe (Just, Nothing))
 import "base" Text.Show (Show)
 import "base" Prelude ((+))
 import "text" Data.Text (Text)
@@ -26,6 +26,8 @@ import Network.Telegram.API.Bot.Capacity.Purgeable
 	(Marking, Purgeable (marking_value, purge_endpoint))
 import Network.Telegram.API.Bot.Property.Identifiable
 	(Identifiable (identificator), Identificator)
+
+import Network.Telegram.API.Bot.Endpoint (Endpoint (value, endpoint), Payload, Post, Purge)
 
 data Message
 	= Textual Int Chat From Text
@@ -82,3 +84,12 @@ instance Access Chat Message where
 instance Access From Message where
 	access f (Textual msg_id chat from txt) = (\from' -> Textual msg_id chat from' txt) <$> f from
 	access f (Command msg_id chat from cmd) = (\from' -> Command msg_id chat from' cmd) <$> f from
+
+
+type instance Payload (Post Message) = (Int64, Text, Maybe Keyboard)
+type instance Payload (Purge Message) = (Int64, Int)
+
+instance Endpoint (Post Message) where
+	value (chat_id, text, Nothing) = object ["chat_id" .= chat_id, "text" .= text]
+	value (chat_id, text, Just kb) = object ["chat_id" .= chat_id, "text" .= text, "reply_markup" .= kb]
+	endpoint _ = "sendMessage"
