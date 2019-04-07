@@ -1,7 +1,17 @@
 module Network.Telegram.API.Bot.Core (Telegram, telegram, ask', Token (..), Ok, result) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
+import "base" Control.Applicative (Applicative ((<*>)))
 import "base" Control.Exception (SomeException)
+import "base" Data.Bool (Bool (True, False))
+import "base" Data.Eq (Eq)
+import "base" Data.Either (Either)
+import "base" Data.Function (flip, (.), ($))
+import "base" Data.Functor ((<$>))
+import "base" Data.Maybe (Maybe (Just, Nothing))
+import "base" Data.Tuple (fst)
+import "base" System.IO (IO)
+import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 import "transformers" Control.Monad.Trans.Reader (ReaderT (runReaderT), ask)
 import "transformers" Control.Monad.Trans.Except (ExceptT, runExceptT)

@@ -3,8 +3,15 @@ module Network.Telegram.API.Bot.Object.Message
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), object, withArray, withObject, (.:), (.=))
 import "aeson" Data.Aeson.Types (Object, Parser, Value)
-import "base" Control.Applicative (Alternative ((<|>), empty))
-import "base" Data.Int (Int64)
+import "base" Control.Applicative (Applicative (pure, (<*>)), Alternative (empty, (<|>)))
+import "base" Control.Monad (Monad ((>>=)), fail)
+import "base" Data.Function ((.), ($))
+import "base" Data.Functor (Functor (fmap), (<$>))
+import "base" Data.Foldable (Foldable (foldr))
+import "base" Data.Int (Int, Int64)
+import "base" Data.Maybe (Maybe (Just, Nothing), maybe)
+import "base" Text.Show (Show)
+import "base" Prelude ((+))
 import "text" Data.Text (Text)
 
 import qualified "text" Data.Text as T (drop, take)

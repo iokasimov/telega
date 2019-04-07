@@ -11,6 +11,6 @@ data Notification
 type instance Drop Notification = (Text, Text)
 
 instance Droppable Notification where
-	drop_value (cbq_id, text) =
-		object ["callback_query_id" .= cbq_id, "text" .= text]
+	drop_value (cbq_id, text) = object
+		["callback_query_id" .= cbq_id, "text" .= text]
 	drop_endpoint _ = "answerCallbackQuery"

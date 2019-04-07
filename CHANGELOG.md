@@ -21,3 +21,4 @@
 
 # 0.1.4
 * Define `Member` datatype for chat users
+* No implicit `Prelude` anymore (NoImplicitPrelude)

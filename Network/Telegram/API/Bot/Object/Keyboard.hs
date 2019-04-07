@@ -1,7 +1,10 @@
 module Network.Telegram.API.Bot.Object.Keyboard (Keyboard (..), Substitution) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), object, withObject, (.:), (.=))
-import "base" Data.Int (Int64)
+import "base" Data.Function (($))
+import "base" Data.Functor ((<$>))
+import "base" Data.Int (Int, Int64)
+import "base" Text.Show (Show)
 
 import Network.Telegram.API.Bot.Capacity.Editable
 	(Substitution, Editable (substitution_value, edit_endpoint))

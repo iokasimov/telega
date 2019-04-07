@@ -2,7 +2,11 @@ module Network.Telegram.API.Bot.Object.Update (Update (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser)
-import "base" Control.Applicative (Alternative ((<|>)))
+import "base" Control.Applicative (Applicative ((<*>)), Alternative ((<|>)))
+import "base" Data.Function (($))
+import "base" Data.Functor ((<$>))
+import "base" Data.Int (Int)
+import "base" Text.Show (Show)
 
 import Network.Telegram.API.Bot.Access (Access (access))
 import Network.Telegram.API.Bot.Object.Callback (Callback)
