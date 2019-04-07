@@ -15,6 +15,9 @@
 * Rename `Member` datatype to `Moving`
 * Define `Access Chat Callback` instance
 * Define `Access From Callback` instance
-* Define `Access From Moving` instance
+* Define `Access Chat Moving` instance
 * Define `Access Chat Message` instance
 * Define `Access From Message` instance
+
+# 0.1.4
+* Define `Member` datatype for chat users

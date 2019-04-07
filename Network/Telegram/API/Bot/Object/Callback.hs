@@ -15,7 +15,9 @@ instance FromJSON Callback where
 		Datatext <$> v .: "id" <*> v .: "message" <*> v .: "data"
 
 instance Access Chat Callback where
-	access f (Datatext cq_id msg dttxt) = flip (Datatext cq_id) dttxt <$> access f msg
+	access f (Datatext cq_id msg dttxt) = flip
+		(Datatext cq_id) dttxt <$> access f msg
 
 instance Access From Callback where
-	access f (Datatext cq_id msg dttxt) = flip (Datatext cq_id) dttxt <$> access f msg
+	access f (Datatext cq_id msg dttxt) = flip
+		(Datatext cq_id) dttxt <$> access f msg

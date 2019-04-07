@@ -28,8 +28,9 @@ library
     Network.Telegram.API.Bot.Object.Button
     Network.Telegram.API.Bot.Object.Callback
     Network.Telegram.API.Bot.Object.Keyboard
-    Network.Telegram.API.Bot.Object.Moving
+    Network.Telegram.API.Bot.Object.Member
     Network.Telegram.API.Bot.Object.Message
+    Network.Telegram.API.Bot.Object.Moving
     Network.Telegram.API.Bot.Object.Notification
     Network.Telegram.API.Bot.Object.Update
     Network.Telegram.API.Bot.Capacity
@@ -39,7 +40,7 @@ library
     Network.Telegram.API.Bot.Capacity.Purgeable
     Network.Telegram.API.Bot.Property
     Network.Telegram.API.Bot.Property.Identifiable
-  build-depends: base == 4.*, transformers, lens, aeson, text, http-client, wreq
+  build-depends: base == 4.*, transformers, lens, aeson, text, time, http-client, wreq
   default-extensions: DataKinds, LambdaCase, OverloadedStrings,
     MultiParamTypeClasses, PackageImports, ScopedTypeVariables,
     TypeApplications, TypeFamilies, TypeFamilyDependencies, TypeOperators
