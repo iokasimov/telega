@@ -17,6 +17,7 @@ import "text" Data.Text (Text)
 import qualified "text" Data.Text as T (drop, take)
 
 import Network.Telegram.API.Bot.Access (Access (access))
+import Network.Telegram.API.Bot.Endpoint (Endpoint (value, endpoint), Payload, Post, Purge)
 import Network.Telegram.API.Bot.Object.Chat (Chat)
 import Network.Telegram.API.Bot.Object.From (From)
 import Network.Telegram.API.Bot.Object.Keyboard (Keyboard)
@@ -26,8 +27,6 @@ import Network.Telegram.API.Bot.Capacity.Purgeable
 	(Marking, Purgeable (marking_value, purge_endpoint))
 import Network.Telegram.API.Bot.Property.Identifiable
 	(Identifiable (identificator), Identificator)
-
-import Network.Telegram.API.Bot.Endpoint (Endpoint (value, endpoint), Payload, Post, Purge)
 
 data Message
 	= Textual Int Chat From Text
@@ -93,3 +92,7 @@ instance Endpoint (Post Message) where
 	value (chat_id, text, Nothing) = object ["chat_id" .= chat_id, "text" .= text]
 	value (chat_id, text, Just kb) = object ["chat_id" .= chat_id, "text" .= text, "reply_markup" .= kb]
 	endpoint _ = "sendMessage"
+
+instance Endpoint (Purge Message) where
+	value (chat_id, message_id) = object ["chat_id" .= chat_id, "message_id" .= message_id]
+	endpoint _ = "deleteMessage"
