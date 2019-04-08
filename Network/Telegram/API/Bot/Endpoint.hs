@@ -22,11 +22,11 @@ type family Payload (capacity :: Capacity) object = r | r -> capacity object
 
 data Capacity = Post | Edit | Purge
 
-class Endpoint capacity a where
+class Endpoint capacity object where
 	{-# MINIMAL payload, endpoint #-}
-	payload :: Payload capacity a -> Value
-	endpoint :: Payload capacity a -> String
-	request :: FromJSON r => Payload capacity a -> Telegram e r
+	payload :: Payload capacity object -> Value
+	endpoint :: Payload capacity object -> String
+	request :: FromJSON r => Payload capacity object -> Telegram env r
 	request x = request' (endpoint x) (payload x)
 
 request' :: forall a env . FromJSON a => String -> Value -> Telegram env a
