@@ -26,3 +26,6 @@
 * Define `Endpoint` typeclass to replace `Capacity`
 * Remove `Capacity` classes and theirs instances
 * Define `Object` type family
+
+# 0.1.5
+* Remove `Internal` module, move its content to `Endpoint`
