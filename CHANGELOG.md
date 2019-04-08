@@ -23,5 +23,6 @@
 * Define `Member` datatype for chat users
 * No implicit `Prelude` anymore (NoImplicitPrelude)
 * Move HTTP request function into `Internal` module
-* Define `Object` type family
 * Define `Endpoint` typeclass to replace `Capacity`
+* Remove `Capacity` classes and theirs instances
+* Define `Object` type family
