@@ -1,4 +1,5 @@
-module Network.Telegram.API.Bot.Endpoint (Endpoint (..), Payload, Edit (..), Post (..), Purge (..)) where
+module Network.Telegram.API.Bot.Endpoint
+	(Endpoint (..), Payload, Drop, Edit, Post, Purge) where
 
 import "aeson" Data.Aeson (FromJSON, Value)
 import "base" Data.String (String)
@@ -8,9 +9,10 @@ import Network.Telegram.API.Bot.Internal (telegram_request)
 
 type family Payload a = r | r -> a
 
-newtype Edit a = Edit a
-newtype Post a = Post a
-newtype Purge a = Purge a
+data Drop a
+data Edit a
+data Post a
+data Purge a
 
 class Endpoint a where
 	{-# MINIMAL payload, endpoint #-}
