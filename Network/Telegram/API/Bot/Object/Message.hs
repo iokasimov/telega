@@ -17,7 +17,7 @@ import "text" Data.Text (Text)
 import qualified "text" Data.Text as T (drop, take)
 
 import Network.Telegram.API.Bot.Access (Access (access))
-import Network.Telegram.API.Bot.Endpoint (Endpoint (payload, endpoint), Payload, Post, Purge)
+import Network.Telegram.API.Bot.Endpoint (Endpoint (payload, endpoint), Payload, Capacity (Post, Purge))
 import Network.Telegram.API.Bot.Object.Chat (Chat)
 import Network.Telegram.API.Bot.Object.From (From)
 import Network.Telegram.API.Bot.Object.Keyboard (Keyboard)
@@ -66,14 +66,14 @@ instance Access From Message where
 	access f (Textual msg_id chat from txt) = (\from' -> Textual msg_id chat from' txt) <$> f from
 	access f (Command msg_id chat from cmd) = (\from' -> Command msg_id chat from' cmd) <$> f from
 
-type instance Payload (Post Message) = (Int64, Text, Maybe Keyboard)
-type instance Payload (Purge Message) = (Int64, Int)
+type instance Payload 'Post Message = (Int64, Text, Maybe Keyboard)
+type instance Payload 'Purge Message = (Int64, Int)
 
-instance Endpoint (Post Message) where
+instance Endpoint 'Post Message where
 	payload (chat_id, text, Nothing) = object ["chat_id" .= chat_id, "text" .= text]
 	payload (chat_id, text, Just kb) = object ["chat_id" .= chat_id, "text" .= text, "reply_markup" .= kb]
 	endpoint _ = "sendMessage"
 
-instance Endpoint (Purge Message) where
+instance Endpoint 'Purge Message where
 	payload (chat_id, message_id) = object ["chat_id" .= chat_id, "message_id" .= message_id]
 	endpoint _ = "deleteMessage"

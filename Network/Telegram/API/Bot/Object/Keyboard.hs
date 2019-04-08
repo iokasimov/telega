@@ -6,7 +6,7 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int, Int64)
 import "base" Text.Show (Show)
 
-import Network.Telegram.API.Bot.Endpoint (Endpoint (payload, endpoint), Payload, Edit)
+import Network.Telegram.API.Bot.Endpoint (Endpoint (payload, endpoint), Payload, Capacity (Edit))
 import Network.Telegram.API.Bot.Object.Button (Button)
 
 data Keyboard = Inline [[Button]] deriving Show
@@ -19,9 +19,9 @@ instance ToJSON Keyboard where
 	toJSON (Inline buttons) = object
 		["inline_keyboard" .= buttons]
 
-type instance Payload (Edit Keyboard) = (Int64, Int, Keyboard)
+type instance Payload 'Edit Keyboard = (Int64, Int, Keyboard)
 
-instance Endpoint (Edit Keyboard) where
+instance Endpoint 'Edit Keyboard where
 	payload (chat_id, message_id, reply_markup) = object
 		["chat_id" .= chat_id, "message_id" .= message_id, "reply_markup" .= reply_markup]
 	endpoint _ = "editMessageReplyMarkup"

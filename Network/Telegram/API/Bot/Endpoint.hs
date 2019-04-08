@@ -1,5 +1,4 @@
-module Network.Telegram.API.Bot.Endpoint
-	(Endpoint (..), Payload, Edit, Post, Purge) where
+module Network.Telegram.API.Bot.Endpoint (Endpoint (..), Payload, Capacity (..)) where
 
 import "aeson" Data.Aeson (FromJSON, Value, decode)
 import "base" Control.Exception (try)
@@ -19,17 +18,15 @@ import "wreq" Network.Wreq.Session (post)
 
 import Network.Telegram.API.Bot.Core (Telegram, Token (Token), Ok, result)
 
-type family Payload a = r | r -> a
+type family Payload (capacity :: Capacity) object = r | r -> capacity object
 
-data Edit a
-data Post a
-data Purge a
+data Capacity = Post | Edit | Purge
 
-class Endpoint a where
+class Endpoint capacity a where
 	{-# MINIMAL payload, endpoint #-}
-	payload :: Payload a -> Value
-	endpoint :: Payload a -> String
-	request :: FromJSON r => Payload a -> Telegram e r
+	payload :: Payload capacity a -> Value
+	endpoint :: Payload capacity a -> String
+	request :: FromJSON r => Payload capacity a -> Telegram e r
 	request x = request' (endpoint x) (payload x)
 
 request' :: forall a env . FromJSON a => String -> Value -> Telegram env a

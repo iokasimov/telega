@@ -30,3 +30,4 @@
 # 0.1.5
 * Remove `Internal` module, move its content to `Endpoint`
 * Remove `Drop` phantom datatype, replace it with `Post`
+* Use promoted constructors of `Capacity` instead of separated datatypes
