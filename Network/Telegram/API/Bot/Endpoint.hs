@@ -1,5 +1,5 @@
 module Network.Telegram.API.Bot.Endpoint
-	(Endpoint (..), Payload, Drop, Edit, Post, Purge) where
+	(Endpoint (..), Payload, Edit, Post, Purge) where
 
 import "aeson" Data.Aeson (FromJSON, Value, decode)
 import "base" Control.Exception (try)
@@ -21,7 +21,6 @@ import Network.Telegram.API.Bot.Core (Telegram, Token (Token), Ok, result)
 
 type family Payload a = r | r -> a
 
-data Drop a
 data Edit a
 data Post a
 data Purge a
