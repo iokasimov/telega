@@ -13,8 +13,8 @@ newtype Post a = Post a
 newtype Purge a = Purge a
 
 class Endpoint a where
-	{-# MINIMAL value, endpoint #-}
-	value :: Payload a -> Value
+	{-# MINIMAL payload, endpoint #-}
+	payload :: Payload a -> Value
 	endpoint :: Payload a -> String
 	request :: FromJSON r => Payload a -> Telegram e r
-	request x = telegram_request (endpoint x) (value x)
+	request x = telegram_request (endpoint x) (payload x)

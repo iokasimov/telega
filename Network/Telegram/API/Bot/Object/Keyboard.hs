@@ -6,6 +6,7 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int, Int64)
 import "base" Text.Show (Show)
 
+import Network.Telegram.API.Bot.Endpoint (Endpoint (payload, endpoint), Payload, Edit)
 import Network.Telegram.API.Bot.Capacity.Editable
 	(Substitution, Editable (substitution_value, edit_endpoint))
 import Network.Telegram.API.Bot.Object.Button (Button)
@@ -26,3 +27,10 @@ instance Editable Keyboard where
 	substitution_value (chat_id, message_id, reply_markup) = object
 		["chat_id" .= chat_id, "message_id" .= message_id, "reply_markup" .= reply_markup]
 	edit_endpoint _ = "editMessageReplyMarkup"
+
+type instance Payload (Edit Keyboard) = (Int64, Int, Keyboard)
+
+instance Endpoint (Edit Keyboard) where
+	payload (chat_id, message_id, reply_markup) = object
+		["chat_id" .= chat_id, "message_id" .= message_id, "reply_markup" .= reply_markup]
+	endpoint _ = "editMessageReplyMarkup"
