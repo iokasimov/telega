@@ -1,23 +1,19 @@
-module Network.Telegram.API.Bot.Object.Message
-	(Message (..), Payload) where
+module Network.Telegram.API.Bot.Object.Message (Message (..)) where
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), object, withArray, withObject, (.:), (.=))
+import "aeson" Data.Aeson (FromJSON (parseJSON), withArray, withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser, Value)
 import "base" Control.Applicative (Applicative ((<*>)), Alternative (empty, (<|>)))
 import "base" Control.Monad (Monad ((>>=)), fail)
 import "base" Data.Function ((.), ($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Foldable (Foldable (foldr))
-import "base" Data.Int (Int, Int64)
-import "base" Data.Maybe (Maybe (Just, Nothing))
+import "base" Data.Int (Int)
 import "base" Text.Show (Show)
 import "base" Prelude ((+))
 import "text" Data.Text (Text, drop, take)
 
-import Network.Telegram.API.Bot.Endpoint (Endpoint (payload, endpoint), Payload, Capacity (Post, Purge))
 import Network.Telegram.API.Bot.Object.Chat (Chat)
 import Network.Telegram.API.Bot.Object.From (From)
-import Network.Telegram.API.Bot.Object.Keyboard (Keyboard)
 
 data Message
 	= Textual Int Chat From Text
@@ -46,15 +42,3 @@ instance FromJSON Message where
 
 		extract_command :: Object -> (Int, Int) -> Parser Text
 		extract_command v (ofs, len) = (take len . drop (ofs + 1)) <$> v .: "text"
-
-type instance Payload 'Post Message = (Int64, Text, Maybe Keyboard)
-type instance Payload 'Purge Message = (Int64, Int)
-
-instance Endpoint 'Post Message where
-	payload (chat_id, text, Nothing) = object ["chat_id" .= chat_id, "text" .= text]
-	payload (chat_id, text, Just kb) = object ["chat_id" .= chat_id, "text" .= text, "reply_markup" .= kb]
-	endpoint _ = "sendMessage"
-
-instance Endpoint 'Purge Message where
-	payload (chat_id, message_id) = object ["chat_id" .= chat_id, "message_id" .= message_id]
-	endpoint _ = "deleteMessage"

@@ -34,3 +34,4 @@
 * Use `MultiParamTypeClasses` instead of `FlexibleIntances` for `Endpoint`
 * Use `UndecidableInstances` and `UndecidableSuperClasses` to use `Object` type family
 * Replace `Access` module with `Accessible` `Property`
+* Replace `Endpoint` module with `Persistable` `Property`
