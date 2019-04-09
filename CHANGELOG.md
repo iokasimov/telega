@@ -32,4 +32,4 @@
 * Remove `Drop` phantom datatype, replace it with `Post`
 * Use promoted constructors of `Capacity` instead of separated datatypes
 * Use `MultiParamTypeClasses` instead of `FlexibleIntances` for `Endpoint`
-* User orphan instances to avoid imports cycle
+* Use `UndecidableInstances` and `UndecidableSuperClasses` to use `Object` type family

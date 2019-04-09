@@ -1,12 +1,16 @@
 module Network.Telegram.API.Bot.Property.Identifiable (Identifiable (..), Identificator) where
 
-import "base" Data.Int (Int)
+import "base" Data.Int (Int, Int64)
 
-import Network.Telegram.API.Bot.Object (Chat (..), From (..), Message (..), Update (..))
+import Network.Telegram.API.Bot.Object (Object)
+import Network.Telegram.API.Bot.Object.Chat (Chat (Private, Group, Supergroup, Channel))
+import Network.Telegram.API.Bot.Object.From (From (Bot, User))
+import Network.Telegram.API.Bot.Object.Message (Message (Textual, Command))
+import Network.Telegram.API.Bot.Object.Update (Update (Query, Membership, Incoming))
 
-type family Identificator a = r
+type family Identificator o = i
 
-class Identifiable o where
+class Object o => Identifiable o where
 	{-# MINIMAL identificator #-}
 	identificator :: o -> Identificator o
 
