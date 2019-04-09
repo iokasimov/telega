@@ -15,19 +15,10 @@ import "base" Text.Show (Show)
 import "lens" Control.Lens (Lens')
 import "text" Data.Text (Text)
 
-import Network.Telegram.API.Bot.Property.Identifiable
-	(Identifiable (identificator), Identificator)
-
 data From
 	= Bot Int (Maybe Text) Text (Maybe Text) (Maybe Text)
 	| User Int (Maybe Text) Text (Maybe Text) (Maybe Text)
 	deriving Show
-
-type instance Identificator From = Int
-
-instance Identifiable From where
-	identificator (Bot i _ _ _ _) = i
-	identificator (User i _ _ _ _) = i
 
 instance Eq From where
 	Bot i _ _ _ _ == Bot i' _ _ _ _ = i == i'

@@ -13,21 +13,12 @@ import Network.Telegram.API.Bot.Object.Callback (Callback)
 import Network.Telegram.API.Bot.Object.Chat (Chat)
 import Network.Telegram.API.Bot.Object.Moving (Moving)
 import Network.Telegram.API.Bot.Object.Message (Message)
-import Network.Telegram.API.Bot.Property.Identifiable
-	(Identifiable (identificator), Identificator)
 
 data Update
 	= Query Int Callback
 	| Membership Int Moving
 	| Incoming Int Message
 	deriving Show
-
-type instance Identificator Update = Int
-
-instance Identifiable Update where
-	identificator (Query i _) = i
-	identificator (Membership i _) = i
-	identificator (Incoming i _) = i
 
 instance FromJSON Update where
 	parseJSON = withObject "Update" $ \v ->

@@ -19,19 +19,11 @@ import Network.Telegram.API.Bot.Endpoint (Endpoint (payload, endpoint), Payload,
 import Network.Telegram.API.Bot.Object.Chat (Chat)
 import Network.Telegram.API.Bot.Object.From (From)
 import Network.Telegram.API.Bot.Object.Keyboard (Keyboard)
-import Network.Telegram.API.Bot.Property.Identifiable
-	(Identifiable (identificator), Identificator)
 
 data Message
 	= Textual Int Chat From Text
 	| Command Int Chat From Text
 	deriving Show
-
-type instance Identificator Message = Int
-
-instance Identifiable Message where
-	identificator (Textual i _ _ _) = i
-	identificator (Command i _ _ _) = i
 
 instance FromJSON Message where
 	parseJSON = withObject "Message" $ \v -> command v <|> textual v where
