@@ -35,6 +35,7 @@ library
     Network.Telegram.API.Bot.Object.Notification
     Network.Telegram.API.Bot.Object.Update
     Network.Telegram.API.Bot.Property
+    Network.Telegram.API.Bot.Property.Accessible
     Network.Telegram.API.Bot.Property.Identifiable
   build-depends: base == 4.*, transformers, lens, aeson, text, time, http-client, wreq
   default-extensions: DataKinds, LambdaCase, OverloadedStrings, NoImplicitPrelude, PackageImports,
