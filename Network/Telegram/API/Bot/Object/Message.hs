@@ -14,7 +14,6 @@ import "base" Text.Show (Show)
 import "base" Prelude ((+))
 import "text" Data.Text (Text, drop, take)
 
-import Network.Telegram.API.Bot.Access (Access (access))
 import Network.Telegram.API.Bot.Endpoint (Endpoint (payload, endpoint), Payload, Capacity (Post, Purge))
 import Network.Telegram.API.Bot.Object.Chat (Chat)
 import Network.Telegram.API.Bot.Object.From (From)
@@ -47,14 +46,6 @@ instance FromJSON Message where
 
 		extract_command :: Object -> (Int, Int) -> Parser Text
 		extract_command v (ofs, len) = (take len . drop (ofs + 1)) <$> v .: "text"
-
-instance Access Chat Message where
-	access f (Textual msg_id chat from txt) = (\chat' -> Textual msg_id chat' from txt) <$> f chat
-	access f (Command msg_id chat from cmd) = (\chat' -> Command msg_id chat' from cmd) <$> f chat
-
-instance Access From Message where
-	access f (Textual msg_id chat from txt) = (\from' -> Textual msg_id chat from' txt) <$> f from
-	access f (Command msg_id chat from cmd) = (\from' -> Command msg_id chat from' cmd) <$> f from
 
 type instance Payload 'Post Message = (Int64, Text, Maybe Keyboard)
 type instance Payload 'Purge Message = (Int64, Int)

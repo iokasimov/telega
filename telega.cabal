@@ -21,7 +21,6 @@ library
   exposed-modules:
     Network.Telegram.API.Bot
     Network.Telegram.API.Bot.Core
-    Network.Telegram.API.Bot.Access
     Network.Telegram.API.Bot.Endpoint
     Network.Telegram.API.Bot.Object
     Network.Telegram.API.Bot.Object.Chat

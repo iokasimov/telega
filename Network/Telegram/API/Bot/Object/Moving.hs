@@ -7,7 +7,6 @@ import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 
-import Network.Telegram.API.Bot.Access (Access (access))
 import Network.Telegram.API.Bot.Object.Chat (Chat)
 import Network.Telegram.API.Bot.Object.From (From)
 
@@ -21,7 +20,3 @@ instance FromJSON Moving where
 
 		joined :: Object -> Parser Moving
 		joined v = Joined <$> v .: "chat" <*> v .: "new_chat_members"
-
-instance Access Chat Moving where
-	access f (Gone chat from) = (\chat' -> Gone chat' from) <$> f chat
-	access f (Joined chat froms) = (\chat' -> Joined chat' froms) <$> f chat

@@ -8,9 +8,7 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int)
 import "base" Text.Show (Show)
 
-import Network.Telegram.API.Bot.Access (Access (access))
 import Network.Telegram.API.Bot.Object.Callback (Callback)
-import Network.Telegram.API.Bot.Object.Chat (Chat)
 import Network.Telegram.API.Bot.Object.Moving (Moving)
 import Network.Telegram.API.Bot.Object.Message (Message)
 
@@ -32,8 +30,3 @@ instance FromJSON Update where
 
 		incoming :: Object -> Parser Update
 		incoming v = Incoming <$> v .: "update_id" <*> v .: "message"
-
-instance Access Chat Update where
-	access f (Incoming upd_id msg) = Incoming upd_id <$> access f msg
-	access f (Query upd_id cb) = Query upd_id <$> access f cb
-	access f (Membership upd_id mmb) = Membership upd_id <$> access f mmb
