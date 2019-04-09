@@ -12,9 +12,7 @@ import "base" Data.Int (Int, Int64)
 import "base" Data.Maybe (Maybe (Just, Nothing))
 import "base" Text.Show (Show)
 import "base" Prelude ((+))
-import "text" Data.Text (Text)
-
-import qualified "text" Data.Text as T (drop, take)
+import "text" Data.Text (Text, drop, take)
 
 import Network.Telegram.API.Bot.Access (Access (access))
 import Network.Telegram.API.Bot.Endpoint (Endpoint (payload, endpoint), Payload, Capacity (Post, Purge))
@@ -56,7 +54,7 @@ instance FromJSON Message where
 				_ -> fail "It's not a bot command"
 
 		extract_command :: Object -> (Int, Int) -> Parser Text
-		extract_command v (ofs, len) = (T.take len . T.drop (ofs + 1)) <$> v .: "text"
+		extract_command v (ofs, len) = (take len . drop (ofs + 1)) <$> v .: "text"
 
 instance Access Chat Message where
 	access f (Textual msg_id chat from txt) = (\chat' -> Textual msg_id chat' from txt) <$> f chat

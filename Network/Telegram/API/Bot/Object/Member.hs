@@ -16,7 +16,7 @@ data Member
 	| Administrator From
 	| Member From
 	| Restricted From POSIXTime
-	-- | Left From
+	| Left From
 	| Kicked From POSIXTime
 	deriving Show
 
@@ -26,6 +26,6 @@ instance FromJSON Member where
 		("administrator" :: Text) -> Administrator <$> v .: "user"
 		("member" :: Text) -> Member <$> v .: "user"
 		("restricted" :: Text) -> Restricted <$> v .: "user" <*> v .: "until_date"
-		-- ("left" :: Text) -> Left <$> v .: "user"
+		("left" :: Text) -> Left <$> v .: "user"
 		("kicked" :: Text) -> Kicked <$> v .: "user" <*> v.: "until_date"
 		_ -> fail "Status of chat member is not defined"

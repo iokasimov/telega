@@ -32,4 +32,3 @@
 * Remove `Drop` phantom datatype, replace it with `Post`
 * Use promoted constructors of `Capacity` instead of separated datatypes
 * Use `MultiParamTypeClasses` instead of `FlexibleIntances` for `Endpoint`
-* Remove `Object` type family
