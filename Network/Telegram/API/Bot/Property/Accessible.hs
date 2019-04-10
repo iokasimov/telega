@@ -8,7 +8,7 @@ import Network.Telegram.API.Bot.Object (Object)
 import Network.Telegram.API.Bot.Object.Callback (Callback (Datatext))
 import Network.Telegram.API.Bot.Object.Chat (Chat)
 import Network.Telegram.API.Bot.Object.From (From)
-import Network.Telegram.API.Bot.Object.Message (Message (Textual, Command))
+import Network.Telegram.API.Bot.Object.Message (Message (Direct))
 import Network.Telegram.API.Bot.Object.Moving (Moving (Gone, Joined))
 import Network.Telegram.API.Bot.Object.Update (Update (Query, Membership, Incoming))
 
@@ -20,8 +20,7 @@ instance Accessible Chat Callback where
 		(Datatext cq_id) dttxt <$> access f msg
 
 instance Accessible Chat Message where
-	access f (Textual msg_id chat from txt) = (\chat' -> Textual msg_id chat' from txt) <$> f chat
-	access f (Command msg_id chat from cmd) = (\chat' -> Command msg_id chat' from cmd) <$> f chat
+	access f (Direct msg_id chat from) = (\chat' -> Direct msg_id chat' from) <$> f chat
 
 instance Accessible Chat Moving where
 	access f (Gone chat from) = (\chat' -> Gone chat' from) <$> f chat
@@ -37,5 +36,4 @@ instance Accessible From Callback where
 		(Datatext cq_id) dttxt <$> access f msg
 
 instance Accessible From Message where
-	access f (Textual msg_id chat from txt) = (\from' -> Textual msg_id chat from' txt) <$> f from
-	access f (Command msg_id chat from cmd) = (\from' -> Command msg_id chat from' cmd) <$> f from
+	access f (Direct msg_id chat from) = (\from' -> Direct msg_id chat from') <$> f from

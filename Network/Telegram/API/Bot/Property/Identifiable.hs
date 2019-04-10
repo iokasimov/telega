@@ -5,7 +5,7 @@ import "base" Data.Int (Int, Int64)
 import Network.Telegram.API.Bot.Object (Object)
 import Network.Telegram.API.Bot.Object.Chat (Chat (Private, Group, Supergroup, Channel))
 import Network.Telegram.API.Bot.Object.From (From (Bot, User))
-import Network.Telegram.API.Bot.Object.Message (Message (Textual, Command))
+import Network.Telegram.API.Bot.Object.Message (Message (Direct))
 import Network.Telegram.API.Bot.Object.Update (Update (Query, Membership, Incoming))
 
 type family Identificator o = i
@@ -30,8 +30,7 @@ instance Identifiable From where
 	identificator (User i _ _ _ _) = i
 
 instance Identifiable Message where
-	identificator (Textual i _ _ _) = i
-	identificator (Command i _ _ _) = i
+	identificator (Direct i _ _) = i
 
 instance Identifiable Update where
 	identificator (Query i _) = i

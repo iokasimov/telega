@@ -35,3 +35,6 @@
 * Use `UndecidableInstances` and `UndecidableSuperClasses` to use `Object` type family
 * Replace `Access` module with `Accessible` `Property`
 * Replace `Endpoint` module with `Persistable` `Property`
+
+# 0.1.6
+* Split `Message` on `Message` and `Content` datatypes

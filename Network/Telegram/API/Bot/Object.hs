@@ -7,6 +7,7 @@ import Network.Telegram.API.Bot.Object.Message as Exports
 import Network.Telegram.API.Bot.Object.Member as Exports
 import Network.Telegram.API.Bot.Object.Keyboard as Exports
 import Network.Telegram.API.Bot.Object.From as Exports
+import Network.Telegram.API.Bot.Object.Content as Exports
 import Network.Telegram.API.Bot.Object.Chat as Exports
 import Network.Telegram.API.Bot.Object.Callback as Exports
 import Network.Telegram.API.Bot.Object.Button as Exports
