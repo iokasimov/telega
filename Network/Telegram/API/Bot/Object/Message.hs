@@ -2,6 +2,7 @@ module Network.Telegram.API.Bot.Object.Message (Message (..), module Exports) wh
 
 import Network.Telegram.API.Bot.Object.Message.Content as Exports
 import Network.Telegram.API.Bot.Object.Message.From as Exports
+import Network.Telegram.API.Bot.Object.Message.Keyboard as Exports
 import Network.Telegram.API.Bot.Object.Message.Origin as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), Value (Object), withObject, (.:))

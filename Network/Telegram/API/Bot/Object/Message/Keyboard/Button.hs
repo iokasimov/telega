@@ -1,4 +1,4 @@
-module Network.Telegram.API.Bot.Object.Keyboard.Button (Button (..), Pressed (..)) where
+module Network.Telegram.API.Bot.Object.Message.Keyboard.Button (Button (..), Pressed (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON)
 	, Object, Value (Object), object, withObject, (.:), (.:?), (.=))

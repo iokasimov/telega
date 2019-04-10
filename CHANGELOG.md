@@ -43,3 +43,4 @@
 * Put `Content`, `From` and `Origin` objects into `Message` submodule
 * Put `Button` object into `Keyboard` submodule
 * Put `Notification` object into `Callback` submodule
+* Put `Keyboard` submodule into `Message` submodule

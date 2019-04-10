@@ -20,8 +20,7 @@ import "wreq" Network.Wreq.Session (post)
 import Network.Telegram.API.Bot.Core (Telegram, Token (Token), Ok, result)
 import Network.Telegram.API.Bot.Object (Object)
 import Network.Telegram.API.Bot.Object.Callback (Notification)
-import Network.Telegram.API.Bot.Object.Keyboard (Keyboard)
-import Network.Telegram.API.Bot.Object.Message (Message)
+import Network.Telegram.API.Bot.Object.Message (Keyboard, Message)
 
 data Capacity = Post | Edit | Purge
 
