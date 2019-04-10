@@ -15,7 +15,6 @@ import Network.Telegram.API.Bot.Object.Message (Message)
 data Update
 	= Query Int Callback
 	| Membership Int Moving
-	-- | Forward Int Message
 	| Incoming Int Message
 	deriving Show
 
@@ -28,12 +27,6 @@ instance FromJSON Update where
 
 		membership :: Object -> Parser Update
 		membership v = Membership <$> v .: "update_id" <*> v .: "message"
-
-		-- forward :: Object -> Parser Update
-		-- forward v = Forward <$> v .: "update_id" <*> (v .: "message" >>= forward_message) where
-		--
-		-- 	forward_message = withObject "Forwarded message" $ \o ->
-		-- 		o .: "forward_from_message_id" <>
 
 		incoming :: Object -> Parser Update
 		incoming v = Incoming <$> v .: "update_id" <*> v .: "message"
