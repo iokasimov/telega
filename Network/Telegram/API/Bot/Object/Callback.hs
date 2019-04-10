@@ -1,4 +1,6 @@
-module Network.Telegram.API.Bot.Object.Callback (Callback (..)) where
+module Network.Telegram.API.Bot.Object.Callback (Callback (..), module Exports) where
+
+import Network.Telegram.API.Bot.Object.Callback.Notification as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Control.Applicative (Applicative ((<*>)))

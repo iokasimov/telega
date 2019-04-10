@@ -40,3 +40,6 @@
 * Split `Message` on `Message` and `Content` datatypes
 * Add `Forward` constructor to `Message` datatype
 * Combine `Chat` and `From` objects into `Origin` datatype
+* Put `Content`, `From` and `Origin` objects into `Message` submodule
+* Put `Button` object into `Keyboard` submodule
+* Put `Notification` object into `Callback` submodule

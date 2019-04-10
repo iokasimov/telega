@@ -1,11 +1,13 @@
-module Network.Telegram.API.Bot.Object.Keyboard (Keyboard (..)) where
+module Network.Telegram.API.Bot.Object.Keyboard (Keyboard (..), module Exports) where
+
+import Network.Telegram.API.Bot.Object.Keyboard.Button as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), object, withObject, (.:), (.=))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 
-import Network.Telegram.API.Bot.Object.Button (Button)
+import Network.Telegram.API.Bot.Object.Keyboard.Button (Button)
 
 data Keyboard = Inline [[Button]] deriving Show
 
