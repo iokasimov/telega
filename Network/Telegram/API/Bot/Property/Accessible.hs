@@ -7,6 +7,7 @@ import "lens" Control.Lens (Lens')
 import Network.Telegram.API.Bot.Object (Object)
 import Network.Telegram.API.Bot.Object.Callback (Callback (Datatext))
 import Network.Telegram.API.Bot.Object.Chat (Chat)
+import Network.Telegram.API.Bot.Object.Content (Content)
 import Network.Telegram.API.Bot.Object.From (From)
 import Network.Telegram.API.Bot.Object.Message (Message (Direct))
 import Network.Telegram.API.Bot.Object.Moving (Moving (Gone, Joined))
@@ -20,7 +21,7 @@ instance Accessible Chat Callback where
 		(Datatext cq_id) dttxt <$> access f msg
 
 instance Accessible Chat Message where
-	access f (Direct msg_id chat from) = (\chat' -> Direct msg_id chat' from) <$> f chat
+	access f (Direct msg_id chat from content) = (\chat' -> Direct msg_id chat' from content) <$> f chat
 
 instance Accessible Chat Moving where
 	access f (Gone chat from) = (\chat' -> Gone chat' from) <$> f chat
@@ -31,9 +32,12 @@ instance Accessible Chat Update where
 	access f (Query upd_id cb) = Query upd_id <$> access f cb
 	access f (Membership upd_id mmb) = Membership upd_id <$> access f mmb
 
+instance Accessible Content Message where
+	access f (Direct msg_id chat from content) = (\content' -> Direct msg_id chat from content') <$> f content
+
 instance Accessible From Callback where
 	access f (Datatext cq_id msg dttxt) = flip
 		(Datatext cq_id) dttxt <$> access f msg
 
 instance Accessible From Message where
-	access f (Direct msg_id chat from) = (\from' -> Direct msg_id chat from') <$> f from
+	access f (Direct msg_id chat from content) = (\from' -> Direct msg_id chat from' content) <$> f from

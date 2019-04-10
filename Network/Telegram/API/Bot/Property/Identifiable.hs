@@ -30,7 +30,7 @@ instance Identifiable From where
 	identificator (User i _ _ _ _) = i
 
 instance Identifiable Message where
-	identificator (Direct i _ _) = i
+	identificator (Direct i _ _ _) = i
 
 instance Identifiable Update where
 	identificator (Query i _) = i
