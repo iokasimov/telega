@@ -7,7 +7,7 @@ import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 
-import Network.Telegram.API.Bot.Object.From (From)
+import Network.Telegram.API.Bot.Object.Message (From)
 
 data Moving = Gone From | Joined [From] deriving Show
 

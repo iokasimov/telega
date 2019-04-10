@@ -1,14 +1,11 @@
 module Network.Telegram.API.Bot.Object (module Exports, Object) where
 
 import Network.Telegram.API.Bot.Object.Update as Exports
-import Network.Telegram.API.Bot.Object.Origin as Exports
 import Network.Telegram.API.Bot.Object.Notification as Exports
 import Network.Telegram.API.Bot.Object.Moving as Exports
 import Network.Telegram.API.Bot.Object.Message as Exports
 import Network.Telegram.API.Bot.Object.Member as Exports
 import Network.Telegram.API.Bot.Object.Keyboard as Exports
-import Network.Telegram.API.Bot.Object.From as Exports
-import Network.Telegram.API.Bot.Object.Content as Exports
 import Network.Telegram.API.Bot.Object.Callback as Exports
 import Network.Telegram.API.Bot.Object.Button as Exports
 
@@ -21,6 +18,8 @@ type instance Object Moving = ()
 type instance Object Message = ()
 type instance Object Member = ()
 type instance Object Keyboard = ()
+type instance Object Content = ()
 type instance Object From = ()
+type instance Object Origin = ()
 type instance Object Callback = ()
 type instance Object Button = ()

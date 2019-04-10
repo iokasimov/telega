@@ -3,8 +3,7 @@ module Network.Telegram.API.Bot.Property.Identifiable (Identifiable (..), Identi
 import "base" Data.Int (Int)
 
 import Network.Telegram.API.Bot.Object (Object)
-import Network.Telegram.API.Bot.Object.From (From)
-import Network.Telegram.API.Bot.Object.Message (Message (Direct, Forward))
+import Network.Telegram.API.Bot.Object.Message (From, Message (Direct, Forward))
 import Network.Telegram.API.Bot.Object.Update (Update (Query, Membership, Incoming))
 
 type family Identificator o = i
