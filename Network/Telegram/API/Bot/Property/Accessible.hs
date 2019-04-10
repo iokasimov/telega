@@ -9,7 +9,7 @@ import Network.Telegram.API.Bot.Object.Callback (Callback (Datatext))
 import Network.Telegram.API.Bot.Object.Chat (Chat)
 import Network.Telegram.API.Bot.Object.Content (Content)
 import Network.Telegram.API.Bot.Object.From (From)
-import Network.Telegram.API.Bot.Object.Message (Message (Direct))
+import Network.Telegram.API.Bot.Object.Message (Message (Direct, Forward))
 import Network.Telegram.API.Bot.Object.Moving (Moving (Gone, Joined))
 import Network.Telegram.API.Bot.Object.Update (Update (Query, Membership, Incoming))
 
@@ -22,6 +22,7 @@ instance Accessible Chat Callback where
 
 instance Accessible Chat Message where
 	access f (Direct msg_id chat from content) = (\chat' -> Direct msg_id chat' from content) <$> f chat
+	access f (Forward msg_id chat from content) = (\chat' -> Forward msg_id chat' from content) <$> f chat
 
 instance Accessible Chat Moving where
 	access f (Gone chat from) = (\chat' -> Gone chat' from) <$> f chat
@@ -34,6 +35,7 @@ instance Accessible Chat Update where
 
 instance Accessible Content Message where
 	access f (Direct msg_id chat from content) = (\content' -> Direct msg_id chat from content') <$> f content
+	access f (Forward msg_id chat from content) = (\content' -> Forward msg_id chat from content') <$> f content
 
 instance Accessible From Callback where
 	access f (Datatext cq_id msg dttxt) = flip
@@ -41,3 +43,4 @@ instance Accessible From Callback where
 
 instance Accessible From Message where
 	access f (Direct msg_id chat from content) = (\from' -> Direct msg_id chat from' content) <$> f from
+	access f (Forward msg_id chat from content) = (\from' -> Forward msg_id chat from' content) <$> f from

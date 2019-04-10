@@ -38,3 +38,4 @@
 
 # 0.1.6
 * Split `Message` on `Message` and `Content` datatypes
+* Add `Forward` constructor to `Message` datatype
