@@ -1,5 +1,5 @@
 name:                telega
-version:             0.1.5
+version:             0.1.6
 synopsis:            Telegram Bot API binding
 description:         High-level bindings, typed entities, inline mode only
 homepage:            https://github.com/iokasimov/telega
