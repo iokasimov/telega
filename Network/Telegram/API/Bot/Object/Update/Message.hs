@@ -1,9 +1,9 @@
-module Network.Telegram.API.Bot.Object.Message (Message (..), module Exports) where
+module Network.Telegram.API.Bot.Object.Update.Message (Message (..), module Exports) where
 
-import Network.Telegram.API.Bot.Object.Message.Content as Exports
-import Network.Telegram.API.Bot.Object.Message.From as Exports
-import Network.Telegram.API.Bot.Object.Message.Keyboard as Exports
-import Network.Telegram.API.Bot.Object.Message.Origin as Exports
+import Network.Telegram.API.Bot.Object.Update.Message.Content as Exports
+import Network.Telegram.API.Bot.Object.Update.Message.From as Exports
+import Network.Telegram.API.Bot.Object.Update.Message.Keyboard as Exports
+import Network.Telegram.API.Bot.Object.Update.Message.Origin as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), Value (Object), withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser)
@@ -15,8 +15,8 @@ import "base" Data.Int (Int)
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
-import Network.Telegram.API.Bot.Object.Message.Content (Content)
-import Network.Telegram.API.Bot.Object.Message.Origin (Origin (Private, Group, Supergroup, Channel))
+import Network.Telegram.API.Bot.Object.Update.Message.Content (Content)
+import Network.Telegram.API.Bot.Object.Update.Message.Origin (Origin (Private, Group, Supergroup, Channel))
 
 data Message
 	= Direct Int Origin Content

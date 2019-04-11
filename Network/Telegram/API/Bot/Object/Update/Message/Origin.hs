@@ -1,4 +1,4 @@
-module Network.Telegram.API.Bot.Object.Message.Origin (Origin (..)) where
+module Network.Telegram.API.Bot.Object.Update.Message.Origin (Origin (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser, Value)
@@ -10,7 +10,7 @@ import "base" Data.Int (Int64)
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
-import Network.Telegram.API.Bot.Object.Message.From (From)
+import Network.Telegram.API.Bot.Object.Update.Message.From (From)
 
 data Origin
 	= Private Int64 From

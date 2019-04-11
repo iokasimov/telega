@@ -9,7 +9,7 @@ import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 import "time" Data.Time.Clock.POSIX (POSIXTime)
 
-import Network.Telegram.API.Bot.Object.Message (From)
+import Network.Telegram.API.Bot.Object.Update.Message.From (From)
 
 data Member
 	= Creator From

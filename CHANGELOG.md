@@ -44,3 +44,4 @@
 * Put `Button` object into `Keyboard` submodule
 * Put `Notification` object into `Callback` submodule
 * Put `Keyboard` submodule into `Message` submodule
+* Put `Callback`, `Message` and `Moving` modules into `Update` submodule

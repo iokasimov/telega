@@ -1,10 +1,7 @@
 module Network.Telegram.API.Bot.Object (module Exports, Object) where
 
 import Network.Telegram.API.Bot.Object.Update as Exports
-import Network.Telegram.API.Bot.Object.Moving as Exports
-import Network.Telegram.API.Bot.Object.Message as Exports
 import Network.Telegram.API.Bot.Object.Member as Exports
-import Network.Telegram.API.Bot.Object.Callback as Exports
 
 import "base" Data.Kind (Constraint)
 

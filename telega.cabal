@@ -22,17 +22,17 @@ library
     Network.Telegram.API.Bot
     Network.Telegram.API.Bot.Core
     Network.Telegram.API.Bot.Object
-    Network.Telegram.API.Bot.Object.Callback
-    Network.Telegram.API.Bot.Object.Callback.Notification
     Network.Telegram.API.Bot.Object.Member
-    Network.Telegram.API.Bot.Object.Message
-    Network.Telegram.API.Bot.Object.Message.Content
-    Network.Telegram.API.Bot.Object.Message.From
-    Network.Telegram.API.Bot.Object.Message.Keyboard
-    Network.Telegram.API.Bot.Object.Message.Keyboard.Button
-    Network.Telegram.API.Bot.Object.Message.Origin
-    Network.Telegram.API.Bot.Object.Moving
     Network.Telegram.API.Bot.Object.Update
+    Network.Telegram.API.Bot.Object.Update.Callback
+    Network.Telegram.API.Bot.Object.Update.Callback.Notification
+    Network.Telegram.API.Bot.Object.Update.Message
+    Network.Telegram.API.Bot.Object.Update.Message.Content
+    Network.Telegram.API.Bot.Object.Update.Message.From
+    Network.Telegram.API.Bot.Object.Update.Message.Keyboard
+    Network.Telegram.API.Bot.Object.Update.Message.Keyboard.Button
+    Network.Telegram.API.Bot.Object.Update.Message.Origin
+    Network.Telegram.API.Bot.Object.Update.Moving
     Network.Telegram.API.Bot.Property
     Network.Telegram.API.Bot.Property.Accessible
     Network.Telegram.API.Bot.Property.Identifiable

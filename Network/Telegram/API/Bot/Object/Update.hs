@@ -1,4 +1,8 @@
-module Network.Telegram.API.Bot.Object.Update (Update (..)) where
+module Network.Telegram.API.Bot.Object.Update (Update (..), module Exports) where
+
+import Network.Telegram.API.Bot.Object.Update.Callback as Exports
+import Network.Telegram.API.Bot.Object.Update.Message as Exports
+import Network.Telegram.API.Bot.Object.Update.Moving as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser)
@@ -8,9 +12,9 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int)
 import "base" Text.Show (Show)
 
-import Network.Telegram.API.Bot.Object.Callback (Callback)
-import Network.Telegram.API.Bot.Object.Moving (Moving)
-import Network.Telegram.API.Bot.Object.Message (Message)
+import Network.Telegram.API.Bot.Object.Update.Callback (Callback)
+import Network.Telegram.API.Bot.Object.Update.Message (Message)
+import Network.Telegram.API.Bot.Object.Update.Moving (Moving)
 
 data Update
 	= Query Int Callback

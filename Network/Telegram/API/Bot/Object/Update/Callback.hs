@@ -1,6 +1,6 @@
-module Network.Telegram.API.Bot.Object.Callback (Callback (..), module Exports) where
+module Network.Telegram.API.Bot.Object.Update.Callback (Callback (..), module Exports) where
 
-import Network.Telegram.API.Bot.Object.Callback.Notification as Exports
+import Network.Telegram.API.Bot.Object.Update.Callback.Notification as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Control.Applicative (Applicative ((<*>)))
@@ -9,7 +9,7 @@ import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
-import Network.Telegram.API.Bot.Object.Message (Message)
+import Network.Telegram.API.Bot.Object.Update.Message (Message)
 
 data Callback = Datatext Text Message Text deriving Show
 

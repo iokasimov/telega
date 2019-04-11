@@ -18,9 +18,7 @@ import "transformers" Control.Monad.Trans.Reader (ask)
 import "wreq" Network.Wreq.Session (post)
 
 import Network.Telegram.API.Bot.Core (Telegram, Token (Token), Ok, result)
-import Network.Telegram.API.Bot.Object (Object)
-import Network.Telegram.API.Bot.Object.Callback (Notification)
-import Network.Telegram.API.Bot.Object.Message (Keyboard, Message)
+import Network.Telegram.API.Bot.Object (Keyboard, Notification, Message, Object)
 
 data Capacity = Post | Edit | Purge
 
