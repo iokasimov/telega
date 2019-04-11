@@ -1,9 +1,11 @@
 module Network.Telegram.API.Bot.Property.Identifiable (Identifiable (..), Identificator) where
 
 import "base" Data.Int (Int, Int64)
+import "text" Data.Text (Text)
 
 import Network.Telegram.API.Bot.Object (Object)
 import Network.Telegram.API.Bot.Object.Update (Update (Query, Membership, Incoming))
+import Network.Telegram.API.Bot.Object.Update.Callback (Callback (Datatext))
 import Network.Telegram.API.Bot.Object.Update.Message (Message (Direct, Forward))
 import Network.Telegram.API.Bot.Object.Update.Message.Origin (Origin (Private, Group, Supergroup, Channel))
 import Network.Telegram.API.Bot.Object.Sender (Sender (Bot, User))
@@ -14,10 +16,14 @@ class Object o => Identifiable o where
 	{-# MINIMAL identificator #-}
 	identificator :: o -> Identificator o
 
+type instance Identificator Callback = Text
 type instance Identificator Message = Int
 type instance Identificator Origin = Int64
 type instance Identificator Sender = Int
 type instance Identificator Update = Int
+
+instance Identifiable Callback where
+	identificator (Datatext i _ _) = i
 
 instance Identifiable Message where
 	identificator (Direct i _ _) = i

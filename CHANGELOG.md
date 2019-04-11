@@ -46,3 +46,6 @@
 * Put `Keyboard` submodule into `Message` submodule
 * Put `Callback`, `Message` and `Moving` modules into `Update` submodule
 * Rename `From` to `Sender` and move it from `Message` and `Update` submodules
+
+# 0.1.7
+* Define `Identifiable` instance for `Callback` datatype
