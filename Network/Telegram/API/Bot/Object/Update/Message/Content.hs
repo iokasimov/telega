@@ -3,7 +3,7 @@ module Network.Telegram.API.Bot.Object.Update.Message.Content (Content (..), mod
 import Network.Telegram.API.Bot.Object.Update.Message.Content.File as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withArray, withObject, (.:))
-import "aeson" Data.Aeson.Types (Object, Parser, Value)
+import "aeson" Data.Aeson.Types (Object, Parser, Value (Object))
 import "base" Control.Applicative (Applicative ((<*>)), Alternative (empty, (<|>)))
 import "base" Control.Monad (Monad ((>>=)), fail)
 import "base" Data.Function ((.), ($))
@@ -17,7 +17,7 @@ import "text" Data.Text (Text, drop, take)
 data Content
 	= Textual Text
 	| Command Text
-	| Attachment Text
+	| Attachment Text File
 	deriving Show
 
 instance FromJSON Content where
@@ -39,7 +39,7 @@ instance FromJSON Content where
 		extract_command v (ofs, len) = (take len . drop (ofs + 1)) <$> v .: "text"
 
 		attachment :: Object -> Parser Content
-		attachment v = Attachment <$> v .: "caption"
+		attachment v = Attachment <$> v .: "caption" <*> parseJSON (Object v)
 
 		textual :: Object -> Parser Content
 		textual v = Textual <$> v .: "text"
