@@ -23,12 +23,12 @@ library
     Network.Telegram.API.Bot.Core
     Network.Telegram.API.Bot.Object
     Network.Telegram.API.Bot.Object.Member
+    Network.Telegram.API.Bot.Object.Sender
     Network.Telegram.API.Bot.Object.Update
     Network.Telegram.API.Bot.Object.Update.Callback
     Network.Telegram.API.Bot.Object.Update.Callback.Notification
     Network.Telegram.API.Bot.Object.Update.Message
     Network.Telegram.API.Bot.Object.Update.Message.Content
-    Network.Telegram.API.Bot.Object.Update.Message.From
     Network.Telegram.API.Bot.Object.Update.Message.Keyboard
     Network.Telegram.API.Bot.Object.Update.Message.Keyboard.Button
     Network.Telegram.API.Bot.Object.Update.Message.Origin

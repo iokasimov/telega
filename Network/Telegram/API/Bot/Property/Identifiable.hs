@@ -2,7 +2,7 @@ module Network.Telegram.API.Bot.Property.Identifiable (Identifiable (..), Identi
 
 import "base" Data.Int (Int)
 
-import Network.Telegram.API.Bot.Object (Object, From, Message (Direct, Forward), Update (Query, Membership, Incoming))
+import Network.Telegram.API.Bot.Object (Object, Message (Direct, Forward), Sender, Update (Query, Membership, Incoming))
 
 type family Identificator o = i
 
@@ -10,7 +10,7 @@ class Object o => Identifiable o where
 	{-# MINIMAL identificator #-}
 	identificator :: o -> Identificator o
 
-type instance Identificator From = Int
+type instance Identificator Sender = Int
 type instance Identificator Message = Int
 type instance Identificator Update = Int
 

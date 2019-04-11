@@ -9,15 +9,15 @@ import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 import "time" Data.Time.Clock.POSIX (POSIXTime)
 
-import Network.Telegram.API.Bot.Object.Update.Message.From (From)
+import Network.Telegram.API.Bot.Object.Sender (Sender)
 
 data Member
-	= Creator From
-	| Administrator From
-	| Member From
-	| Restricted From POSIXTime
-	| Left From
-	| Kicked From POSIXTime
+	= Creator Sender
+	| Administrator Sender
+	| Member Sender
+	| Restricted Sender POSIXTime
+	| Left Sender
+	| Kicked Sender POSIXTime
 	deriving Show
 
 instance FromJSON Member where

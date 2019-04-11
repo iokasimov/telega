@@ -7,9 +7,9 @@ import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 
-import Network.Telegram.API.Bot.Object.Update.Message.From (From)
+import Network.Telegram.API.Bot.Object.Sender (Sender)
 
-data Moving = Gone From | Joined [From] deriving Show
+data Moving = Gone Sender | Joined [Sender] deriving Show
 
 instance FromJSON Moving where
 	parseJSON = withObject "Moving" $ \v -> gone v <|> joined v where

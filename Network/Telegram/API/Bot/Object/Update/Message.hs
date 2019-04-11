@@ -1,7 +1,6 @@
 module Network.Telegram.API.Bot.Object.Update.Message (Message (..), module Exports) where
 
 import Network.Telegram.API.Bot.Object.Update.Message.Content as Exports
-import Network.Telegram.API.Bot.Object.Update.Message.From as Exports
 import Network.Telegram.API.Bot.Object.Update.Message.Keyboard as Exports
 import Network.Telegram.API.Bot.Object.Update.Message.Origin as Exports
 

@@ -10,12 +10,12 @@ import "base" Data.Int (Int64)
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
-import Network.Telegram.API.Bot.Object.Update.Message.From (From)
+import Network.Telegram.API.Bot.Object.Sender (Sender)
 
 data Origin
-	= Private Int64 From
-	| Group Int64 Text From
-	| Supergroup Int64 Text From
+	= Private Int64 Sender
+	| Group Int64 Text Sender
+	| Supergroup Int64 Text Sender
 	| Channel Int64 Text
 	deriving Show
 
