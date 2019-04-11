@@ -6,7 +6,7 @@ import "text" Data.Text (Text)
 import Network.Telegram.API.Bot.Object (Object)
 import Network.Telegram.API.Bot.Object.Update (Update (Query, Membership, Incoming))
 import Network.Telegram.API.Bot.Object.Update.Callback (Callback (Datatext))
-import Network.Telegram.API.Bot.Object.Update.Message (Message (Direct, Forward))
+import Network.Telegram.API.Bot.Object.Update.Message (Message (Direct, Forward, Reply))
 import Network.Telegram.API.Bot.Object.Update.Message.Origin (Origin (Private, Group, Supergroup, Channel))
 import Network.Telegram.API.Bot.Object.Sender (Sender (Bot, User))
 
@@ -28,6 +28,7 @@ instance Identifiable Callback where
 instance Identifiable Message where
 	identificator (Direct i _ _) = i
 	identificator (Forward i _ _) = i
+	identificator (Reply i _ _ _) = i
 
 instance Identifiable Origin where
 	identificator (Private i _) = i

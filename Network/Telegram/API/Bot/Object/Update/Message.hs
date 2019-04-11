@@ -20,21 +20,22 @@ import Network.Telegram.API.Bot.Object.Update.Message.Origin (Origin (Private, G
 data Message
 	= Direct Int Origin Content
 	| Forward Int Origin Content
+	| Reply Int Origin Content Message
 	deriving Show
 
 instance FromJSON Message where
 	parseJSON = withObject "Message" $ \v ->
-		forward_from_channel v <|> forward_from_chat v <|> direct v where
+		forward_channel v <|> forward_chat v <|> reply v <|> direct v where
 
-		forward_from_channel :: Object -> Parser Message
-		forward_from_channel v = Forward <$> v .: "forward_from_message_id"
+		forward_channel :: Object -> Parser Message
+		forward_channel v = Forward <$> v .: "forward_from_message_id"
 			<*> (v .: "forward_from_chat" >>= channel) <*> parseJSON (Object v) where
 
 			channel :: Value -> Parser Origin
 			channel = withObject "Channel" $ \c -> Channel <$> c .: "id" <*> c .: "title"
 
-		forward_from_chat :: Object -> Parser Message
-		forward_from_chat v = Forward <$> v .: "message_id"
+		forward_chat :: Object -> Parser Message
+		forward_chat v = Forward <$> v .: "message_id"
 			<*> (v .: "chat" >>= chat) <*> parseJSON (Object v) where
 
 			chat :: Value -> Parser Origin
@@ -43,6 +44,10 @@ instance FromJSON Message where
 				("group" :: Text) -> Group <$> c .: "id" <*> c .: "title" <*> v .: "forward_from"
 				("supergroup" :: Text) -> Supergroup <$> c .: "id" <*> c .: "title" <*> v .: "forward_from"
 				_ -> fail "Type of chat is not defined"
+
+		reply :: Object -> Parser Message
+		reply v = Reply <$> v .: "message_id" <*> parseJSON (Object v)
+			<*> parseJSON (Object v) <*> v .: "reply_to_message"
 
 		direct :: Object -> Parser Message
 		direct v = Direct <$> v .: "message_id"

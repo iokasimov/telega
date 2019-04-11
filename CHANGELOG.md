@@ -49,3 +49,4 @@
 
 # 0.1.7
 * Define `Identifiable` instance for `Callback` datatype
+* Add `Reply` constructor to `Message` datatype
