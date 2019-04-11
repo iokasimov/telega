@@ -1,4 +1,6 @@
-module Network.Telegram.API.Bot.Object.Update.Message.Content (Content (..)) where
+module Network.Telegram.API.Bot.Object.Update.Message.Content (Content (..), module Exports) where
+
+import Network.Telegram.API.Bot.Object.Update.Message.Content.File as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withArray, withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser, Value)
@@ -15,16 +17,14 @@ import "text" Data.Text (Text, drop, take)
 data Content
 	= Textual Text
 	| Command Text
+	| Attachment Text
 	deriving Show
 
 instance FromJSON Content where
-	parseJSON = withObject "Content" $ \v -> command v <|> textual v where
+	parseJSON = withObject "Content" $ \v -> command v <|> attachment v <|> textual v where
 
 		command :: Object -> Parser Content
 		command v = Command <$> (v .: "entities" >>= command_entity >>= extract_command v)
-
-		textual :: Object -> Parser Content
-		textual v = Textual <$> v .: "text"
 
 		command_entity :: Value -> Parser (Int, Int)
 		command_entity = withArray "Command content" $ \a ->
@@ -37,3 +37,9 @@ instance FromJSON Content where
 
 		extract_command :: Object -> (Int, Int) -> Parser Text
 		extract_command v (ofs, len) = (take len . drop (ofs + 1)) <$> v .: "text"
+
+		attachment :: Object -> Parser Content
+		attachment v = Attachment <$> v .: "caption"
+
+		textual :: Object -> Parser Content
+		textual v = Textual <$> v .: "text"

@@ -50,3 +50,5 @@
 # 0.1.7
 * Define `Identifiable` instance for `Callback` datatype
 * Add `Reply` constructor to `Message` datatype
+* Add `Attachment` constructor to `Content` datatype
+* Define `File` for animations, audio, documents, photos, videos or voices
