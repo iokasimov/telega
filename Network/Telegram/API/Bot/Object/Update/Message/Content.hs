@@ -4,7 +4,7 @@ import Network.Telegram.API.Bot.Object.Update.Message.Content.File as Exports
 import Network.Telegram.API.Bot.Object.Update.Message.Content.Info as Exports
 import Network.Telegram.API.Bot.Object.Update.Message.Content.Size as Exports
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), withArray, withObject, (.:))
+import "aeson" Data.Aeson (FromJSON (parseJSON), withArray, withObject, (.:), (.:?))
 import "aeson" Data.Aeson.Types (Object, Parser, Value (Object))
 import "base" Control.Applicative (Applicative ((<*>)), Alternative (empty, (<|>)))
 import "base" Control.Monad (Monad ((>>=)), fail)
