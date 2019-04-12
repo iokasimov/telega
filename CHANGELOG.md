@@ -53,3 +53,4 @@
 * Add `Attachment` constructor to `Content` datatype
 * Define `File` for animations, audio, documents, photos, videos or voices
 * Extract `Size` datatype into separated module within `Content` submodule
+* Define `Location` and `Info` datatypes within `Content` submodule

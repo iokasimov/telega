@@ -30,6 +30,8 @@ library
     Network.Telegram.API.Bot.Object.Update.Message
     Network.Telegram.API.Bot.Object.Update.Message.Content
     Network.Telegram.API.Bot.Object.Update.Message.Content.File
+    Network.Telegram.API.Bot.Object.Update.Message.Content.Info
+    Network.Telegram.API.Bot.Object.Update.Message.Content.Location
     Network.Telegram.API.Bot.Object.Update.Message.Content.Size
     Network.Telegram.API.Bot.Object.Update.Message.Keyboard
     Network.Telegram.API.Bot.Object.Update.Message.Keyboard.Button
