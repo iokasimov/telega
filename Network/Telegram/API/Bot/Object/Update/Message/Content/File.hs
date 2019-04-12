@@ -11,6 +11,8 @@ import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
+import Network.Telegram.API.Bot.Object.Update.Message.Content.Size (Size)
+
 data File
 	= Animation Text Int Int Int (Maybe Int)
 	| Audio Text Int
@@ -63,10 +65,3 @@ instance FromJSON File where
 			file :: Value -> Parser File
 			file = withObject "Voice" $ \f -> Voice
 				<$> f .: "file_id" <*> f .: "duration" <*> f .:? "file_size"
-
-data Size = Size Text Int Int (Maybe Int)
-	deriving Show
-
-instance FromJSON Size where
-	parseJSON = withObject "Size" $ \v -> Size <$> v .: "file_id"
-		<*> v .: "width" <*> v .: "height" <*> v .: "file_size"

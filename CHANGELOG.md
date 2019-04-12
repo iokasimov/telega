@@ -52,3 +52,4 @@
 * Add `Reply` constructor to `Message` datatype
 * Add `Attachment` constructor to `Content` datatype
 * Define `File` for animations, audio, documents, photos, videos or voices
+* Extract `Size` datatype into separated module within `Content` submodule

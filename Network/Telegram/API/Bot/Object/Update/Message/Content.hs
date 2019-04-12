@@ -1,6 +1,7 @@
 module Network.Telegram.API.Bot.Object.Update.Message.Content (Content (..), module Exports) where
 
 import Network.Telegram.API.Bot.Object.Update.Message.Content.File as Exports
+import Network.Telegram.API.Bot.Object.Update.Message.Content.Size as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withArray, withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser, Value (Object))
@@ -18,6 +19,10 @@ data Content
 	= Textual Text
 	| Command Text
 	| Attachment Text File
+	-- | Contact
+	-- | Invoice
+	-- | Location
+	-- | Sticker
 	deriving Show
 
 instance FromJSON Content where
