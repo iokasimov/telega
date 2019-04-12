@@ -11,6 +11,7 @@ import "base" Data.Function ((.), ($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Foldable (Foldable (foldr))
 import "base" Data.Int (Int)
+import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 import "base" Prelude ((+))
 import "text" Data.Text (Text, drop, take)
@@ -18,11 +19,7 @@ import "text" Data.Text (Text, drop, take)
 data Content
 	= Textual Text
 	| Command Text
-	| Attachment Text File
-	-- | Contact
-	-- | Invoice
-	-- | Location
-	-- | Sticker
+	| Attachment (Maybe Text) File
 	deriving Show
 
 instance FromJSON Content where
