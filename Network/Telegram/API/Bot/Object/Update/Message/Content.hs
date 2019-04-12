@@ -43,7 +43,7 @@ instance FromJSON Content where
 		extract_command v (ofs, len) = (take len . drop (ofs + 1)) <$> v .: "text"
 
 		attachment :: Object -> Parser Content
-		attachment v = Attachment <$> v .: "caption" <*> parseJSON (Object v)
+		attachment v = Attachment <$> v .:? "caption" <*> parseJSON (Object v)
 
 		other :: Object -> Parser Content
 		other v = Information <$> parseJSON (Object v)
