@@ -61,3 +61,4 @@
 * Define `PL` newtype to avoid violating injectivity annotation of `Payload` type family
 * Define `Messaging` datatype to separate direct, reply and forward `Message`
 * Make first argument of `Payload` type family poly kinded (enable `PolyKinds`)
+* Define `Persistable` instance for `Directly`, `Forwarding` and `Replying` `Message`

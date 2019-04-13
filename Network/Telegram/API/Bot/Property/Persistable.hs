@@ -64,6 +64,20 @@ instance Persistable 'Fetch Member where
 	payload (PL (chat_id, user_id)) = object ["chat_id" .= chat_id, "user_id" .= user_id]
 	endpoint _ = "getChatMember"
 
+instance Persistable 'Directly Message where
+	payload (PL (chat_id, text)) = object ["chat_id" .= chat_id, "text" .= text]
+	endpoint _ = "sendMessage"
+
+instance Persistable 'Forwarding Message where
+	payload (PL (chat_id, from_chat_id, message_id)) = object
+		["chat_id" .= chat_id, "from_chat_id" .= from_chat_id, "message_id" .= message_id]
+	endpoint _ = "forwardMessage"
+
+instance Persistable 'Replying Message where
+	payload (PL (chat_id, reply_to_message_id, text)) = object
+		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "text" .= text]
+	endpoint _ = "sendMessage"
+
 instance Persistable 'Purge Message where
 	payload (PL (chat_id, message_id)) = object ["chat_id" .= chat_id, "message_id" .= message_id]
 	endpoint _ = "deleteMessage"
