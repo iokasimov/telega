@@ -59,3 +59,5 @@
 * Add information about `Group` or `Supergroup` (id and title) into `Moving` datatype
 * Add `Fetch` capacity, define `Persistable Fetch` for `Sender` to get info about bot
 * Define `PL` newtype to avoid violating injectivity annotation of `Payload` type family
+* Define `Messaging` datatype to separate direct, reply and forward `Message`
+* Make first argument of `Payload` type family poly kinded (enable `PolyKinds`)

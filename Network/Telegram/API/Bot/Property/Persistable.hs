@@ -18,20 +18,25 @@ import "transformers" Control.Monad.Trans.Reader (ask)
 import "wreq" Network.Wreq.Session (post)
 
 import Network.Telegram.API.Bot.Core (Telegram, Token (Token), Ok, result)
-import Network.Telegram.API.Bot.Object (Object, Keyboard, Notification, Member, Message, Sender)
+import Network.Telegram.API.Bot.Object (Object, Keyboard, Notification, Member, Sender)
+import Network.Telegram.API.Bot.Object.Update.Message (Message, Messaging (Directly, Forwarding, Replying))
 
 data Capacity = Fetch | Post | Edit | Purge
 
-newtype PL (c :: Capacity) (o :: *) a = PL a
+newtype PL c o a = PL a
 
-type family Payload (c :: Capacity) o = r | r -> o c
+type family Payload (c :: k) o = r | r -> o c
 
-type instance Payload 'Post Keyboard = PL 'Post Keyboard (Int64, Int, Keyboard)
+type instance Payload 'Post Keyboard = PL 'Post Keyboard (Int64, Text, Keyboard)
 type instance Payload 'Edit Keyboard = PL 'Edit Keyboard (Int64, Int, Keyboard)
 type instance Payload 'Fetch Member = PL 'Fetch Member (Int64, Int)
 type instance Payload 'Purge Message = PL 'Purge Message (Int64, Int)
 type instance Payload 'Post Notification = PL 'Post Notification (Text, Text)
 type instance Payload 'Fetch Sender = PL 'Fetch Sender ()
+
+type instance Payload 'Directly Message = PL 'Directly Message (Int64, Text)
+type instance Payload 'Forwarding Message = PL 'Forwarding Message (Int64, Int64, Int)
+type instance Payload 'Replying Message = PL 'Replying Message (Int64, Int, Text)
 
 class Object o => Persistable c o where
 	{-# MINIMAL payload, endpoint #-}

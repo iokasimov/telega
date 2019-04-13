@@ -1,4 +1,4 @@
-module Network.Telegram.API.Bot.Object.Update.Message (Message (..), module Exports) where
+module Network.Telegram.API.Bot.Object.Update.Message (Message (..), Messaging (..), module Exports) where
 
 import Network.Telegram.API.Bot.Object.Update.Message.Content as Exports
 import Network.Telegram.API.Bot.Object.Update.Message.Keyboard as Exports
@@ -16,6 +16,8 @@ import "text" Data.Text (Text)
 
 import Network.Telegram.API.Bot.Object.Update.Message.Content (Content)
 import Network.Telegram.API.Bot.Object.Update.Message.Origin (Origin (Private, Group, Supergroup, Channel))
+
+data Messaging = Directly | Forwarding | Replying
 
 data Message
 	= Direct Int Origin Content
