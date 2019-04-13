@@ -57,3 +57,5 @@
 
 # 0.1.8
 * Add information about `Group` or `Supergroup` (id and title) into `Moving` datatype
+* Add `Fetch` capacity, define `Persistable Fetch` for `Sender` to get info about bot
+* Define `PL` newtype to avoid violating injectivity annotation of `Payload` type family
