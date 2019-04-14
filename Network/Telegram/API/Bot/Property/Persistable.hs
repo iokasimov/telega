@@ -1,4 +1,5 @@
-module Network.Telegram.API.Bot.Property.Persistable (Persistable (..), Payload, PL (..), Capacity (..)) where
+module Network.Telegram.API.Bot.Property.Persistable
+	(Persistable (..), Payload, PL (..), Capacity (..), Messaging (..)) where
 
 import "aeson" Data.Aeson (FromJSON, Value, decode, object, (.=))
 import "base" Control.Exception (try)
@@ -19,9 +20,9 @@ import "wreq" Network.Wreq.Session (post)
 
 import Network.Telegram.API.Bot.Core (Telegram, Token (Token), Ok, result)
 import Network.Telegram.API.Bot.Object (Object, Keyboard, Notification, Member, Sender)
-import Network.Telegram.API.Bot.Object.Update.Message (Message, Messaging (Directly, Forwarding, Replying))
+import Network.Telegram.API.Bot.Object.Update.Message (Message)
 
-data Capacity = Fetch | Post Messaging | Edit | Purge
+data Capacity = Post | Fetch | Edit | Purge
 
 newtype PL c o a = PL a
 
@@ -35,9 +36,11 @@ type instance Payload 'Purge Message = PL 'Purge Message (Int64, Int)
 type instance Payload 'Post Notification = PL 'Post Notification (Text, Text)
 type instance Payload 'Fetch Sender = PL 'Fetch Sender ()
 
-type instance Payload ('Post 'Directly) Message = PL 'Directly Message (Int64, Text)
-type instance Payload ('Post 'Forwarding) Message = PL 'Forwarding Message (Int64, Int64, Int)
-type instance Payload ('Post 'Replying) Message = PL 'Replying Message (Int64, Int, Text)
+data Messaging = Directly Capacity | Forwarding Capacity | Replying Capacity
+
+type instance Payload ('Directly 'Post) Message = PL ('Directly 'Post) Message (Int64, Text)
+type instance Payload ('Forwarding 'Post) Message = PL ('Forwarding 'Post) Message (Int64, Int64, Int)
+type instance Payload ('Replying 'Post) Message = PL ('Replying 'Post) Message (Int64, Int, Text)
 
 class Object o => Persistable c o where
 	{-# MINIMAL payload, endpoint #-}
@@ -65,16 +68,16 @@ instance Persistable 'Fetch Member where
 	payload (PL (chat_id, user_id)) = object ["chat_id" .= chat_id, "user_id" .= user_id]
 	endpoint _ = "getChatMember"
 
-instance Persistable ('Post 'Directly) Message where
+instance Persistable ('Directly 'Post) Message where
 	payload (PL (chat_id, text)) = object ["chat_id" .= chat_id, "text" .= text]
 	endpoint _ = "sendMessage"
 
-instance Persistable ('Post 'Forwarding) Message where
+instance Persistable ('Forwarding 'Post) Message where
 	payload (PL (chat_id, from_chat_id, message_id)) = object
 		["chat_id" .= chat_id, "from_chat_id" .= from_chat_id, "message_id" .= message_id]
 	endpoint _ = "forwardMessage"
 
-instance Persistable ('Post 'Replying) Message where
+instance Persistable ('Replying 'Post) Message where
 	payload (PL (chat_id, reply_to_message_id, text)) = object
 		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "text" .= text]
 	endpoint _ = "sendMessage"

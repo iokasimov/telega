@@ -64,4 +64,4 @@
 * Define `Persistable` instance for `Directly`, `Forwarding` and `Replying` `Message`
 
 # 0.1.9
-* `Messaging` datatype now is the parameter of `Post` `Capacity`
+* Move `Messaging` datatype to `Persistable` module and make it over `Capacity` parameter
