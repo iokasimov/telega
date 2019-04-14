@@ -53,6 +53,11 @@ type instance Payload ('Point' ('Reply' 'Post')) Info = PL ('Point' ('Reply' 'Po
 type instance Payload ('Contact' ('Reply' 'Post')) Info = PL ('Contact' ('Reply' 'Post')) Info (Int64, Int, Text, Text, Maybe Text, Maybe Text)
 type instance Payload ('Venue' ('Reply' 'Post')) Info = PL ('Venue' ('Reply' 'Post')) Info (Int64, Int, Location, Text, Text, Maybe Text, Maybe Text)
 
+data Member' = Kick' | Unban'
+
+type instance Payload 'Kick' Member = PL 'Kick' Member (Int64, Int, Int)
+type instance Payload 'Unban' Member = PL 'Unban' Member (Int64, Int)
+
 class Object o => Persistable c o where
 	{-# MINIMAL payload, endpoint #-}
 	payload :: Payload c o -> Value
@@ -144,3 +149,12 @@ instance Persistable ('Venue' ('Reply' 'Post')) Info where
 		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "location" .= location, "title" .= title,
 			"address" .= address, "foursquare_id" .= foursquare_id, "foursquare_type" .= foursquare_type]
 	endpoint _ = "sendVenue"
+
+instance Persistable 'Kick' Member where
+	payload (PL (chat_id, user_id, until_date)) = object
+		["chat_id" .= chat_id, "user_id" .= user_id, "until_date" .= until_date]
+	endpoint _ = "kickChatMember"
+
+instance Persistable 'Unban' Member where
+	payload (PL (chat_id, user_id)) = object ["chat_id" .= chat_id, "user_id" .= user_id]
+	endpoint _ = "unbanChatMember"
