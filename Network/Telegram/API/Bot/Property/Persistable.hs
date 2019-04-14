@@ -49,6 +49,9 @@ data Info' = Point' Message' | Contact' Message' | Venue' Message'
 type instance Payload ('Point' ('Direct' 'Post)) Info = PL ('Point' ('Direct' 'Post)) Info (Int64, Location, Int)
 type instance Payload ('Contact' ('Direct' 'Post)) Info = PL ('Contact' ('Direct' 'Post)) Info (Int64, Text, Text, Maybe Text, Maybe Text)
 type instance Payload ('Venue' ('Direct' 'Post)) Info = PL ('Venue' ('Direct' 'Post)) Info (Int64, Location, Text, Text, Maybe Text, Maybe Text)
+type instance Payload ('Point' ('Reply' 'Post)) Info = PL ('Point' ('Reply' 'Post)) Info (Int64, Int, Location, Int)
+type instance Payload ('Contact' ('Reply' 'Post)) Info = PL ('Contact' ('Reply' 'Post)) Info (Int64, Int, Text, Text, Maybe Text, Maybe Text)
+type instance Payload ('Venue' ('Reply' 'Post)) Info = PL ('Venue' ('Reply' 'Post)) Info (Int64, Int, Location, Text, Text, Maybe Text, Maybe Text)
 
 class Object o => Persistable c o where
 	{-# MINIMAL payload, endpoint #-}
@@ -122,4 +125,22 @@ instance Persistable ('Venue' ('Direct' 'Post)) Info where
 	payload (PL (chat_id, location, title, address, foursquare_id, foursquare_type)) = object
 		["chat_id" .= chat_id, "location" .= location, "title" .= title, "address" .= address,
 			"foursquare_id" .= foursquare_id, "foursquare_type" .= foursquare_type]
+	endpoint _ = "sendVenue"
+
+instance Persistable ('Point' ('Reply' 'Post)) Info where
+	payload (PL (chat_id, reply_to_message_id, location, live_period)) = object
+		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id,
+			"location" .= location, "live_period" .= live_period]
+	endpoint _ = "sendLocation"
+
+instance Persistable ('Contact' ('Reply' 'Post)) Info where
+	payload (PL (chat_id, reply_to_message_id, phone_number, first_name, last_name, vcard)) = object
+		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "phone_number" .= phone_number,
+			"first_name" .= first_name, "last_name" .= last_name, "vcard" .= vcard]
+	endpoint _ = "sendContact"
+
+instance Persistable ('Venue' ('Reply' 'Post)) Info where
+	payload (PL (chat_id, reply_to_message_id, location, title, address, foursquare_id, foursquare_type)) = object
+		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "location" .= location, "title" .= title,
+			"address" .= address, "foursquare_id" .= foursquare_id, "foursquare_type" .= foursquare_type]
 	endpoint _ = "sendVenue"

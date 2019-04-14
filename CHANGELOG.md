@@ -65,4 +65,4 @@
 
 # 0.1.9
 * Move `Messaging` datatype to `Persistable` module and make it over `Capacity` parameter
-* Define `Persistable` instances for `Info` datatype (for direct messages only)
+* Define `Persistable` instances for `Info` datatype (for direct and reply messages)
