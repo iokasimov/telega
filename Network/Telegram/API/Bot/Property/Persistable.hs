@@ -1,5 +1,5 @@
 module Network.Telegram.API.Bot.Property.Persistable
-	(Persistable (..), Payload, PL (..), Capacity (..), Messaging (..)) where
+	(Persistable (..), Payload, PL (..), Capacity (..), Message' (..)) where
 
 import "aeson" Data.Aeson (FromJSON, Value, decode, object, (.=))
 import "base" Control.Exception (try)
@@ -7,7 +7,7 @@ import "base" Control.Monad (Monad ((>>=)), join)
 import "base" Data.Function (flip, (.), ($))
 import "base" Data.Functor (Functor (fmap), (<$>))
 import "base" Data.Int (Int, Int64)
-import "base" Data.Maybe (fromJust)
+import "base" Data.Maybe (Maybe, fromJust)
 import "base" Data.Semigroup (Semigroup ((<>)))
 import "base" Data.String (String)
 import "base" Data.Tuple (snd)
@@ -21,6 +21,8 @@ import "wreq" Network.Wreq.Session (post)
 import Network.Telegram.API.Bot.Core (Telegram, Token (Token), Ok, result)
 import Network.Telegram.API.Bot.Object (Object, Keyboard, Notification, Member, Sender)
 import Network.Telegram.API.Bot.Object.Update.Message (Message)
+import Network.Telegram.API.Bot.Object.Update.Message.Content.Info (Info)
+import Network.Telegram.API.Bot.Object.Update.Message.Content.Location (Location)
 
 data Capacity = Post | Fetch | Edit | Purge
 
@@ -36,11 +38,17 @@ type instance Payload 'Purge Message = PL 'Purge Message (Int64, Int)
 type instance Payload 'Post Notification = PL 'Post Notification (Text, Text)
 type instance Payload 'Fetch Sender = PL 'Fetch Sender ()
 
-data Messaging = Directly Capacity | Forwarding Capacity | Replying Capacity
+data Message' = Direct' Capacity | Forward' Capacity | Reply' Capacity
 
-type instance Payload ('Directly 'Post) Message = PL ('Directly 'Post) Message (Int64, Text)
-type instance Payload ('Forwarding 'Post) Message = PL ('Forwarding 'Post) Message (Int64, Int64, Int)
-type instance Payload ('Replying 'Post) Message = PL ('Replying 'Post) Message (Int64, Int, Text)
+type instance Payload ('Direct' 'Post) Message = PL ('Direct' 'Post) Message (Int64, Text)
+type instance Payload ('Forward' 'Post) Message = PL ('Forward' 'Post) Message (Int64, Int64, Int)
+type instance Payload ('Reply' 'Post) Message = PL ('Reply' 'Post) Message (Int64, Int, Text)
+
+data Info' = Point' Message' | Contact' Message' | Venue' Message'
+
+type instance Payload ('Point' ('Direct' 'Post)) Info = PL ('Point' ('Direct' 'Post)) Info (Int64, Location, Int)
+type instance Payload ('Contact' ('Direct' 'Post)) Info = PL ('Contact' ('Direct' 'Post)) Info (Int64, Text, Text, Maybe Text, Maybe Text)
+type instance Payload ('Venue' ('Direct' 'Post)) Info = PL ('Venue' ('Direct' 'Post)) Info (Int64, Location, Text, Text, Maybe Text, Maybe Text)
 
 class Object o => Persistable c o where
 	{-# MINIMAL payload, endpoint #-}
@@ -68,16 +76,16 @@ instance Persistable 'Fetch Member where
 	payload (PL (chat_id, user_id)) = object ["chat_id" .= chat_id, "user_id" .= user_id]
 	endpoint _ = "getChatMember"
 
-instance Persistable ('Directly 'Post) Message where
+instance Persistable ('Direct' 'Post) Message where
 	payload (PL (chat_id, text)) = object ["chat_id" .= chat_id, "text" .= text]
 	endpoint _ = "sendMessage"
 
-instance Persistable ('Forwarding 'Post) Message where
+instance Persistable ('Forward' 'Post) Message where
 	payload (PL (chat_id, from_chat_id, message_id)) = object
 		["chat_id" .= chat_id, "from_chat_id" .= from_chat_id, "message_id" .= message_id]
 	endpoint _ = "forwardMessage"
 
-instance Persistable ('Replying 'Post) Message where
+instance Persistable ('Reply' 'Post) Message where
 	payload (PL (chat_id, reply_to_message_id, text)) = object
 		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "text" .= text]
 	endpoint _ = "sendMessage"
@@ -98,3 +106,20 @@ instance Persistable 'Edit Message where
 	payload (PL (chat_id, message_id, text)) = object
 		["chat_id" .= chat_id, "message_id" .= message_id, "text" .= text]
 	endpoint _ = "editMessageText"
+
+instance Persistable ('Point' ('Direct' 'Post)) Info where
+	payload (PL (chat_id, location, live_period)) = object
+		["chat_id" .= chat_id, "location" .= location, "live_period" .= live_period]
+	endpoint _ = "sendLocation"
+
+instance Persistable ('Contact' ('Direct' 'Post)) Info where
+	payload (PL (chat_id, phone_number, first_name, last_name, vcard)) =
+		object ["chat_id" .= chat_id, "phone_number" .= phone_number,
+			"first_name" .= first_name, "last_name" .= last_name, "vcard" .= vcard]
+	endpoint _ = "sendContact"
+
+instance Persistable ('Venue' ('Direct' 'Post)) Info where
+	payload (PL (chat_id, location, title, address, foursquare_id, foursquare_type)) = object
+		["chat_id" .= chat_id, "location" .= location, "title" .= title, "address" .= address,
+			"foursquare_id" .= foursquare_id, "foursquare_type" .= foursquare_type]
+	endpoint _ = "sendVenue"
