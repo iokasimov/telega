@@ -62,3 +62,6 @@
 * Define `Messaging` datatype to separate direct, reply and forward `Message`
 * Make first argument of `Payload` type family poly kinded (enable `PolyKinds`)
 * Define `Persistable` instance for `Directly`, `Forwarding` and `Replying` `Message`
+
+# 0.1.9
+* `Messaging` datatype now is the parameter of `Post` `Capacity`

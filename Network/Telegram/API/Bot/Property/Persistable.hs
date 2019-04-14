@@ -21,7 +21,7 @@ import Network.Telegram.API.Bot.Core (Telegram, Token (Token), Ok, result)
 import Network.Telegram.API.Bot.Object (Object, Keyboard, Notification, Member, Sender)
 import Network.Telegram.API.Bot.Object.Update.Message (Message, Messaging (Directly, Forwarding, Replying))
 
-data Capacity = Fetch | Post | Edit | Purge
+data Capacity = Fetch | Post Messaging | Edit | Purge
 
 newtype PL c o a = PL a
 
@@ -30,13 +30,14 @@ type family Payload (c :: k) o = r | r -> o c
 type instance Payload 'Post Keyboard = PL 'Post Keyboard (Int64, Text, Keyboard)
 type instance Payload 'Edit Keyboard = PL 'Edit Keyboard (Int64, Int, Keyboard)
 type instance Payload 'Fetch Member = PL 'Fetch Member (Int64, Int)
+type instance Payload 'Edit Message = PL 'Edit Message (Int64, Int, Text)
 type instance Payload 'Purge Message = PL 'Purge Message (Int64, Int)
 type instance Payload 'Post Notification = PL 'Post Notification (Text, Text)
 type instance Payload 'Fetch Sender = PL 'Fetch Sender ()
 
-type instance Payload 'Directly Message = PL 'Directly Message (Int64, Text)
-type instance Payload 'Forwarding Message = PL 'Forwarding Message (Int64, Int64, Int)
-type instance Payload 'Replying Message = PL 'Replying Message (Int64, Int, Text)
+type instance Payload ('Post 'Directly) Message = PL 'Directly Message (Int64, Text)
+type instance Payload ('Post 'Forwarding) Message = PL 'Forwarding Message (Int64, Int64, Int)
+type instance Payload ('Post 'Replying) Message = PL 'Replying Message (Int64, Int, Text)
 
 class Object o => Persistable c o where
 	{-# MINIMAL payload, endpoint #-}
@@ -64,16 +65,16 @@ instance Persistable 'Fetch Member where
 	payload (PL (chat_id, user_id)) = object ["chat_id" .= chat_id, "user_id" .= user_id]
 	endpoint _ = "getChatMember"
 
-instance Persistable 'Directly Message where
+instance Persistable ('Post 'Directly) Message where
 	payload (PL (chat_id, text)) = object ["chat_id" .= chat_id, "text" .= text]
 	endpoint _ = "sendMessage"
 
-instance Persistable 'Forwarding Message where
+instance Persistable ('Post 'Forwarding) Message where
 	payload (PL (chat_id, from_chat_id, message_id)) = object
 		["chat_id" .= chat_id, "from_chat_id" .= from_chat_id, "message_id" .= message_id]
 	endpoint _ = "forwardMessage"
 
-instance Persistable 'Replying Message where
+instance Persistable ('Post 'Replying) Message where
 	payload (PL (chat_id, reply_to_message_id, text)) = object
 		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "text" .= text]
 	endpoint _ = "sendMessage"
@@ -89,3 +90,8 @@ instance Persistable 'Post Notification where
 instance Persistable 'Fetch Sender where
 	payload (PL ()) = object []
 	endpoint _ = "getMe"
+
+instance Persistable 'Edit Message where
+	payload (PL (chat_id, message_id, text)) = object
+		["chat_id" .= chat_id, "message_id" .= message_id, "text" .= text]
+	endpoint _ = "editMessageText"
