@@ -66,3 +66,4 @@
 # 0.1.9
 * Move `Messaging` datatype to `Persistable` module and make it over `Capacity` parameter
 * Define `Persistable` instances for `Info` datatype (for direct and reply messages)
+* Add ticks to all constructors of `Capacity` to surround them from two sides in promoted versions
