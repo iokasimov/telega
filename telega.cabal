@@ -23,6 +23,8 @@ library
     Network.Telegram.API.Bot.Core
     Network.Telegram.API.Bot.Object
     Network.Telegram.API.Bot.Object.Member
+    Network.Telegram.API.Bot.Object.Member.Powers
+    Network.Telegram.API.Bot.Object.Member.Restrictions
     Network.Telegram.API.Bot.Object.Sender
     Network.Telegram.API.Bot.Object.Update
     Network.Telegram.API.Bot.Object.Update.Callback
