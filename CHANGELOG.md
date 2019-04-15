@@ -78,3 +78,5 @@
 * Define `Persistable` instances for `Location` datatype
 * Define `Inform` datatype and include it to `Capacity` with `Send` constructor
 * Put `Payload` type family into `Persistable` type class
+
+# 0.2.1
