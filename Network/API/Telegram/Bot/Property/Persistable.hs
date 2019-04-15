@@ -4,6 +4,7 @@ module Network.API.Telegram.Bot.Property.Persistable
 import "aeson" Data.Aeson (FromJSON, Value, decode, object, (.=))
 import "base" Control.Exception (try)
 import "base" Control.Monad (Monad ((>>=)), join)
+import "base" Data.Bool (Bool (False, True))
 import "base" Data.Function (flip, (.), ($))
 import "base" Data.Functor (Functor (fmap), (<$>))
 import "base" Data.Int (Int, Int64)
@@ -26,18 +27,21 @@ import Network.API.Telegram.Bot.Object.Update.Message.Content.Location (Location
 
 data Way = Directly | Forwarding | Replying
 
-data Capacity object = Send Way object | Post object | Fetch object | Edit object | Purge object
+data Inform = Silently | Notify
+
+data Capacity object = Send Inform Way object | Post object | Fetch object | Edit object | Purge object
 
 type family Payload (capacity :: * -> Capacity *) object = payload | payload -> capacity object
 
 type instance Payload 'Post Keyboard = Tagged ('Post Keyboard) (Int64, Text, Keyboard)
 type instance Payload 'Edit Keyboard = Tagged ('Edit Keyboard) (Int64, Int, Keyboard)
 type instance Payload 'Fetch Member = Tagged ('Fetch Member) (Int64, Int)
-type instance Payload ('Send 'Directly) Location = Tagged ('Send 'Directly Location) (Int64, Location, Int)
-type instance Payload ('Send 'Replying) Location = Tagged ('Send 'Replying Location) (Int64, Location, Int, Int)
-type instance Payload ('Send 'Directly) Message = Tagged ('Send 'Directly Message) (Int64, Text)
-type instance Payload ('Send 'Forwarding) Message = Tagged ('Send 'Forwarding Message) (Int64, Int64, Int)
-type instance Payload ('Send 'Replying) Message = Tagged ('Send 'Replying Message) (Int64, Int, Text)
+type instance Payload ('Send 'Notify 'Directly) Location = Tagged ('Send 'Notify 'Directly Location) (Int64, Location, Int)
+type instance Payload ('Send 'Silently 'Directly) Location = Tagged ('Send 'Silently 'Directly Location) (Int64, Location, Int)
+type instance Payload ('Send 'Notify 'Replying) Location = Tagged ('Send 'Notify 'Replying Location) (Int64, Location, Int, Int)
+type instance Payload ('Send 'Notify 'Directly) Message = Tagged ('Send 'Notify 'Directly Message) (Int64, Text)
+type instance Payload ('Send 'Notify 'Forwarding) Message = Tagged ('Send 'Notify 'Forwarding Message) (Int64, Int64, Int)
+type instance Payload ('Send 'Notify 'Replying) Message = Tagged ('Send 'Notify 'Replying Message) (Int64, Int, Text)
 type instance Payload 'Edit Message = Tagged ('Edit Message) (Int64, Int, Text)
 type instance Payload 'Purge Message = Tagged ('Purge Message) (Int64, Int)
 type instance Payload 'Post Notification = Tagged ('Post Notification) (Text, Text)
@@ -65,33 +69,66 @@ instance Persistable 'Post Keyboard where
 		["chat_id" .= chat_id, "text" .= text, "reply_markup" .= kb]
 	endpoint _ = "sendMessage"
 
-instance Persistable ('Send 'Directly) Location where
-	payload (untag -> (chat_id, Location latitude longitude, live_period)) = object
-		["chat_id" .= chat_id, "latitude" .= latitude, "longitude" .= longitude, "live_period" .= live_period]
+instance Persistable ('Send 'Notify 'Directly) Location where
+	payload (untag -> (chat_id, Location latitude longitude, live_period)) =
+		object ["chat_id" .= chat_id, "latitude" .= latitude, "longitude" .= longitude,
+			"live_period" .= live_period, "disable_notification" .= False]
 	endpoint _ = "sendLocation"
 
-instance Persistable ('Send 'Replying) Location where
-	payload (untag -> (chat_id, Location latitude longitude, live_period, reply_to_message_id)) =
+instance Persistable ('Send 'Silently 'Directly) Location where
+	payload (untag -> (chat_id, Location latitude longitude, live_period)) =
 		object ["chat_id" .= chat_id, "latitude" .= latitude, "longitude" .= longitude,
-			"live_period" .= live_period, "reply_to_message_id" .= reply_to_message_id]
+			"live_period" .= live_period, "disable_notification" .= True]
+	endpoint _ = "sendLocation"
+
+instance Persistable ('Send 'Notify 'Replying) Location where
+	payload (untag -> (chat_id, Location latitude longitude, live_period, reply_to_message_id)) = object
+		["chat_id" .= chat_id, "latitude" .= latitude, "longitude" .= longitude, "live_period" .= live_period,
+			"reply_to_message_id" .= reply_to_message_id, "disable_notification" .= False]
+	endpoint _ = "sendLocation"
+
+instance Persistable ('Send 'Silently 'Replying) Location where
+	payload (untag -> (chat_id, Location latitude longitude, live_period, reply_to_message_id)) = object
+		["chat_id" .= chat_id, "latitude" .= latitude, "longitude" .= longitude, "live_period" .= live_period,
+			"reply_to_message_id" .= reply_to_message_id, "disable_notification" .= True]
 	endpoint _ = "sendLocation"
 
 instance Persistable 'Fetch Member where
 	payload (untag -> (chat_id, user_id)) = object ["chat_id" .= chat_id, "user_id" .= user_id]
 	endpoint _ = "getChatMember"
 
-instance Persistable ('Send 'Directly) Message where
-	payload (untag -> (chat_id, text)) = object ["chat_id" .= chat_id, "text" .= text]
+instance Persistable ('Send 'Notify 'Directly) Message where
+	payload (untag -> (chat_id, text)) = object
+		["chat_id" .= chat_id, "text" .= text, "disable_notification" .= False]
 	endpoint _ = "sendMessage"
 
-instance Persistable ('Send 'Forwarding) Message where
+instance Persistable ('Send 'Silently 'Directly) Message where
+	payload (untag -> (chat_id, text)) = object
+		["chat_id" .= chat_id, "text" .= text, "disable_notification" .= True]
+	endpoint _ = "sendMessage"
+
+instance Persistable ('Send 'Notify 'Forwarding) Message where
 	payload (untag -> (chat_id, from_chat_id, message_id)) = object
-		["chat_id" .= chat_id, "from_chat_id" .= from_chat_id, "message_id" .= message_id]
+		["chat_id" .= chat_id, "from_chat_id" .= from_chat_id,
+			"message_id" .= message_id, "disable_notification" .= False]
 	endpoint _ = "forwardMessage"
 
-instance Persistable ('Send 'Replying) Message where
+instance Persistable ('Send 'Silently 'Forwarding) Message where
+	payload (untag -> (chat_id, from_chat_id, message_id)) = object
+		["chat_id" .= chat_id, "from_chat_id" .= from_chat_id,
+			"message_id" .= message_id, "disable_notification" .= True]
+	endpoint _ = "forwardMessage"
+
+instance Persistable ('Send 'Notify 'Replying) Message where
 	payload (untag -> (chat_id, reply_to_message_id, text)) = object
-		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "text" .= text]
+		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id,
+			"text" .= text, "disable_notification" .= False]
+	endpoint _ = "sendMessage"
+
+instance Persistable ('Send 'Silently 'Replying) Message where
+	payload (untag -> (chat_id, reply_to_message_id, text)) = object
+		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id,
+			"text" .= text, "disable_notification" .= True]
 	endpoint _ = "sendMessage"
 
 instance Persistable 'Purge Message where

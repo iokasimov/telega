@@ -76,3 +76,4 @@
 * Replace `Message'` with `Way` and include it to `Capacity` with `Send` constructor
 * Remove `user_id` field from `Contact` datatype
 * Define `Persistable` instances for `Location` datatype
+* Define `Inform` datatype and include it to `Capacity` with `Send` constructor
