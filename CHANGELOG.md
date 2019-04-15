@@ -72,3 +72,5 @@
 
 # 0.2.0
 * Rename `Network.Telegram.API` to `Network.API.Telegram`
+* Replace `PL` newtype with `Tagged` newtype from `tagged` package
+* Replace `Message'` with `Way` and include it to `Capacity` with `Send` constructor
