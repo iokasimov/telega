@@ -151,12 +151,12 @@ instance Persistable 'Purge Message where
 	type instance Payload 'Purge Message = Tagged ('Purge Message) (Int64, Int)
 	payload (untag -> (chat_id, message_id)) = object ["chat_id" .= chat_id, "message_id" .= message_id]
 	endpoint _ = "deleteMessage"
---
+
 instance Persistable 'Post Notification where
 	type instance Payload 'Post Notification = Tagged ('Post Notification) (Text, Text)
 	payload (untag -> (cbq_id, text)) = object ["callback_query_id" .= cbq_id, "text" .= text]
 	endpoint _ = "answerCallbackQuery"
---
+
 instance Persistable 'Fetch Sender where
 	type instance Payload 'Fetch Sender = Tagged ('Fetch Sender) ()
 	payload _ = object []

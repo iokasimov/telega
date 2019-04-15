@@ -80,3 +80,4 @@
 * Put `Payload` type family into `Persistable` type class
 
 # 0.2.1
+* Define `Poll` and his `Option` datatypes
