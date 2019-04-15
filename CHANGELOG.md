@@ -69,3 +69,6 @@
 * Add ticks to all constructors of `Capacity` to surround them from two sides in promoted versions
 * Define `Persistable` instance for `Member` (for kicking and unbanning only)
 * Define `Powers` and `Restrictions` datatypes within created `Member` submodule
+
+# 0.2.0
+* Rename `Network.Telegram.API` to `Network.API.Telegram`
