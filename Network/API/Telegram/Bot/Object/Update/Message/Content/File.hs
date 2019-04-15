@@ -18,8 +18,7 @@ import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
 data File
-	= Animation Text Int Int Int (Maybe Size) (Maybe Text) (Maybe Text) (Maybe Int)
-	| Audiofile Audio
+	= Audiofile Audio
 	| Videofile Video
 	| General Document
 	| Voicerecord Voice
@@ -28,15 +27,7 @@ data File
 
 instance FromJSON File where
 	parseJSON = withObject "Message" $ \v -> photo v <|> document v
-		<|> audio v <|> video v <|> animation v <|> voice v where
-
-		animation :: Object -> Parser File
-		animation v = v .: "animation" >>= file where
-
-			file :: Value -> Parser File
-			file = withObject "Animation" $ \f -> Animation <$> f .: "file_id"
-				<*> f .: "width" <*> f .: "height" <*> f .: "duration" <*> f .:? "thumb"
-				<*> f .:? "file_name" <*> f .:? "mime_type" <*> f .:? "file_size"
+		<|> audio v <|> video v <|> voice v where
 
 		audio :: Object -> Parser File
 		audio v = Audiofile <$> v .: "audio"

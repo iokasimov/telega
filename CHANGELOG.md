@@ -82,4 +82,5 @@
 # 0.2.1
 * Define `Poll` and his `Option` datatypes
 * Put `Size` into `File`, `Option` into `Poll`, `Location` into `Info` created submodules
-* Extract `Audio`,`Document`, `Video` objects from `File` datatype into modules
+* Extract `Audio`,`Document`, `Video`, `Voice` from `File` datatype into modules
+* Remove `Animation` construction from `File` datatype
