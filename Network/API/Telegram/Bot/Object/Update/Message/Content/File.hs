@@ -3,6 +3,7 @@ module Network.API.Telegram.Bot.Object.Update.Message.Content.File (File (..), m
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Audio as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Document as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Size as Exports
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Video as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:), (.:?))
 import "aeson" Data.Aeson.Types (Object, Parser, Value)
@@ -18,8 +19,8 @@ import "text" Data.Text (Text)
 data File
 	= Animation Text Int Int Int (Maybe Size) (Maybe Text) (Maybe Text) (Maybe Int)
 	| Audiofile Audio
+	| Videofile Video
 	| General Document
-	| Video Text Int Int Int (Maybe Size) (Maybe Text) (Maybe Int)
 	| Voice Text Int (Maybe Text) (Maybe Int)
 	| Photo [Size]
 	deriving Show
@@ -46,12 +47,7 @@ instance FromJSON File where
 		photo v = Photo <$> v .: "photo"
 
 		video :: Object -> Parser File
-		video v = v .: "video" >>= file where
-
-			file :: Value -> Parser File
-			file = withObject "Video" $ \f -> Video <$> f .: "file_id"
-				<*> f .: "width" <*> f .: "height" <*> f .: "duration"
-				<*> f .:?  "thumb" <*> f .:? "mime_type" <*> f .:? "file_size"
+		video v = Videofile <$> v .: "video"
 
 		voice :: Object -> Parser File
 		voice v = v .: "voice" >>= file where
