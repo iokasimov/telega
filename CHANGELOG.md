@@ -82,3 +82,4 @@
 # 0.2.1
 * Define `Poll` and his `Option` datatypes
 * Put `Size` into `File`, `Option` into `Poll`, `Location` into `Info` created submodules
+* Extract `Document` object from `File` datatype into separated module

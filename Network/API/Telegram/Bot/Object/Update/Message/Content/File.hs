@@ -1,5 +1,6 @@
 module Network.API.Telegram.Bot.Object.Update.Message.Content.File (File (..), module Exports) where
 
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Document as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Size as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:), (.:?))
@@ -16,7 +17,7 @@ import "text" Data.Text (Text)
 data File
 	= Animation Text Int Int Int (Maybe Size) (Maybe Text) (Maybe Text) (Maybe Int)
 	| Audio Text Int (Maybe Text) (Maybe Text) (Maybe Text) (Maybe Int) (Maybe Size)
-	| Document Text (Maybe Size) (Maybe Text) (Maybe Text) (Maybe Int)
+	| General Document
 	| Video Text Int Int Int (Maybe Size) (Maybe Text) (Maybe Int)
 	| Voice Text Int (Maybe Text) (Maybe Int)
 	| Photo [Size]
@@ -43,11 +44,7 @@ instance FromJSON File where
 				<*> f .:? "mime_type" <*> f .:? "file_size" <*> f .:? "thumb"
 
 		document :: Object -> Parser File
-		document v = v .: "document" >>= file where
-
-			file :: Value -> Parser File
-			file = withObject "Document" $ \f -> Document <$> f .: "file_id"
-				<*> f .:? "thumb" <*> f .:? "file_name" <*> f .:? "mime_type" <*> f .:? "file_size"
+		document v = General <$> v .: "document"
 
 		photo :: Object -> Parser File
 		photo v = Photo <$> v .: "photo"

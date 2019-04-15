@@ -9,8 +9,7 @@ import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
-data Size = Size Text Int Int (Maybe Int)
-	deriving Show
+data Size = Size Text Int Int (Maybe Int) deriving Show
 
 instance FromJSON Size where
 	parseJSON = withObject "Size" $ \v -> Size <$> v .: "file_id"
