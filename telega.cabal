@@ -32,11 +32,11 @@ library
     Network.API.Telegram.Bot.Object.Update.Message
     Network.API.Telegram.Bot.Object.Update.Message.Content
     Network.API.Telegram.Bot.Object.Update.Message.Content.File
+    Network.API.Telegram.Bot.Object.Update.Message.Content.File.Size
     Network.API.Telegram.Bot.Object.Update.Message.Content.Info
-    Network.API.Telegram.Bot.Object.Update.Message.Content.Location
-    Network.API.Telegram.Bot.Object.Update.Message.Content.Option
+    Network.API.Telegram.Bot.Object.Update.Message.Content.Info.Location
     Network.API.Telegram.Bot.Object.Update.Message.Content.Poll
-    Network.API.Telegram.Bot.Object.Update.Message.Content.Size
+    Network.API.Telegram.Bot.Object.Update.Message.Content.Poll.Option
     Network.API.Telegram.Bot.Object.Update.Message.Keyboard
     Network.API.Telegram.Bot.Object.Update.Message.Keyboard.Button
     Network.API.Telegram.Bot.Object.Update.Message.Origin

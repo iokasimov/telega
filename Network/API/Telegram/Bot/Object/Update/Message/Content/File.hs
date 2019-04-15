@@ -1,4 +1,6 @@
-module Network.API.Telegram.Bot.Object.Update.Message.Content.File (File (..)) where
+module Network.API.Telegram.Bot.Object.Update.Message.Content.File (File (..), module Exports) where
+
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Size as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:), (.:?))
 import "aeson" Data.Aeson.Types (Object, Parser, Value)
@@ -10,8 +12,6 @@ import "base" Data.Int (Int)
 import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
-
-import Network.API.Telegram.Bot.Object.Update.Message.Content.Size (Size)
 
 data File
 	= Animation Text Int Int Int (Maybe Size) (Maybe Text) (Maybe Text) (Maybe Int)

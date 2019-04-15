@@ -1,4 +1,6 @@
-module Network.API.Telegram.Bot.Object.Update.Message.Content.Info (Info (..)) where
+module Network.API.Telegram.Bot.Object.Update.Message.Content.Info (Info (..), module Exports) where
+
+import Network.API.Telegram.Bot.Object.Update.Message.Content.Info.Location as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:), (.:?))
 import "aeson" Data.Aeson.Types (Object, Parser, Value)
@@ -9,8 +11,6 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
-
-import Network.API.Telegram.Bot.Object.Update.Message.Content.Location (Location)
 
 data Info = Point Location
 	| Contact Text (Maybe Text) Text (Maybe Text)

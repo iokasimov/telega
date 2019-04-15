@@ -1,4 +1,4 @@
-module Network.API.Telegram.Bot.Object.Update.Message.Content.Location (Location (..)) where
+module Network.API.Telegram.Bot.Object.Update.Message.Content.Info.Location (Location (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), object, withObject, (.:), (.=))
 import "base" Control.Applicative ((<*>))

@@ -23,7 +23,7 @@ import "wreq" Network.Wreq.Session (post)
 import Network.API.Telegram.Bot.Core (Telegram, Token (Token), Ok, result)
 import Network.API.Telegram.Bot.Object (Object, Keyboard, Notification, Member, Sender)
 import Network.API.Telegram.Bot.Object.Update.Message (Message)
-import Network.API.Telegram.Bot.Object.Update.Message.Content.Location (Location (Location))
+import Network.API.Telegram.Bot.Object.Update.Message.Content.Info.Location (Location (Location))
 
 data Inform = Silently | Notify
 

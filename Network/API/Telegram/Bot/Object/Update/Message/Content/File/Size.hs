@@ -1,4 +1,4 @@
-module Network.API.Telegram.Bot.Object.Update.Message.Content.Size (Size (..)) where
+module Network.API.Telegram.Bot.Object.Update.Message.Content.File.Size (Size (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Control.Applicative ((<*>))
