@@ -14,7 +14,7 @@ import "text" Data.Text (Text)
 import Network.API.Telegram.Bot.Object.Update.Message.Content.Location (Location)
 
 data Info = Point Location
-	| Contact (Maybe Int) Text (Maybe Text) Text (Maybe Text)
+	| Contact Text (Maybe Text) Text (Maybe Text)
 	| Venue Location Text Text (Maybe Text) (Maybe Text)
 	deriving Show
 
@@ -25,8 +25,8 @@ instance FromJSON Info where
 		contact v = v .: "contact" >>= info where
 
 			info :: Value -> Parser Info
-			info = withObject "Contact" $ \i -> Contact <$> i .:? "user_id"
-				<*> i .: "first_name" <*> i .:? "last_name"
+			info = withObject "Contact" $ \i -> Contact
+				<$> i .: "first_name" <*> i .:? "last_name"
 				<*> i .: "phone_number" <*> i .:? "vcard"
 
 		venue :: Object -> Parser Info

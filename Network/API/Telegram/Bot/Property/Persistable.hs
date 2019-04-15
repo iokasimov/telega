@@ -7,12 +7,12 @@ import "base" Control.Monad (Monad ((>>=)), join)
 import "base" Data.Function (flip, (.), ($))
 import "base" Data.Functor (Functor (fmap), (<$>))
 import "base" Data.Int (Int, Int64)
-import "base" Data.Maybe (Maybe, fromJust)
+import "base" Data.Maybe (fromJust)
 import "base" Data.Semigroup (Semigroup ((<>)))
 import "base" Data.String (String)
 import "base" Data.Tuple (snd)
 import "http-client" Network.HTTP.Client (Response (responseBody))
-import "tagged" Data.Tagged (Tagged (Tagged), untag)
+import "tagged" Data.Tagged (Tagged, untag)
 import "text" Data.Text (Text, unpack)
 import "transformers" Control.Monad.Trans.Class (lift)
 import "transformers" Control.Monad.Trans.Except (ExceptT (ExceptT))
@@ -22,8 +22,6 @@ import "wreq" Network.Wreq.Session (post)
 import Network.API.Telegram.Bot.Core (Telegram, Token (Token), Ok, result)
 import Network.API.Telegram.Bot.Object (Object, Keyboard, Notification, Member, Sender)
 import Network.API.Telegram.Bot.Object.Update.Message (Message)
-import Network.API.Telegram.Bot.Object.Update.Message.Content.Info (Info)
-import Network.API.Telegram.Bot.Object.Update.Message.Content.Location (Location)
 
 data Way = Directly | Forwarding | Replying
 
@@ -42,25 +40,11 @@ type instance Payload 'Purge Message = Tagged ('Purge Message) (Int64, Int)
 type instance Payload 'Post Notification = Tagged ('Post Notification) (Text, Text)
 type instance Payload 'Fetch Sender = Tagged ('Fetch Sender) ()
 
--- data Info' = Point' Way | Contact' Way | Venue' Way
-
--- type instance Payload ('Point' ('Send Directly)) Info= PL ('Point' ('Send Directly)) Info (Int64, Location, Int)
--- type instance Payload ('Contact' ('Send Directly)) Info = PL ('Contact' ('Send Directly)) Info (Int64, Text, Text, Maybe Text, Maybe Text)
--- type instance Payload ('Venue' ('Send Directly)) Info = PL ('Venue' ('Send Directly)) Info (Int64, Location, Text, Text, Maybe Text, Maybe Text)
--- type instance Payload ('Point' ('Send Replying)) Info = PL ('Point' ('Send Replying)) Info (Int64, Int, Location, Int)
--- type instance Payload ('Contact' ('Send Replying)) Info = PL ('Contact' ('Send Replying)) Info (Int64, Int, Text, Text, Maybe Text, Maybe Text)
--- type instance Payload ('Venue' ('Send Replying)) Info = PL ('Venue' ('Send Replying)) Info (Int64, Int, Location, Text, Text, Maybe Text, Maybe Text)
-
--- data Member' = Kick' | Unban'
-
--- type instance Payload 'Kick' Member = PL 'Kick' Member (Int64, Int, Int)
--- type instance Payload 'Unban' Member = PL 'Unban' Member (Int64, Int)
-
-class Object o => Persistable c o where
+class Object object => Persistable capacity object where
 	{-# MINIMAL payload, endpoint #-}
-	payload :: Payload c o -> Value
-	endpoint :: Payload c o -> String
-	request :: FromJSON r => Payload c o -> Telegram e r
+	payload :: Payload capacity object -> Value
+	endpoint :: Payload capacity object -> String
+	request :: FromJSON r => Payload capacity object -> Telegram e r
 	request x = request' (endpoint x) (payload x) where
 
 		request' :: forall a e . FromJSON a => String -> Value -> Telegram e a
@@ -112,47 +96,3 @@ instance Persistable 'Edit Message where
 	payload (untag -> (chat_id, message_id, text)) = object
 		["chat_id" .= chat_id, "message_id" .= message_id, "text" .= text]
 	endpoint _ = "editMessageText"
-
--- instance Persistable ('Point' (Send 'Directly)) Info where
--- 	payload (PL (chat_id, location, live_period)) = object
--- 		["chat_id" .= chat_id, "location" .= location, "live_period" .= live_period]
--- 	endpoint _ = "sendLocation"
---
--- instance Persistable ('Contact' (Send 'Directly)) Info where
--- 	payload (PL (chat_id, phone_number, first_name, last_name, vcard)) =
--- 		object ["chat_id" .= chat_id, "phone_number" .= phone_number,
--- 			"first_name" .= first_name, "last_name" .= last_name, "vcard" .= vcard]
--- 	endpoint _ = "sendContact"
---
--- instance Persistable ('Venue' (Send 'Directly)) Info where
--- 	payload (PL (chat_id, location, title, address, foursquare_id, foursquare_type)) = object
--- 		["chat_id" .= chat_id, "location" .= location, "title" .= title, "address" .= address,
--- 			"foursquare_id" .= foursquare_id, "foursquare_type" .= foursquare_type]
--- 	endpoint _ = "sendVenue"
---
--- instance Persistable ('Point' (Send 'Replying)) Info where
--- 	payload (PL (chat_id, reply_to_message_id, location, live_period)) = object
--- 		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id,
--- 			"location" .= location, "live_period" .= live_period]
--- 	endpoint _ = "sendLocation"
---
--- instance Persistable ('Contact' (Send 'Replying)) Info where
--- 	payload (PL (chat_id, reply_to_message_id, phone_number, first_name, last_name, vcard)) = object
--- 		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "phone_number" .= phone_number,
--- 			"first_name" .= first_name, "last_name" .= last_name, "vcard" .= vcard]
--- 	endpoint _ = "sendContact"
---
--- instance Persistable ('Venue' (Send 'Replying)) Info where
--- 	payload (PL (chat_id, reply_to_message_id, location, title, address, foursquare_id, foursquare_type)) = object
--- 		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "location" .= location, "title" .= title,
--- 			"address" .= address, "foursquare_id" .= foursquare_id, "foursquare_type" .= foursquare_type]
--- 	endpoint _ = "sendVenue"
---
--- instance Persistable 'Kick' Member where
--- 	payload (PL (chat_id, user_id, until_date)) = object
--- 		["chat_id" .= chat_id, "user_id" .= user_id, "until_date" .= until_date]
--- 	endpoint _ = "kickChatMember"
---
--- instance Persistable 'Unban' Member where
--- 	payload (PL (chat_id, user_id)) = object ["chat_id" .= chat_id, "user_id" .= user_id]
--- 	endpoint _ = "unbanChatMember"
