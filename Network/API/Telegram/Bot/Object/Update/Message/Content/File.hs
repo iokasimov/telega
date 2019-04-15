@@ -4,6 +4,7 @@ import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Audio as Expo
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Document as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Size as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Video as Exports
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Voice as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:), (.:?))
 import "aeson" Data.Aeson.Types (Object, Parser, Value)
@@ -21,7 +22,7 @@ data File
 	| Audiofile Audio
 	| Videofile Video
 	| General Document
-	| Voice Text Int (Maybe Text) (Maybe Int)
+	| Voicerecord Voice
 	| Photo [Size]
 	deriving Show
 
@@ -50,8 +51,4 @@ instance FromJSON File where
 		video v = Videofile <$> v .: "video"
 
 		voice :: Object -> Parser File
-		voice v = v .: "voice" >>= file where
-
-			file :: Value -> Parser File
-			file = withObject "Voice" $ \f -> Voice <$> f .: "file_id"
-				<*> f .: "duration" <*> f .:? "mime_type" <*> f .:? "file_size"
+		voice v = Voicerecord <$> v .: "voice"
