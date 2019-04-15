@@ -1,5 +1,5 @@
 module Network.API.Telegram.Bot.Property.Persistable
-	(Persistable (..), Payload, Capacity (..)) where
+	(Persistable (..), Payload, Capacity (..), Way (..)) where
 
 import "aeson" Data.Aeson (FromJSON, Value, decode, object, (.=))
 import "base" Control.Exception (try)
@@ -27,33 +27,32 @@ import Network.API.Telegram.Bot.Object.Update.Message.Content.Location (Location
 
 data Way = Directly | Forwarding | Replying
 
-data Capacity object = Send Way object | Create object | Fetch object | Edit object | Purge object
+data Capacity object = Send Way object | Post object | Fetch object | Edit object | Purge object
 
 type family Payload (capacity :: * -> Capacity *) object = payload | payload -> capacity object
 
--- type instance Payload 'Post' Keyboard = PL 'Post' Keyboard (Int64, Text, Keyboard)
--- type instance Payload 'Edit' Keyboard = PL 'Edit' Keyboard (Int64, Int, Keyboard)
--- type instance Payload 'Fetch' Member = PL 'Fetch' Member (Int64, Int)
+type instance Payload 'Post Keyboard = Tagged ('Post Keyboard) (Int64, Text, Keyboard)
+type instance Payload 'Edit Keyboard = Tagged ('Edit Keyboard) (Int64, Int, Keyboard)
+type instance Payload 'Fetch Member = Tagged ('Fetch Member) (Int64, Int)
+type instance Payload ('Send 'Directly) Message = Tagged ('Send 'Directly Message) (Int64, Text)
+type instance Payload ('Send 'Forwarding) Message = Tagged ('Send 'Forwarding Message) (Int64, Int64, Int)
+type instance Payload ('Send 'Replying) Message = Tagged ('Send 'Replying Message) (Int64, Int, Text)
 type instance Payload 'Edit Message = Tagged ('Edit Message) (Int64, Int, Text)
--- type instance Payload 'Purge' Message = PL 'Purge' Message (Int64, Int)
--- type instance Payload 'Post' Notification = PL 'Post' Notification (Text, Text)
--- type instance Payload 'Fetch' Sender = PL 'Fetch' Sender ()
-
-type instance Payload ('Send 'Directly) Message = Tagged ('Send Directly Message) (Int64, Text)
-type instance Payload ('Send 'Forwarding) Message = Tagged ('Send Forwarding Message) (Int64, Int64, Int)
-type instance Payload ('Send 'Replying) Message = Tagged ('Send Replying Message) (Int64, Int, Text) -- PL ('Send Replying) Message (Int64, Int, Text)
+type instance Payload 'Purge Message = Tagged ('Purge Message) (Int64, Int)
+type instance Payload 'Post Notification = Tagged ('Post Notification) (Text, Text)
+type instance Payload 'Fetch Sender = Tagged ('Fetch Sender) ()
 
 -- data Info' = Point' Way | Contact' Way | Venue' Way
---
+
 -- type instance Payload ('Point' ('Send Directly)) Info= PL ('Point' ('Send Directly)) Info (Int64, Location, Int)
 -- type instance Payload ('Contact' ('Send Directly)) Info = PL ('Contact' ('Send Directly)) Info (Int64, Text, Text, Maybe Text, Maybe Text)
 -- type instance Payload ('Venue' ('Send Directly)) Info = PL ('Venue' ('Send Directly)) Info (Int64, Location, Text, Text, Maybe Text, Maybe Text)
 -- type instance Payload ('Point' ('Send Replying)) Info = PL ('Point' ('Send Replying)) Info (Int64, Int, Location, Int)
 -- type instance Payload ('Contact' ('Send Replying)) Info = PL ('Contact' ('Send Replying)) Info (Int64, Int, Text, Text, Maybe Text, Maybe Text)
 -- type instance Payload ('Venue' ('Send Replying)) Info = PL ('Venue' ('Send Replying)) Info (Int64, Int, Location, Text, Text, Maybe Text, Maybe Text)
---
+
 -- data Member' = Kick' | Unban'
---
+
 -- type instance Payload 'Kick' Member = PL 'Kick' Member (Int64, Int, Int)
 -- type instance Payload 'Unban' Member = PL 'Unban' Member (Int64, Int)
 
@@ -69,50 +68,50 @@ class Object o => Persistable c o where
 			. fmap (fromJust . join . fmap result . decode @(Ok a) . responseBody)
 				. flip (post session) p $ "https://api.telegram.org/" <> unpack token <> "/" <> e
 
--- instance Persistable 'Edit' Keyboard where
--- 	payload (PL (chat_id, message_id, reply_markup)) = object
--- 		["chat_id" .= chat_id, "message_id" .= message_id, "reply_markup" .= reply_markup]
--- 	endpoint _ = "editMessageReplyMarkup"
---
--- instance Persistable 'Post' Keyboard where
--- 	payload (PL (chat_id, text, kb)) = object
--- 		["chat_id" .= chat_id, "text" .= text, "reply_markup" .= kb]
--- 	endpoint _ = "sendMessage"
---
--- instance Persistable 'Fetch' Member where
--- 	payload (PL (chat_id, user_id)) = object ["chat_id" .= chat_id, "user_id" .= user_id]
--- 	endpoint _ = "getChatMember"
---
-instance Persistable ('Send Directly) Message where
+instance Persistable 'Edit Keyboard where
+	payload (untag -> (chat_id, message_id, reply_markup)) = object
+		["chat_id" .= chat_id, "message_id" .= message_id, "reply_markup" .= reply_markup]
+	endpoint _ = "editMessageReplyMarkup"
+
+instance Persistable 'Post Keyboard where
+	payload (untag -> (chat_id, text, kb)) = object
+		["chat_id" .= chat_id, "text" .= text, "reply_markup" .= kb]
+	endpoint _ = "sendMessage"
+
+instance Persistable 'Fetch Member where
+	payload (untag -> (chat_id, user_id)) = object ["chat_id" .= chat_id, "user_id" .= user_id]
+	endpoint _ = "getChatMember"
+
+instance Persistable ('Send 'Directly) Message where
 	payload (untag -> (chat_id, text)) = object ["chat_id" .= chat_id, "text" .= text]
 	endpoint _ = "sendMessage"
 
-instance Persistable ('Send Forwarding) Message where
+instance Persistable ('Send 'Forwarding) Message where
 	payload (untag -> (chat_id, from_chat_id, message_id)) = object
 		["chat_id" .= chat_id, "from_chat_id" .= from_chat_id, "message_id" .= message_id]
 	endpoint _ = "forwardMessage"
---
-instance Persistable ('Send Replying) Message where
+
+instance Persistable ('Send 'Replying) Message where
 	payload (untag -> (chat_id, reply_to_message_id, text)) = object
 		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "text" .= text]
 	endpoint _ = "sendMessage"
---
--- instance Persistable 'Purge' Message where
--- 	payload (PL (chat_id, message_id)) = object ["chat_id" .= chat_id, "message_id" .= message_id]
--- 	endpoint _ = "deleteMessage"
---
--- instance Persistable 'Post' Notification where
--- 	payload (PL (cbq_id, text)) = object ["callback_query_id" .= cbq_id, "text" .= text]
--- 	endpoint _ = "answerCallbackQuery"
---
--- instance Persistable 'Fetch' Sender where
--- 	payload (PL ()) = object []
--- 	endpoint _ = "getMe"
---
--- instance Persistable 'Edit' Message where
--- 	payload (PL (chat_id, message_id, text)) = object
--- 		["chat_id" .= chat_id, "message_id" .= message_id, "text" .= text]
--- 	endpoint _ = "editMessageText"
+
+instance Persistable 'Purge Message where
+	payload (untag -> (chat_id, message_id)) = object ["chat_id" .= chat_id, "message_id" .= message_id]
+	endpoint _ = "deleteMessage"
+
+instance Persistable 'Post Notification where
+	payload (untag -> (cbq_id, text)) = object ["callback_query_id" .= cbq_id, "text" .= text]
+	endpoint _ = "answerCallbackQuery"
+
+instance Persistable 'Fetch Sender where
+	payload _ = object []
+	endpoint _ = "getMe"
+
+instance Persistable 'Edit Message where
+	payload (untag -> (chat_id, message_id, text)) = object
+		["chat_id" .= chat_id, "message_id" .= message_id, "text" .= text]
+	endpoint _ = "editMessageText"
 
 -- instance Persistable ('Point' (Send 'Directly)) Info where
 -- 	payload (PL (chat_id, location, live_period)) = object
