@@ -1,5 +1,6 @@
 module Network.API.Telegram.Bot.Object.Update.Message.Content.File (File (..), module Exports) where
 
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Audio as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Document as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Size as Exports
 
@@ -16,7 +17,7 @@ import "text" Data.Text (Text)
 
 data File
 	= Animation Text Int Int Int (Maybe Size) (Maybe Text) (Maybe Text) (Maybe Int)
-	| Audio Text Int (Maybe Text) (Maybe Text) (Maybe Text) (Maybe Int) (Maybe Size)
+	| Audiofile Audio
 	| General Document
 	| Video Text Int Int Int (Maybe Size) (Maybe Text) (Maybe Int)
 	| Voice Text Int (Maybe Text) (Maybe Int)
@@ -36,12 +37,7 @@ instance FromJSON File where
 				<*> f .:? "file_name" <*> f .:? "mime_type" <*> f .:? "file_size"
 
 		audio :: Object -> Parser File
-		audio v = v .: "audio" >>= file where
-
-			file :: Value -> Parser File
-			file = withObject "Audio" $ \f -> Audio <$> f .: "file_id"
-				<*> f .: "duration" <*> f .:? "performer" <*> f .:? "title"
-				<*> f .:? "mime_type" <*> f .:? "file_size" <*> f .:? "thumb"
+		audio v = Audiofile <$> v .: "audio"
 
 		document :: Object -> Parser File
 		document v = General <$> v .: "document"
