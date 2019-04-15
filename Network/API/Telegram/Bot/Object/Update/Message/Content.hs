@@ -2,6 +2,7 @@ module Network.API.Telegram.Bot.Object.Update.Message.Content (Content (..), mod
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.Info as Exports
+import Network.API.Telegram.Bot.Object.Update.Message.Content.Location as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.Size as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withArray, withObject, (.:), (.:?))

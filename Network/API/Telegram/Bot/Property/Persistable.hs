@@ -22,6 +22,7 @@ import "wreq" Network.Wreq.Session (post)
 import Network.API.Telegram.Bot.Core (Telegram, Token (Token), Ok, result)
 import Network.API.Telegram.Bot.Object (Object, Keyboard, Notification, Member, Sender)
 import Network.API.Telegram.Bot.Object.Update.Message (Message)
+import Network.API.Telegram.Bot.Object.Update.Message.Content.Location (Location (Location))
 
 data Way = Directly | Forwarding | Replying
 
@@ -32,6 +33,8 @@ type family Payload (capacity :: * -> Capacity *) object = payload | payload -> 
 type instance Payload 'Post Keyboard = Tagged ('Post Keyboard) (Int64, Text, Keyboard)
 type instance Payload 'Edit Keyboard = Tagged ('Edit Keyboard) (Int64, Int, Keyboard)
 type instance Payload 'Fetch Member = Tagged ('Fetch Member) (Int64, Int)
+type instance Payload ('Send 'Directly) Location = Tagged ('Send 'Directly Location) (Int64, Location, Int)
+type instance Payload ('Send 'Replying) Location = Tagged ('Send 'Replying Location) (Int64, Location, Int, Int)
 type instance Payload ('Send 'Directly) Message = Tagged ('Send 'Directly Message) (Int64, Text)
 type instance Payload ('Send 'Forwarding) Message = Tagged ('Send 'Forwarding Message) (Int64, Int64, Int)
 type instance Payload ('Send 'Replying) Message = Tagged ('Send 'Replying Message) (Int64, Int, Text)
@@ -61,6 +64,17 @@ instance Persistable 'Post Keyboard where
 	payload (untag -> (chat_id, text, kb)) = object
 		["chat_id" .= chat_id, "text" .= text, "reply_markup" .= kb]
 	endpoint _ = "sendMessage"
+
+instance Persistable ('Send 'Directly) Location where
+	payload (untag -> (chat_id, Location latitude longitude, live_period)) = object
+		["chat_id" .= chat_id, "latitude" .= latitude, "longitude" .= longitude, "live_period" .= live_period]
+	endpoint _ = "sendLocation"
+
+instance Persistable ('Send 'Replying) Location where
+	payload (untag -> (chat_id, Location latitude longitude, live_period, reply_to_message_id)) =
+		object ["chat_id" .= chat_id, "latitude" .= latitude, "longitude" .= longitude,
+			"live_period" .= live_period, "reply_to_message_id" .= reply_to_message_id]
+	endpoint _ = "sendLocation"
 
 instance Persistable 'Fetch Member where
 	payload (untag -> (chat_id, user_id)) = object ["chat_id" .= chat_id, "user_id" .= user_id]
