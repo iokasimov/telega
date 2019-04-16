@@ -1,6 +1,6 @@
 module Network.API.Telegram.Bot.Object.Update.Message.Content.File.Document (Document (..)) where
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:), (.:?))
+import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, object, (.:), (.:?), (.=))
 import "base" Control.Applicative ((<*>))
 import "base" Data.Bool (Bool (True, False))
 import "base" Data.Int (Int, Int64)
@@ -27,8 +27,8 @@ instance Persistable ('Send 'Notify 'Directly) Document where
 	type instance Payload ('Send 'Notify 'Directly) Document
 		= Tagged ('Send 'Notify 'Directly Document)
 			(Int64, Text, Maybe Text, Maybe Text)
-	payload (untag -> (chat_id, document, thumb, caption)) =
-		object ["chat_id" .= chat_id, "document" .= document, "thumb" .= thumb,
+	payload (untag -> (chat_id, document, thumb, caption)) = object
+		["chat_id" .= chat_id, "document" .= document, "thumb" .= thumb,
 			"caption" .= caption, "disable_notification" .= False]
 	endpoint _ = "sendDocument"
 
@@ -37,7 +37,7 @@ instance Persistable ('Send 'Silently 'Directly) Document where
 		= Tagged ('Send 'Silently 'Directly Document)
 			(Int64, Text, Maybe Text, Maybe Text)
 	payload (untag -> (chat_id, document, thumb, caption)) = object
-		object ["chat_id" .= chat_id, "document" .= document, "thumb" .= thumb,
+		 ["chat_id" .= chat_id, "document" .= document, "thumb" .= thumb,
 			"caption" .= caption, "disable_notification" .= True]
 	endpoint _ = "sendDocument"
 

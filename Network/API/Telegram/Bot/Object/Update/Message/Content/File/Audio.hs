@@ -1,6 +1,7 @@
 module Network.API.Telegram.Bot.Object.Update.Message.Content.File.Audio (Audio (..)) where
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), object, withObject, (.:), (.:?), (.=))
+import "aeson" Data.Aeson (FromJSON (parseJSON)
+	, object, withObject, (.:), (.:?), (.=))
 import "base" Control.Applicative ((<*>))
 import "base" Data.Bool (Bool (True, False))
 import "base" Data.Int (Int, Int64)
