@@ -89,4 +89,4 @@
 * Add `Polling` constructor to `Content` for `Poll` object
 
 # 0.2.2
-* Define `Persistable` instances for `Poll` datatype
+* Define `Persistable` instances for `Poll`, `Audio` datatypes
