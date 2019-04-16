@@ -6,16 +6,12 @@ import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Size as Expor
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Video as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Voice as Exports
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:), (.:?))
-import "aeson" Data.Aeson.Types (Object, Parser, Value)
-import "base" Control.Applicative (Applicative ((<*>)), Alternative ((<|>)))
-import "base" Control.Monad (Monad ((>>=)))
+import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
+import "aeson" Data.Aeson.Types (Object, Parser)
+import "base" Control.Applicative ((<|>))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
-import "base" Data.Int (Int)
-import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
-import "text" Data.Text (Text)
 
 data File
 	= Audiofile Audio
