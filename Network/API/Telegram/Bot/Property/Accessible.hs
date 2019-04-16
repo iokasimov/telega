@@ -4,13 +4,12 @@ import "base" Data.Function (flip)
 import "base" Data.Functor ((<$>))
 import "lens" Control.Lens (Lens')
 
-import Network.API.Telegram.Bot.Object (Object)
 import Network.API.Telegram.Bot.Object.Update.Callback (Callback (Datatext))
 import Network.API.Telegram.Bot.Object.Update.Message (Message (Direct, Forward, Reply))
 import Network.API.Telegram.Bot.Object.Update.Message.Content (Content)
 import Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin)
 
-class Object source => Accessible target source where
+class Accessible target source where
 	access :: Lens' source target
 
 instance Accessible Content Message where

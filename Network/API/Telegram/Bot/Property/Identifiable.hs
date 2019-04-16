@@ -3,7 +3,6 @@ module Network.API.Telegram.Bot.Property.Identifiable (Identifiable (..), Identi
 import "base" Data.Int (Int, Int64)
 import "text" Data.Text (Text)
 
-import Network.API.Telegram.Bot.Object (Object)
 import Network.API.Telegram.Bot.Object.Update (Update (Query, Membership, Incoming))
 import Network.API.Telegram.Bot.Object.Update.Callback (Callback (Datatext))
 import Network.API.Telegram.Bot.Object.Update.Message (Message (Direct, Forward, Reply))
@@ -12,7 +11,7 @@ import Network.API.Telegram.Bot.Object.Sender (Sender (Bot, User))
 
 type family Identificator o = i
 
-class Object o => Identifiable o where
+class Identifiable o where
 	{-# MINIMAL identificator #-}
 	identificator :: o -> Identificator o
 

@@ -91,3 +91,4 @@
 # 0.2.2
 * Define `Persistable` instances for `Poll`, `Audio`, `Document`, `Video`, `Voice` datatypes
 * Define `Group` datatype for representation basic groups and supergroups
+* Remove `Object` type family to distribute `Accessible` and `Identifiable` instances
