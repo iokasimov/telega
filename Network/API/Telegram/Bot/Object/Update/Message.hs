@@ -19,6 +19,7 @@ import "text" Data.Text (Text)
 import Network.API.Telegram.Bot.Object.Update.Message.Content (Content)
 import Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin (Private, Group, Supergroup, Channel))
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
+import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, identificator))
 import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint)
 	, Capacity (Send, Edit, Purge), Inform (Notify, Silently), Way (Directly, Forwarding, Replying))
 
@@ -67,6 +68,12 @@ instance FromJSON Message where
 		direct :: Object -> Parser Message
 		direct v = Direct <$> v .: "message_id"
 			<*> parseJSON (Object v) <*> parseJSON (Object v)
+
+instance Identifiable Message where
+	type instance Identificator Message = Int
+	identificator (Direct i _ _) = i
+	identificator (Forward i _ _) = i
+	identificator (Reply i _ _ _) = i
 
 instance Persistable ('Send 'Notify 'Directly) Message where
 	type instance Payload ('Send 'Notify 'Directly) Message

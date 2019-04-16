@@ -12,6 +12,7 @@ import "text" Data.Text (Text)
 import Network.API.Telegram.Bot.Object.Update.Message (Message)
 import Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin)
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
+import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, identificator))
 
 data Callback = Datatext Text Message Text deriving Show
 
@@ -22,3 +23,7 @@ instance Accessible Origin Callback where
 instance FromJSON Callback where
 	parseJSON = withObject "Callback" $ \v ->
 		Datatext <$> v .: "id" <*> v .: "message" <*> v .: "data"
+
+instance Identifiable Callback where
+	type instance Identificator Callback = Text
+	identificator (Datatext i _ _) = i
