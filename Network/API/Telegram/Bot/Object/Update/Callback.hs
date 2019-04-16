@@ -4,14 +4,20 @@ import Network.API.Telegram.Bot.Object.Update.Callback.Notification as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Control.Applicative (Applicative ((<*>)))
-import "base" Data.Function (($))
+import "base" Data.Function (flip, ($))
 import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Object.Update.Message (Message)
+import Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin)
+import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 
 data Callback = Datatext Text Message Text deriving Show
+
+instance Accessible Origin Callback where
+	access f (Datatext cq_id msg dttxt) = flip
+		(Datatext cq_id) dttxt <$> access f msg
 
 instance FromJSON Callback where
 	parseJSON = withObject "Callback" $ \v ->

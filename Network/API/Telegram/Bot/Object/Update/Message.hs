@@ -18,6 +18,7 @@ import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content (Content)
 import Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin (Private, Group, Supergroup, Channel))
+import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint)
 	, Capacity (Send, Edit, Purge), Inform (Notify, Silently), Way (Directly, Forwarding, Replying))
 
@@ -26,6 +27,16 @@ data Message
 	| Forward Int Origin Content
 	| Reply Int Origin Content Message
 	deriving Show
+
+instance Accessible Content Message where
+	access f (Direct msg_id origin content) = (\content' -> Direct msg_id origin content') <$> f content
+	access f (Forward msg_id origin content) = (\content' -> Forward msg_id origin content') <$> f content
+	access f (Reply msg_id origin content msg) = (\content' -> Reply msg_id origin content' msg) <$> f content
+
+instance Accessible Origin Message where
+	access f (Direct msg_id origin content) = (\origin' -> Direct msg_id origin' content) <$> f origin
+	access f (Forward msg_id origin content) = (\origin' -> Forward msg_id origin' content) <$> f origin
+	access f (Reply msg_id origin content msg) = (\origin' -> Reply msg_id origin' content msg) <$> f origin
 
 instance FromJSON Message where
 	parseJSON = withObject "Message" $ \v ->
