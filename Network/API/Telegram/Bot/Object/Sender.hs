@@ -1,6 +1,6 @@
 module Network.API.Telegram.Bot.Object.Sender (Sender (..), nickname, firstname, lastname) where
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), Object, withObject, (.:), (.:?))
+import "aeson" Data.Aeson (FromJSON (parseJSON), Object, object, withObject, (.:), (.:?))
 import "aeson" Data.Aeson.Types (Parser)
 import "base" Control.Applicative (Applicative ((<*>)))
 import "base" Control.Monad (Monad ((>>=)))
@@ -12,7 +12,11 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 import "lens" Control.Lens (Lens')
+import "tagged" Data.Tagged (Tagged)
 import "text" Data.Text (Text)
+
+import Network.API.Telegram.Bot.Property.Persistable
+	(Persistable (Payload, payload, endpoint), Capacity (Fetch))
 
 data Sender
 	= Bot Int (Maybe Text) Text (Maybe Text) (Maybe Text)
@@ -36,6 +40,11 @@ instance FromJSON Sender where
 			<*> v .: "first_name"
 			<*> v .:? "last_name"
 			<*> v .:? "language_code"
+
+instance Persistable 'Fetch Sender where
+	type instance Payload 'Fetch Sender = Tagged ('Fetch Sender) ()
+	payload _ = object []
+	endpoint _ = "getMe"
 
 nickname :: Lens' Sender (Maybe Text)
 nickname f (Bot uid nn fn ln lng) = (\nn' -> Bot uid nn' fn ln lng) <$> f nn

@@ -85,3 +85,4 @@
 * Extract `Audio`,`Document`, `Video`, `Voice` from `File` datatype into modules
 * Remove `Animation` construction from `File` datatype
 * Rename `request` method to `persist` in `Persistable` type class
+* Distribute `Persistable` instances on objects that belong to them
