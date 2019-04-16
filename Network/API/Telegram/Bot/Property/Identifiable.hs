@@ -1,6 +1,6 @@
 module Network.API.Telegram.Bot.Property.Identifiable (Identifiable (..)) where
 
 class Identifiable o where
-	{-# MINIMAL identificator #-}
+	{-# MINIMAL ident #-}
 	type family Identificator o :: *
-	identificator :: o -> Identificator o
+	ident :: o -> Identificator o

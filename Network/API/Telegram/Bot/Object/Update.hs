@@ -15,7 +15,7 @@ import "base" Text.Show (Show)
 import Network.API.Telegram.Bot.Object.Update.Callback (Callback)
 import Network.API.Telegram.Bot.Object.Update.Message (Message)
 import Network.API.Telegram.Bot.Object.Update.Moving (Moving)
-import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, identificator))
+import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 
 data Update
 	= Query Int Callback
@@ -38,6 +38,6 @@ instance FromJSON Update where
 
 instance Identifiable Update where
 	type instance Identificator Update = Int
-	identificator (Query i _) = i
-	identificator (Membership i _) = i
-	identificator (Incoming i _) = i
+	ident (Query i _) = i
+	ident (Membership i _) = i
+	ident (Incoming i _) = i

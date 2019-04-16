@@ -11,7 +11,7 @@ import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Object.Sender (Sender)
-import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, identificator))
+import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 
 data Origin
 	= Private Int64 Sender
@@ -33,7 +33,7 @@ instance FromJSON Origin where
 
 instance Identifiable Origin where
 	type instance Identificator Origin = Int64
-	identificator (Private i _) = i
-	identificator (Group i _ _) = i
-	identificator (Supergroup i _ _) = i
-	identificator (Channel i _) = i
+	ident (Private i _) = i
+	ident (Group i _ _) = i
+	ident (Supergroup i _ _) = i
+	ident (Channel i _) = i

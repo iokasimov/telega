@@ -12,7 +12,7 @@ import "text" Data.Text (Text)
 import Network.API.Telegram.Bot.Object.Update.Message (Message)
 import Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin)
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
-import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, identificator))
+import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 
 data Callback = Datatext Text Message Text deriving Show
 
@@ -26,4 +26,4 @@ instance FromJSON Callback where
 
 instance Identifiable Callback where
 	type instance Identificator Callback = Text
-	identificator (Datatext i _ _) = i
+	ident (Datatext i _ _) = i

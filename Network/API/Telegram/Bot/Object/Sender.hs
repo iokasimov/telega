@@ -15,7 +15,7 @@ import "lens" Control.Lens (Lens')
 import "tagged" Data.Tagged (Tagged)
 import "text" Data.Text (Text)
 
-import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, identificator))
+import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint), Capacity (Fetch))
 
 data Sender
@@ -41,8 +41,8 @@ instance FromJSON Sender where
 
 instance Identifiable Sender where
 	type instance Identificator Sender = Int
-	identificator (Bot i _ _ _ _) = i
-	identificator (User i _ _ _ _) = i
+	ident (Bot i _ _ _ _) = i
+	ident (User i _ _ _ _) = i
 
 instance Persistable 'Fetch Sender where
 	type instance Payload 'Fetch Sender = Tagged ('Fetch Sender) ()

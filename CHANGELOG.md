@@ -1,6 +1,6 @@
 # 0.1.1
 * Define `chat` lens for `Update` datatype
-* Add string identificator to `Callback` datatype
+* Add string ident to `Callback` datatype
 * Define `Notification` datatype
 * Define `Droppable` typeclass
 
@@ -93,3 +93,4 @@
 * Define `Group` datatype for representation basic groups and supergroups
 * Remove `Object` type family to distribute `Accessible` and `Identifiable` instances
 * Put `Identificator` type family into `Identifiable` type class
+* Rename `identifcator` to `ident`, add MINIMAL pragma to `Accessible`
