@@ -87,3 +87,6 @@
 * Rename `request` method to `persist` in `Persistable` type class
 * Distribute `Persistable` instances on objects that belong to them
 * Add `Polling` constructor to `Content` for `Poll` object
+
+# 0.2.2
+* Define `Persistable` instances for `Poll` datatype
