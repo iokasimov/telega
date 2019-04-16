@@ -12,8 +12,9 @@ import "tagged" Data.Tagged (Tagged, untag)
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Size (Size)
-import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint)
-	, Capacity (Send), Inform (Notify, Silently), Way (Directly, Replying))
+import Network.API.Telegram.Bot.Property.Persistable
+	( Persistable (Payload, payload, endpoint), Capacity (Send)
+	, Inform (Notify, Silently), Way (Directly, Replying))
 
 data Audio = Audio Text Int (Maybe Text) (Maybe Text) (Maybe Text) (Maybe Int) (Maybe Size)
 	deriving Show
@@ -26,7 +27,7 @@ instance FromJSON Audio where
 instance Persistable ('Send 'Notify 'Directly) Audio where
 	type instance Payload ('Send 'Notify 'Directly) Audio
 		= Tagged ('Send 'Notify 'Directly Audio)
-			(Int64, Text, Text, Int, Text, Text, Maybe Text)
+			(Int64, Text, Maybe Text, Int, Text, Text, Maybe Text)
 	payload (untag -> (chat_id, audio, caption, duration, performer, title, thumb)) = object
 		["chat_id" .= chat_id, "audio" .= audio, "caption" .= caption, "duration" .= duration,
 			"performer" .= performer, "title" .= title, "thumb" .= thumb, "disable_notification" .= False]
@@ -35,7 +36,7 @@ instance Persistable ('Send 'Notify 'Directly) Audio where
 instance Persistable ('Send 'Silently 'Directly) Audio where
 	type instance Payload ('Send 'Silently 'Directly) Audio
 		= Tagged ('Send 'Silently 'Directly Audio)
-			(Int64, Text, Text, Int, Text, Text, Maybe Text)
+			(Int64, Text, Maybe Text, Int, Text, Text, Maybe Text)
 	payload (untag -> (chat_id, audio, caption, duration, performer, title, thumb)) = object
 		["chat_id" .= chat_id, "audio" .= audio, "caption" .= caption, "duration" .= duration,
 			"performer" .= performer, "title" .= title, "thumb" .= thumb, "disable_notification" .= True]
@@ -44,7 +45,7 @@ instance Persistable ('Send 'Silently 'Directly) Audio where
 instance Persistable ('Send 'Notify 'Replying) Audio where
 	type instance Payload ('Send 'Notify 'Replying) Audio
 		= Tagged ('Send 'Notify 'Replying Audio)
-			(Int64, Int, Text, Text, Int, Text, Text, Maybe Text)
+			(Int64, Int, Text, Maybe Text, Int, Text, Text, Maybe Text)
 	payload (untag -> (chat_id, reply_to_message_id, audio, caption, duration, performer, title, thumb)) =
 		object ["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "audio" .= audio,
 			"caption" .= caption, "duration" .= duration, "performer" .= performer, "title" .= title,
@@ -54,7 +55,7 @@ instance Persistable ('Send 'Notify 'Replying) Audio where
 instance Persistable ('Send 'Silently 'Replying) Audio where
 	type instance Payload ('Send 'Silently 'Replying) Audio
 		= Tagged ('Send 'Silently 'Replying Audio)
-			(Int64, Int, Text, Text, Int, Text, Text, Maybe Text)
+			(Int64, Int, Text, Maybe Text, Int, Text, Text, Maybe Text)
 	payload (untag -> (chat_id, reply_to_message_id, audio, caption, duration, performer, title, thumb)) =
 		object ["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "audio" .= audio,
 			"caption" .= caption, "duration" .= duration, "performer" .= performer, "title" .= title,
