@@ -86,3 +86,4 @@
 * Remove `Animation` construction from `File` datatype
 * Rename `request` method to `persist` in `Persistable` type class
 * Distribute `Persistable` instances on objects that belong to them
+* Add `Polling` constructor to `Content` for `Poll` object
