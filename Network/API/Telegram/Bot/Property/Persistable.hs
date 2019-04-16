@@ -36,11 +36,11 @@ class Object object => Persistable capacity object where
 	type Payload (capacity :: * -> Capacity *) object = payload | payload -> capacity object
 	payload :: Payload capacity object -> Value
 	endpoint :: Payload capacity object -> String
-	request :: FromJSON r => Payload capacity object -> Telegram e r
-	request x = request' (endpoint x) (payload x) where
+	persist :: FromJSON r => Payload capacity object -> Telegram e r
+	persist x = request (endpoint x) (payload x) where
 
-		request' :: forall a e . FromJSON a => String -> Value -> Telegram e a
-		request' e p = snd <$> ask >>= \(session, Token token) -> lift . ExceptT . try
+		request :: forall a e . FromJSON a => String -> Value -> Telegram e a
+		request e p = snd <$> ask >>= \(session, Token token) -> lift . ExceptT . try
 			. fmap (fromJust . join . fmap result . decode @(Ok a) . responseBody)
 				. flip (post session) p $ "https://api.telegram.org/" <> unpack token <> "/" <> e
 

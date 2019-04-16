@@ -84,3 +84,4 @@
 * Put `Size` into `File`, `Option` into `Poll`, `Location` into `Info` created submodules
 * Extract `Audio`,`Document`, `Video`, `Voice` from `File` datatype into modules
 * Remove `Animation` construction from `File` datatype
+* Rename `request` method to `persist` in `Persistable` type class
