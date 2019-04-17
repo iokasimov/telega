@@ -38,7 +38,7 @@ instance FromJSON Member where
 		("kicked" :: Text) -> Kicked <$> v .: "user" <*> v.: "until_date"
 		_ -> fail "Status of chat member is not defined"
 
-instance Persistable 'Fetch Member where
-	type instance Payload 'Fetch Member = Tagged ('Fetch Member) (Int64, Int)
-	payload (untag -> (chat_id, user_id)) = object ["chat_id" .= chat_id, "user_id" .= user_id]
-	endpoint _ = "getChatMember"
+-- instance Persistable 'Fetch Member where
+-- 	type instance Payload 'Fetch Member = Tagged ('Fetch Member) (Int64, Int)
+-- 	payload (untag -> (chat_id, user_id)) = object ["chat_id" .= chat_id, "user_id" .= user_id]
+-- 	endpoint _ = "getChatMember"

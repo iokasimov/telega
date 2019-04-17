@@ -95,3 +95,4 @@
 * Put `Identificator` type family into `Identifiable` type class
 * Rename `identifcator` to `ident`, add MINIMAL pragma to `Accessible`
 * Include `Group` information into `Moving` object
+* Method `payload` in `Persistable` type class defines hash table, not `JSON` value

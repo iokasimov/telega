@@ -6,9 +6,11 @@ import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), object, withOb
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int, Int64)
+import "base" Data.Semigroup ((<>))
 import "base" Text.Show (Show)
 import "tagged" Data.Tagged (Tagged, untag)
 import "text" Data.Text (Text)
+import "unordered-containers" Data.HashMap.Strict (singleton)
 
 import Network.API.Telegram.Bot.Property.Persistable
 	(Persistable (Payload, payload, endpoint), Capacity (Edit, Post))
@@ -26,13 +28,13 @@ instance ToJSON Keyboard where
 instance Persistable 'Edit Keyboard where
 	type instance Payload 'Edit Keyboard
 		= Tagged ('Edit Keyboard) (Int64, Int, Keyboard)
-	payload (untag -> (chat_id, message_id, reply_markup)) = object
-		["chat_id" .= chat_id, "message_id" .= message_id, "reply_markup" .= reply_markup]
+	payload (untag -> (chat_id, message_id, reply_markup)) = singleton "chat_id" (toJSON chat_id) <>
+		singleton "message_id" (toJSON message_id) <> singleton "reply_markup" (toJSON reply_markup)
 	endpoint _ = "editMessageReplyMarkup"
 
 instance Persistable 'Post Keyboard where
 	type instance Payload 'Post Keyboard
 		= Tagged ('Post Keyboard) (Int64, Text, Keyboard)
-	payload (untag -> (chat_id, text, kb)) = object
-		["chat_id" .= chat_id, "text" .= text, "reply_markup" .= kb]
+	payload (untag -> (chat_id, text, reply_markup)) = singleton "chat_id" (toJSON chat_id)
+		<> singleton "text" (toJSON text) <> singleton "reply_markup" (toJSON reply_markup)
 	endpoint _ = "sendMessage"

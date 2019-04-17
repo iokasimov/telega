@@ -75,59 +75,59 @@ instance Identifiable Message where
 	ident (Forward i _ _) = i
 	ident (Reply i _ _ _) = i
 
-instance Persistable ('Send 'Notify 'Directly) Message where
-	type instance Payload ('Send 'Notify 'Directly) Message
-		= Tagged ('Send 'Notify 'Directly Message) (Int64, Text)
-	payload (untag -> (chat_id, text)) = object
-		["chat_id" .= chat_id, "text" .= text, "disable_notification" .= False]
-	endpoint _ = "sendMessage"
-
-instance Persistable ('Send 'Silently 'Directly) Message where
-	type instance Payload ('Send 'Silently 'Directly) Message
-		= Tagged ('Send 'Silently 'Directly Message) (Int64, Text)
-	payload (untag -> (chat_id, text)) = object
-		["chat_id" .= chat_id, "text" .= text, "disable_notification" .= True]
-	endpoint _ = "sendMessage"
-
-instance Persistable ('Send 'Notify 'Forwarding) Message where
-	type instance Payload ('Send 'Notify 'Forwarding) Message
-		= Tagged ('Send 'Notify 'Forwarding Message) (Int64, Int64, Int)
-	payload (untag -> (chat_id, from_chat_id, message_id)) = object
-		["chat_id" .= chat_id, "from_chat_id" .= from_chat_id,
-			"message_id" .= message_id, "disable_notification" .= False]
-	endpoint _ = "forwardMessage"
-
-instance Persistable ('Send 'Silently 'Forwarding) Message where
-	type instance Payload ('Send 'Silently 'Forwarding) Message
-		= Tagged ('Send 'Silently 'Forwarding Message) (Int64, Int64, Int)
-	payload (untag -> (chat_id, from_chat_id, message_id)) = object
-		["chat_id" .= chat_id, "from_chat_id" .= from_chat_id,
-			"message_id" .= message_id, "disable_notification" .= True]
-	endpoint _ = "forwardMessage"
-
-instance Persistable ('Send 'Notify 'Replying) Message where
-	type instance Payload ('Send 'Notify 'Replying) Message
-		= Tagged ('Send 'Notify 'Replying Message) (Int64, Int, Text)
-	payload (untag -> (chat_id, reply_to_message_id, text)) = object
-		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id,
-			"text" .= text, "disable_notification" .= False]
-	endpoint _ = "sendMessage"
-
-instance Persistable ('Send 'Silently 'Replying) Message where
-	type instance Payload ('Send 'Silently 'Replying) Message
-		= Tagged ('Send 'Silently 'Replying Message) (Int64, Int, Text)
-	payload (untag -> (chat_id, reply_to_message_id, text)) = object
-		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id,
-			"text" .= text, "disable_notification" .= True]
-	endpoint _ = "sendMessage"
-
-instance Persistable 'Edit Message where
-	type instance Payload 'Edit Message = Tagged ('Edit Message) (Int64, Int, Text)
-	payload (untag -> (chat_id, message_id, text)) = object
-		["chat_id" .= chat_id, "message_id" .= message_id, "text" .= text]
-	endpoint _ = "editMessageText"
-
-instance Persistable 'Purge Message where
-	type instance Payload 'Purge Message = Tagged ('Purge Message) (Int64, Int)
-	payload (untag -> (chat_id, message_id)) = object ["chat_id" .= chat_id, "message_id" .= message_id]
-	endpoint _ = "deleteMessage"
+-- instance Persistable ('Send 'Notify 'Directly) Message where
+-- 	type instance Payload ('Send 'Notify 'Directly) Message
+-- 		= Tagged ('Send 'Notify 'Directly Message) (Int64, Text)
+-- 	payload (untag -> (chat_id, text)) = object
+-- 		["chat_id" .= chat_id, "text" .= text, "disable_notification" .= False]
+-- 	endpoint _ = "sendMessage"
+--
+-- instance Persistable ('Send 'Silently 'Directly) Message where
+-- 	type instance Payload ('Send 'Silently 'Directly) Message
+-- 		= Tagged ('Send 'Silently 'Directly Message) (Int64, Text)
+-- 	payload (untag -> (chat_id, text)) = object
+-- 		["chat_id" .= chat_id, "text" .= text, "disable_notification" .= True]
+-- 	endpoint _ = "sendMessage"
+--
+-- instance Persistable ('Send 'Notify 'Forwarding) Message where
+-- 	type instance Payload ('Send 'Notify 'Forwarding) Message
+-- 		= Tagged ('Send 'Notify 'Forwarding Message) (Int64, Int64, Int)
+-- 	payload (untag -> (chat_id, from_chat_id, message_id)) = object
+-- 		["chat_id" .= chat_id, "from_chat_id" .= from_chat_id,
+-- 			"message_id" .= message_id, "disable_notification" .= False]
+-- 	endpoint _ = "forwardMessage"
+--
+-- instance Persistable ('Send 'Silently 'Forwarding) Message where
+-- 	type instance Payload ('Send 'Silently 'Forwarding) Message
+-- 		= Tagged ('Send 'Silently 'Forwarding Message) (Int64, Int64, Int)
+-- 	payload (untag -> (chat_id, from_chat_id, message_id)) = object
+-- 		["chat_id" .= chat_id, "from_chat_id" .= from_chat_id,
+-- 			"message_id" .= message_id, "disable_notification" .= True]
+-- 	endpoint _ = "forwardMessage"
+--
+-- instance Persistable ('Send 'Notify 'Replying) Message where
+-- 	type instance Payload ('Send 'Notify 'Replying) Message
+-- 		= Tagged ('Send 'Notify 'Replying Message) (Int64, Int, Text)
+-- 	payload (untag -> (chat_id, reply_to_message_id, text)) = object
+-- 		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id,
+-- 			"text" .= text, "disable_notification" .= False]
+-- 	endpoint _ = "sendMessage"
+--
+-- instance Persistable ('Send 'Silently 'Replying) Message where
+-- 	type instance Payload ('Send 'Silently 'Replying) Message
+-- 		= Tagged ('Send 'Silently 'Replying Message) (Int64, Int, Text)
+-- 	payload (untag -> (chat_id, reply_to_message_id, text)) = object
+-- 		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id,
+-- 			"text" .= text, "disable_notification" .= True]
+-- 	endpoint _ = "sendMessage"
+--
+-- instance Persistable 'Edit Message where
+-- 	type instance Payload 'Edit Message = Tagged ('Edit Message) (Int64, Int, Text)
+-- 	payload (untag -> (chat_id, message_id, text)) = object
+-- 		["chat_id" .= chat_id, "message_id" .= message_id, "text" .= text]
+-- 	endpoint _ = "editMessageText"
+--
+-- instance Persistable 'Purge Message where
+-- 	type instance Payload 'Purge Message = Tagged ('Purge Message) (Int64, Int)
+-- 	payload (untag -> (chat_id, message_id)) = object ["chat_id" .= chat_id, "message_id" .= message_id]
+-- 	endpoint _ = "deleteMessage"

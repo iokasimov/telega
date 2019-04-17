@@ -25,40 +25,40 @@ instance FromJSON Audio where
 		<*> v .: "duration" <*> v .:? "performer" <*> v .:? "title"
 		<*> v .:? "mime_type" <*> v .:? "file_size" <*> v .:? "thumb"
 
-instance Persistable ('Send 'Notify 'Directly) Audio where
-	type instance Payload ('Send 'Notify 'Directly) Audio
-		= Tagged ('Send 'Notify 'Directly Audio)
-			(Int64, Text, Maybe Text, Int, Text, Text, Maybe Text)
-	payload (untag -> (chat_id, audio, caption, duration, performer, title, thumb)) = object
-		["chat_id" .= chat_id, "audio" .= audio, "caption" .= caption, "duration" .= duration,
-			"performer" .= performer, "title" .= title, "thumb" .= thumb, "disable_notification" .= False]
-	endpoint _ = "sendAudio"
-
-instance Persistable ('Send 'Silently 'Directly) Audio where
-	type instance Payload ('Send 'Silently 'Directly) Audio
-		= Tagged ('Send 'Silently 'Directly Audio)
-			(Int64, Text, Maybe Text, Int, Text, Text, Maybe Text)
-	payload (untag -> (chat_id, audio, caption, duration, performer, title, thumb)) = object
-		["chat_id" .= chat_id, "audio" .= audio, "caption" .= caption, "duration" .= duration,
-			"performer" .= performer, "title" .= title, "thumb" .= thumb, "disable_notification" .= True]
-	endpoint _ = "sendAudio"
-
-instance Persistable ('Send 'Notify 'Replying) Audio where
-	type instance Payload ('Send 'Notify 'Replying) Audio
-		= Tagged ('Send 'Notify 'Replying Audio)
-			(Int64, Int, Text, Maybe Text, Int, Text, Text, Maybe Text)
-	payload (untag -> (chat_id, reply_to_message_id, audio, caption, duration, performer, title, thumb)) =
-		object ["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "audio" .= audio,
-			"caption" .= caption, "duration" .= duration, "performer" .= performer, "title" .= title,
-				"thumb" .= thumb, "disable_notification" .= False]
-	endpoint _ = "sendAudio"
-
-instance Persistable ('Send 'Silently 'Replying) Audio where
-	type instance Payload ('Send 'Silently 'Replying) Audio
-		= Tagged ('Send 'Silently 'Replying Audio)
-			(Int64, Int, Text, Maybe Text, Int, Text, Text, Maybe Text)
-	payload (untag -> (chat_id, reply_to_message_id, audio, caption, duration, performer, title, thumb)) =
-		object ["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "audio" .= audio,
-			"caption" .= caption, "duration" .= duration, "performer" .= performer, "title" .= title,
-				"thumb" .= thumb, "disable_notification" .= True]
-	endpoint _ = "sendAudio"
+-- instance Persistable ('Send 'Notify 'Directly) Audio where
+-- 	type instance Payload ('Send 'Notify 'Directly) Audio
+-- 		= Tagged ('Send 'Notify 'Directly Audio)
+-- 			(Int64, Text, Maybe Text, Int, Text, Text, Maybe Text)
+-- 	payload (untag -> (chat_id, audio, caption, duration, performer, title, thumb)) = object
+-- 		["chat_id" .= chat_id, "audio" .= audio, "caption" .= caption, "duration" .= duration,
+-- 			"performer" .= performer, "title" .= title, "thumb" .= thumb, "disable_notification" .= False]
+-- 	endpoint _ = "sendAudio"
+--
+-- instance Persistable ('Send 'Silently 'Directly) Audio where
+-- 	type instance Payload ('Send 'Silently 'Directly) Audio
+-- 		= Tagged ('Send 'Silently 'Directly Audio)
+-- 			(Int64, Text, Maybe Text, Int, Text, Text, Maybe Text)
+-- 	payload (untag -> (chat_id, audio, caption, duration, performer, title, thumb)) = object
+-- 		["chat_id" .= chat_id, "audio" .= audio, "caption" .= caption, "duration" .= duration,
+-- 			"performer" .= performer, "title" .= title, "thumb" .= thumb, "disable_notification" .= True]
+-- 	endpoint _ = "sendAudio"
+--
+-- instance Persistable ('Send 'Notify 'Replying) Audio where
+-- 	type instance Payload ('Send 'Notify 'Replying) Audio
+-- 		= Tagged ('Send 'Notify 'Replying Audio)
+-- 			(Int64, Int, Text, Maybe Text, Int, Text, Text, Maybe Text)
+-- 	payload (untag -> (chat_id, reply_to_message_id, audio, caption, duration, performer, title, thumb)) =
+-- 		object ["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "audio" .= audio,
+-- 			"caption" .= caption, "duration" .= duration, "performer" .= performer, "title" .= title,
+-- 				"thumb" .= thumb, "disable_notification" .= False]
+-- 	endpoint _ = "sendAudio"
+--
+-- instance Persistable ('Send 'Silently 'Replying) Audio where
+-- 	type instance Payload ('Send 'Silently 'Replying) Audio
+-- 		= Tagged ('Send 'Silently 'Replying Audio)
+-- 			(Int64, Int, Text, Maybe Text, Int, Text, Text, Maybe Text)
+-- 	payload (untag -> (chat_id, reply_to_message_id, audio, caption, duration, performer, title, thumb)) =
+-- 		object ["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "audio" .= audio,
+-- 			"caption" .= caption, "duration" .= duration, "performer" .= performer, "title" .= title,
+-- 				"thumb" .= thumb, "disable_notification" .= True]
+-- 	endpoint _ = "sendAudio"

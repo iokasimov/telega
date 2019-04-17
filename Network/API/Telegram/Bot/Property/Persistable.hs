@@ -1,7 +1,7 @@
 module Network.API.Telegram.Bot.Property.Persistable
 	(Persistable (..), Capacity (..), Inform (..), Way (..)) where
 
-import "aeson" Data.Aeson (FromJSON, Value, decode)
+import "aeson" Data.Aeson (FromJSON, Value (Object), Object, decode)
 import "base" Control.Exception (try)
 import "base" Control.Monad (Monad ((>>=)), join)
 import "base" Data.Function (flip, (.), ($))
@@ -28,10 +28,10 @@ data Capacity object = Send Inform Way object | Post object | Fetch object | Edi
 class Persistable capacity object where
 	{-# MINIMAL payload, endpoint #-}
 	type Payload (capacity :: * -> Capacity *) object = payload | payload -> capacity object
-	payload :: Payload capacity object -> Value
+	payload :: Payload capacity object -> Object
 	endpoint :: Payload capacity object -> String
 	persist :: FromJSON r => Payload capacity object -> Telegram e r
-	persist x = request (endpoint x) (payload x) where
+	persist x = request (endpoint x) (Object $ payload x) where
 
 		request :: forall a e . FromJSON a => String -> Value -> Telegram e a
 		request e p = snd <$> ask >>= \(session, Token token) -> lift . ExceptT . try

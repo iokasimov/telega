@@ -44,10 +44,10 @@ instance Identifiable Sender where
 	ident (Bot i _ _ _ _) = i
 	ident (User i _ _ _ _) = i
 
-instance Persistable 'Fetch Sender where
-	type instance Payload 'Fetch Sender = Tagged ('Fetch Sender) ()
-	payload _ = object []
-	endpoint _ = "getMe"
+-- instance Persistable 'Fetch Sender where
+-- 	type instance Payload 'Fetch Sender = Tagged ('Fetch Sender) ()
+-- 	payload _ = null
+-- 	endpoint _ = "getMe"
 
 nickname :: Lens' Sender (Maybe Text)
 nickname f (Bot uid nn fn ln lng) = (\nn' -> Bot uid nn' fn ln lng) <$> f nn

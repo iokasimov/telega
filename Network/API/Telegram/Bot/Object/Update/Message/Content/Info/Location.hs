@@ -23,34 +23,34 @@ instance ToJSON Location where
 	toJSON (Location latitude longitude) = object
 		["latitude" .= latitude, "longitude" .= longitude]
 
-instance Persistable ('Send 'Notify 'Directly) Location where
-	type instance Payload ('Send 'Notify 'Directly) Location
-		= Tagged ('Send 'Notify 'Directly Location) (Int64, Location, Int)
-	payload (untag -> (chat_id, Location latitude longitude, live_period)) =
-		object ["chat_id" .= chat_id, "latitude" .= latitude, "longitude" .= longitude,
-			"live_period" .= live_period, "disable_notification" .= False]
-	endpoint _ = "sendLocation"
-
-instance Persistable ('Send 'Silently 'Directly) Location where
-	type instance Payload ('Send 'Silently 'Directly) Location
-		= Tagged ('Send 'Silently 'Directly Location) (Int64, Location, Int)
-	payload (untag -> (chat_id, Location latitude longitude, live_period)) =
-		object ["chat_id" .= chat_id, "latitude" .= latitude, "longitude" .= longitude,
-			"live_period" .= live_period, "disable_notification" .= True]
-	endpoint _ = "sendLocation"
-
-instance Persistable ('Send 'Notify 'Replying) Location where
-	type instance Payload ('Send 'Notify 'Replying) Location
-		= Tagged ('Send 'Notify 'Replying Location) (Int64, Location, Int, Int)
-	payload (untag -> (chat_id, Location latitude longitude, live_period, reply_to_message_id)) = object
-		["chat_id" .= chat_id, "latitude" .= latitude, "longitude" .= longitude, "live_period" .= live_period,
-			"reply_to_message_id" .= reply_to_message_id, "disable_notification" .= False]
-	endpoint _ = "sendLocation"
-
-instance Persistable ('Send 'Silently 'Replying) Location where
-	type instance Payload ('Send 'Silently 'Replying) Location
-		= Tagged ('Send 'Silently 'Replying Location) (Int64, Location, Int, Int)
-	payload (untag -> (chat_id, Location latitude longitude, live_period, reply_to_message_id)) = object
-		["chat_id" .= chat_id, "latitude" .= latitude, "longitude" .= longitude, "live_period" .= live_period,
-			"reply_to_message_id" .= reply_to_message_id, "disable_notification" .= True]
-	endpoint _ = "sendLocation"
+-- instance Persistable ('Send 'Notify 'Directly) Location where
+-- 	type instance Payload ('Send 'Notify 'Directly) Location
+-- 		= Tagged ('Send 'Notify 'Directly Location) (Int64, Location, Int)
+-- 	payload (untag -> (chat_id, Location latitude longitude, live_period)) =
+-- 		object ["chat_id" .= chat_id, "latitude" .= latitude, "longitude" .= longitude,
+-- 			"live_period" .= live_period, "disable_notification" .= False]
+-- 	endpoint _ = "sendLocation"
+--
+-- instance Persistable ('Send 'Silently 'Directly) Location where
+-- 	type instance Payload ('Send 'Silently 'Directly) Location
+-- 		= Tagged ('Send 'Silently 'Directly Location) (Int64, Location, Int)
+-- 	payload (untag -> (chat_id, Location latitude longitude, live_period)) =
+-- 		object ["chat_id" .= chat_id, "latitude" .= latitude, "longitude" .= longitude,
+-- 			"live_period" .= live_period, "disable_notification" .= True]
+-- 	endpoint _ = "sendLocation"
+--
+-- instance Persistable ('Send 'Notify 'Replying) Location where
+-- 	type instance Payload ('Send 'Notify 'Replying) Location
+-- 		= Tagged ('Send 'Notify 'Replying Location) (Int64, Location, Int, Int)
+-- 	payload (untag -> (chat_id, Location latitude longitude, live_period, reply_to_message_id)) = object
+-- 		["chat_id" .= chat_id, "latitude" .= latitude, "longitude" .= longitude, "live_period" .= live_period,
+-- 			"reply_to_message_id" .= reply_to_message_id, "disable_notification" .= False]
+-- 	endpoint _ = "sendLocation"
+--
+-- instance Persistable ('Send 'Silently 'Replying) Location where
+-- 	type instance Payload ('Send 'Silently 'Replying) Location
+-- 		= Tagged ('Send 'Silently 'Replying Location) (Int64, Location, Int, Int)
+-- 	payload (untag -> (chat_id, Location latitude longitude, live_period, reply_to_message_id)) = object
+-- 		["chat_id" .= chat_id, "latitude" .= latitude, "longitude" .= longitude, "live_period" .= live_period,
+-- 			"reply_to_message_id" .= reply_to_message_id, "disable_notification" .= True]
+-- 	endpoint _ = "sendLocation"

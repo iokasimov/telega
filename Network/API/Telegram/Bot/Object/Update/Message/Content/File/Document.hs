@@ -23,38 +23,38 @@ instance FromJSON Document where
 	parseJSON = withObject "Document" $ \v -> Document <$> v .: "file_id"
 		<*> v .:? "thumb" <*> v .:? "file_name" <*> v .:? "mime_type" <*> v .:? "file_size"
 
-instance Persistable ('Send 'Notify 'Directly) Document where
-	type instance Payload ('Send 'Notify 'Directly) Document
-		= Tagged ('Send 'Notify 'Directly Document)
-			(Int64, Text, Maybe Text, Maybe Text)
-	payload (untag -> (chat_id, document, thumb, caption)) = object
-		["chat_id" .= chat_id, "document" .= document, "thumb" .= thumb,
-			"caption" .= caption, "disable_notification" .= False]
-	endpoint _ = "sendDocument"
-
-instance Persistable ('Send 'Silently 'Directly) Document where
-	type instance Payload ('Send 'Silently 'Directly) Document
-		= Tagged ('Send 'Silently 'Directly Document)
-			(Int64, Text, Maybe Text, Maybe Text)
-	payload (untag -> (chat_id, document, thumb, caption)) = object
-		 ["chat_id" .= chat_id, "document" .= document, "thumb" .= thumb,
-			"caption" .= caption, "disable_notification" .= True]
-	endpoint _ = "sendDocument"
-
-instance Persistable ('Send 'Notify 'Replying) Document where
-	type instance Payload ('Send 'Notify 'Replying) Document
-		= Tagged ('Send 'Notify 'Replying Document)
-			(Int64, Int, Text, Maybe Text, Maybe Text)
-	payload (untag -> (chat_id, reply_to_message_id, document, thumb, caption)) = object
-		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "document" .= document,
-			"thumb" .= thumb, "caption" .= caption, "disable_notification" .= False]
-	endpoint _ = "sendDocument"
-
-instance Persistable ('Send 'Silently 'Replying) Document where
-	type instance Payload ('Send 'Silently 'Replying) Document
-		= Tagged ('Send 'Silently 'Replying Document)
-			(Int64, Int, Text, Maybe Text, Maybe Text)
-	payload (untag -> (chat_id, reply_to_message_id, document, thumb, caption)) = object
-		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "document" .= document,
-			"thumb" .= thumb, "caption" .= caption, "disable_notification" .= True]
-	endpoint _ = "sendDocument"
+-- instance Persistable ('Send 'Notify 'Directly) Document where
+-- 	type instance Payload ('Send 'Notify 'Directly) Document
+-- 		= Tagged ('Send 'Notify 'Directly Document)
+-- 			(Int64, Text, Maybe Text, Maybe Text)
+-- 	payload (untag -> (chat_id, document, thumb, caption)) = object
+-- 		["chat_id" .= chat_id, "document" .= document, "thumb" .= thumb,
+-- 			"caption" .= caption, "disable_notification" .= False]
+-- 	endpoint _ = "sendDocument"
+--
+-- instance Persistable ('Send 'Silently 'Directly) Document where
+-- 	type instance Payload ('Send 'Silently 'Directly) Document
+-- 		= Tagged ('Send 'Silently 'Directly Document)
+-- 			(Int64, Text, Maybe Text, Maybe Text)
+-- 	payload (untag -> (chat_id, document, thumb, caption)) = object
+-- 		 ["chat_id" .= chat_id, "document" .= document, "thumb" .= thumb,
+-- 			"caption" .= caption, "disable_notification" .= True]
+-- 	endpoint _ = "sendDocument"
+--
+-- instance Persistable ('Send 'Notify 'Replying) Document where
+-- 	type instance Payload ('Send 'Notify 'Replying) Document
+-- 		= Tagged ('Send 'Notify 'Replying Document)
+-- 			(Int64, Int, Text, Maybe Text, Maybe Text)
+-- 	payload (untag -> (chat_id, reply_to_message_id, document, thumb, caption)) = object
+-- 		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "document" .= document,
+-- 			"thumb" .= thumb, "caption" .= caption, "disable_notification" .= False]
+-- 	endpoint _ = "sendDocument"
+--
+-- instance Persistable ('Send 'Silently 'Replying) Document where
+-- 	type instance Payload ('Send 'Silently 'Replying) Document
+-- 		= Tagged ('Send 'Silently 'Replying Document)
+-- 			(Int64, Int, Text, Maybe Text, Maybe Text)
+-- 	payload (untag -> (chat_id, reply_to_message_id, document, thumb, caption)) = object
+-- 		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id, "document" .= document,
+-- 			"thumb" .= thumb, "caption" .= caption, "disable_notification" .= True]
+-- 	endpoint _ = "sendDocument"
