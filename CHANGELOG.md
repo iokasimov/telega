@@ -94,3 +94,4 @@
 * Remove `Object` type family to distribute `Accessible` and `Identifiable` instances
 * Put `Identificator` type family into `Identifiable` type class
 * Rename `identifcator` to `ident`, add MINIMAL pragma to `Accessible`
+* Include `Group` information into `Moving` object
