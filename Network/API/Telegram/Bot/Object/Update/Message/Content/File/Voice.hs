@@ -12,9 +12,9 @@ import "base" Text.Show (Show)
 import "tagged" Data.Tagged (Tagged, untag)
 import "text" Data.Text (Text)
 
-import Network.API.Telegram.Bot.Property.Persistable
-	( Persistable (Payload, payload, endpoint), Capacity (Send)
-	, Inform (Notify, Silently), Way (Directly, Replying))
+-- import Network.API.Telegram.Bot.Property.Persistable
+-- 	( Persistable (Payload, payload, endpoint), Capacity (Send)
+-- 	, Inform (Notify, Silently), Way (Directly, Replying))
 
 data Voice = Voice Text Int (Maybe Text) (Maybe Int) deriving Show
 

@@ -12,9 +12,9 @@ import "tagged" Data.Tagged (Tagged, untag)
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Size (Size)
-import Network.API.Telegram.Bot.Property.Persistable
-	( Persistable (Payload, payload, endpoint), Capacity (Send)
-	, Inform (Notify, Silently), Way (Directly, Replying))
+-- import Network.API.Telegram.Bot.Property.Persistable
+-- 	( Persistable (Payload, payload, endpoint), Capacity (Send)
+-- 	, Inform (Notify, Silently), Way (Directly, Replying))
 
 data Document = Document Text (Maybe Size) (Maybe Text) (Maybe Text) (Maybe Int)
 	deriving Show

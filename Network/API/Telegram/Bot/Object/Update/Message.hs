@@ -4,24 +4,24 @@ import Network.API.Telegram.Bot.Object.Update.Message.Content as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Keyboard as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Origin as Exports
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), Value (Object), object, withObject, (.:), (.=))
+import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), Value (Object), withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser)
 import "base" Control.Applicative (Applicative ((<*>)), Alternative ((<|>)))
 import "base" Control.Monad (Monad ((>>=)), fail)
-import "base" Data.Bool (Bool (True, False))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int, Int64)
+import "base" Data.Semigroup ((<>))
 import "base" Text.Show (Show)
-import "tagged" Data.Tagged (Tagged, untag)
 import "text" Data.Text (Text)
+import "unordered-containers" Data.HashMap.Strict (singleton)
+import "with" Data.With (type (:&:)((:&:)))
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content (Content)
 import Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin (Private, Group, Supergroup, Channel))
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
-import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint)
-	, Capacity (Send, Edit, Purge), Inform (Notify, Silently), Way (Directly, Forwarding, Replying))
+import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint), Capacity (Send))
 
 data Message
 	= Direct Int Origin Content
@@ -75,13 +75,11 @@ instance Identifiable Message where
 	ident (Forward i _ _) = i
 	ident (Reply i _ _ _) = i
 
--- instance Persistable ('Send 'Notify 'Directly) Message where
--- 	type instance Payload ('Send 'Notify 'Directly) Message
--- 		= Tagged ('Send 'Notify 'Directly Message) (Int64, Text)
--- 	payload (untag -> (chat_id, text)) = object
--- 		["chat_id" .= chat_id, "text" .= text, "disable_notification" .= False]
--- 	endpoint _ = "sendMessage"
---
+instance Persistable ('Send Message) where
+	type instance Payload ('Send Message) = (Int64 :&: Text)
+	payload (chat_id :&: text) = singleton "chat_id" (toJSON chat_id) <> singleton "text" (toJSON text)
+	endpoint _ = "sendMessage"
+
 -- instance Persistable ('Send 'Silently 'Directly) Message where
 -- 	type instance Payload ('Send 'Silently 'Directly) Message
 -- 		= Tagged ('Send 'Silently 'Directly Message) (Int64, Text)

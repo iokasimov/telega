@@ -10,8 +10,8 @@ import "base" GHC.Float (Float)
 import "base" Text.Show (Show)
 import "tagged" Data.Tagged (Tagged, untag)
 
-import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint)
-	, Capacity (Send), Inform (Notify, Silently), Way (Directly, Replying))
+-- import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint)
+-- 	, Capacity (Send), Inform (Notify, Silently), Way (Directly, Replying))
 
 data Location = Location Float Float deriving Show
 

@@ -4,7 +4,7 @@ import "aeson" Data.Aeson (object, (.=))
 import "tagged" Data.Tagged (Tagged, untag)
 import "text" Data.Text (Text)
 
-import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint), Capacity (Post))
+-- import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint), Capacity (Post))
 
 data Notification
 

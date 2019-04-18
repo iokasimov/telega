@@ -12,8 +12,8 @@ import "tagged" Data.Tagged (Tagged, untag)
 import "text" Data.Text (Text)
 import "unordered-containers" Data.HashMap.Strict (singleton)
 
-import Network.API.Telegram.Bot.Property.Persistable
-	(Persistable (Payload, payload, endpoint), Capacity (Edit, Post))
+-- import Network.API.Telegram.Bot.Property.Persistable
+-- 	(Persistable (Payload, payload, endpoint), Capacity (Edit, Post))
 
 data Keyboard = Inline [[Button]] deriving Show
 
@@ -25,16 +25,16 @@ instance ToJSON Keyboard where
 	toJSON (Inline buttons) = object
 		["inline_keyboard" .= buttons]
 
-instance Persistable 'Edit Keyboard where
-	type instance Payload 'Edit Keyboard
-		= Tagged ('Edit Keyboard) (Int64, Int, Keyboard)
-	payload (untag -> (chat_id, message_id, reply_markup)) = singleton "chat_id" (toJSON chat_id) <>
-		singleton "message_id" (toJSON message_id) <> singleton "reply_markup" (toJSON reply_markup)
-	endpoint _ = "editMessageReplyMarkup"
-
-instance Persistable 'Post Keyboard where
-	type instance Payload 'Post Keyboard
-		= Tagged ('Post Keyboard) (Int64, Text, Keyboard)
-	payload (untag -> (chat_id, text, reply_markup)) = singleton "chat_id" (toJSON chat_id)
-		<> singleton "text" (toJSON text) <> singleton "reply_markup" (toJSON reply_markup)
-	endpoint _ = "sendMessage"
+-- instance Persistable 'Edit Keyboard where
+-- 	type instance Payload 'Edit Keyboard
+-- 		= Tagged ('Edit Keyboard) (Int64, Int, Keyboard)
+-- 	payload (untag -> (chat_id, message_id, reply_markup)) = singleton "chat_id" (toJSON chat_id) <>
+-- 		singleton "message_id" (toJSON message_id) <> singleton "reply_markup" (toJSON reply_markup)
+-- 	endpoint _ = "editMessageReplyMarkup"
+--
+-- instance Persistable 'Post Keyboard where
+-- 	type instance Payload 'Post Keyboard
+-- 		= Tagged ('Post Keyboard) (Int64, Text, Keyboard)
+-- 	payload (untag -> (chat_id, text, reply_markup)) = singleton "chat_id" (toJSON chat_id)
+-- 		<> singleton "text" (toJSON text) <> singleton "reply_markup" (toJSON reply_markup)
+-- 	endpoint _ = "sendMessage"

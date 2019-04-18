@@ -16,8 +16,8 @@ import "text" Data.Text (Text)
 import "time" Data.Time.Clock.POSIX (POSIXTime)
 
 import Network.API.Telegram.Bot.Object.Sender (Sender)
-import Network.API.Telegram.Bot.Property.Persistable
-	(Persistable (Payload, payload, endpoint), Capacity (Fetch))
+-- import Network.API.Telegram.Bot.Property.Persistable
+-- 	(Persistable (Payload, payload, endpoint), Capacity (Fetch))
 
 data Member
 	= Creator Sender
