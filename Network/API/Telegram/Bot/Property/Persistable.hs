@@ -1,6 +1,5 @@
 module Network.API.Telegram.Bot.Property.Persistable
 	(Persistable (..), Capacity (..), Silenlty (..)) where
-	-- (Persistable (..), Capacity (..), Inform (..), Way (..)) where
 
 import "aeson" Data.Aeson (FromJSON, ToJSON (toJSON), Value (Object), Object, decode)
 import "base" Control.Exception (try)
@@ -8,6 +7,7 @@ import "base" Control.Monad (Monad ((>>=)), join)
 import "base" Data.Bool (Bool (True))
 import "base" Data.Function (flip, (.), ($))
 import "base" Data.Functor (Functor (fmap), (<$>))
+import "base" Data.Int (Int)
 import "base" Data.Maybe (fromJust)
 import "base" Data.Semigroup (Semigroup ((<>)))
 import "base" Data.String (String)
@@ -23,7 +23,7 @@ import "wreq" Network.Wreq.Session (post)
 
 import Network.API.Telegram.Bot.Core (Telegram, Token (Token), Ok, result)
 
-data Capacity object = Send object
+data Capacity object = Send object | Reply object
 
 data Silenlty (capacity :: * -> Capacity *) object = Silenlty
 
@@ -43,4 +43,10 @@ class Persistable action where
 instance Persistable ('Send obj) => Persistable (Silenlty 'Send obj) where
 	type Payload (Silenlty 'Send obj) = (Silenlty 'Send obj :&: Payload ('Send obj))
 	payload (_ :&: x) = payload x <> singleton "disable_notification" (toJSON True)
+	endpoint (_ :&: x) = endpoint x
+
+instance Persistable ('Send obj) => Persistable ('Reply obj) where
+	type Payload ('Reply obj) = (Int :&: Payload ('Send obj))
+	payload (reply_to_message_id :&: x) = payload x <> singleton
+		"reply_to_message_id" (toJSON reply_to_message_id)
 	endpoint (_ :&: x) = endpoint x

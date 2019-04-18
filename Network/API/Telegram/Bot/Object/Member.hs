@@ -16,8 +16,6 @@ import "text" Data.Text (Text)
 import "time" Data.Time.Clock.POSIX (POSIXTime)
 
 import Network.API.Telegram.Bot.Object.Sender (Sender)
--- import Network.API.Telegram.Bot.Property.Persistable
--- 	(Persistable (Payload, payload, endpoint), Capacity (Fetch))
 
 data Member
 	= Creator Sender
@@ -37,8 +35,3 @@ instance FromJSON Member where
 		("left" :: Text) -> Left <$> v .: "user"
 		("kicked" :: Text) -> Kicked <$> v .: "user" <*> v.: "until_date"
 		_ -> fail "Status of chat member is not defined"
-
--- instance Persistable 'Fetch Member where
--- 	type instance Payload 'Fetch Member = Tagged ('Fetch Member) (Int64, Int)
--- 	payload (untag -> (chat_id, user_id)) = object ["chat_id" .= chat_id, "user_id" .= user_id]
--- 	endpoint _ = "getChatMember"

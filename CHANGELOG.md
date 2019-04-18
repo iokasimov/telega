@@ -96,3 +96,6 @@
 * Rename `identifcator` to `ident`, add MINIMAL pragma to `Accessible`
 * Include `Group` information into `Moving` object
 * Method `payload` in `Persistable` type class defines hash table, not `JSON` value
+* Rename `Message` constructors to use old name as `Capacity` constructors
+* Define `Persistable` instance for `Reply`-ing messages
+* Temporary delete old `Persistable` instances

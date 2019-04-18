@@ -25,33 +25,33 @@ import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payl
 
 data Message
 	= Direct Int Origin Content
-	| Forward Int Origin Content
-	| Reply Int Origin Content Message
+	| Forwarded Int Origin Content
+	| Replied Int Origin Content Message
 	deriving Show
 
 instance Accessible Content Message where
 	access f (Direct msg_id origin content) = (\content' -> Direct msg_id origin content') <$> f content
-	access f (Forward msg_id origin content) = (\content' -> Forward msg_id origin content') <$> f content
-	access f (Reply msg_id origin content msg) = (\content' -> Reply msg_id origin content' msg) <$> f content
+	access f (Forwarded msg_id origin content) = (\content' -> Forwarded msg_id origin content') <$> f content
+	access f (Replied msg_id origin content msg) = (\content' -> Replied msg_id origin content' msg) <$> f content
 
 instance Accessible Origin Message where
 	access f (Direct msg_id origin content) = (\origin' -> Direct msg_id origin' content) <$> f origin
-	access f (Forward msg_id origin content) = (\origin' -> Forward msg_id origin' content) <$> f origin
-	access f (Reply msg_id origin content msg) = (\origin' -> Reply msg_id origin' content msg) <$> f origin
+	access f (Forwarded msg_id origin content) = (\origin' -> Forwarded msg_id origin' content) <$> f origin
+	access f (Replied msg_id origin content msg) = (\origin' -> Replied msg_id origin' content msg) <$> f origin
 
 instance FromJSON Message where
 	parseJSON = withObject "Message" $ \v ->
 		forward_channel v <|> forward_chat v <|> reply v <|> direct v where
 
 		forward_channel :: Object -> Parser Message
-		forward_channel v = Forward <$> v .: "forward_from_message_id"
+		forward_channel v = Forwarded <$> v .: "forward_from_message_id"
 			<*> (v .: "forward_from_chat" >>= channel) <*> parseJSON (Object v) where
 
 			channel :: Value -> Parser Origin
 			channel = withObject "Channel" $ \c -> Channel <$> c .: "id" <*> c .: "title"
 
 		forward_chat :: Object -> Parser Message
-		forward_chat v = Forward <$> v .: "message_id"
+		forward_chat v = Forwarded <$> v .: "message_id"
 			<*> (v .: "chat" >>= chat) <*> parseJSON (Object v) where
 
 			chat :: Value -> Parser Origin
@@ -62,7 +62,7 @@ instance FromJSON Message where
 				_ -> fail "Type of chat is not defined"
 
 		reply :: Object -> Parser Message
-		reply v = Reply <$> v .: "message_id" <*> parseJSON (Object v)
+		reply v = Replied <$> v .: "message_id" <*> parseJSON (Object v)
 			<*> parseJSON (Object v) <*> v .: "reply_to_message"
 
 		direct :: Object -> Parser Message
@@ -72,60 +72,10 @@ instance FromJSON Message where
 instance Identifiable Message where
 	type instance Identificator Message = Int
 	ident (Direct i _ _) = i
-	ident (Forward i _ _) = i
-	ident (Reply i _ _ _) = i
+	ident (Forwarded i _ _) = i
+	ident (Replied i _ _ _) = i
 
 instance Persistable ('Send Message) where
 	type instance Payload ('Send Message) = (Int64 :&: Text)
 	payload (chat_id :&: text) = singleton "chat_id" (toJSON chat_id) <> singleton "text" (toJSON text)
 	endpoint _ = "sendMessage"
-
--- instance Persistable ('Send 'Silently 'Directly) Message where
--- 	type instance Payload ('Send 'Silently 'Directly) Message
--- 		= Tagged ('Send 'Silently 'Directly Message) (Int64, Text)
--- 	payload (untag -> (chat_id, text)) = object
--- 		["chat_id" .= chat_id, "text" .= text, "disable_notification" .= True]
--- 	endpoint _ = "sendMessage"
---
--- instance Persistable ('Send 'Notify 'Forwarding) Message where
--- 	type instance Payload ('Send 'Notify 'Forwarding) Message
--- 		= Tagged ('Send 'Notify 'Forwarding Message) (Int64, Int64, Int)
--- 	payload (untag -> (chat_id, from_chat_id, message_id)) = object
--- 		["chat_id" .= chat_id, "from_chat_id" .= from_chat_id,
--- 			"message_id" .= message_id, "disable_notification" .= False]
--- 	endpoint _ = "forwardMessage"
---
--- instance Persistable ('Send 'Silently 'Forwarding) Message where
--- 	type instance Payload ('Send 'Silently 'Forwarding) Message
--- 		= Tagged ('Send 'Silently 'Forwarding Message) (Int64, Int64, Int)
--- 	payload (untag -> (chat_id, from_chat_id, message_id)) = object
--- 		["chat_id" .= chat_id, "from_chat_id" .= from_chat_id,
--- 			"message_id" .= message_id, "disable_notification" .= True]
--- 	endpoint _ = "forwardMessage"
---
--- instance Persistable ('Send 'Notify 'Replying) Message where
--- 	type instance Payload ('Send 'Notify 'Replying) Message
--- 		= Tagged ('Send 'Notify 'Replying Message) (Int64, Int, Text)
--- 	payload (untag -> (chat_id, reply_to_message_id, text)) = object
--- 		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id,
--- 			"text" .= text, "disable_notification" .= False]
--- 	endpoint _ = "sendMessage"
---
--- instance Persistable ('Send 'Silently 'Replying) Message where
--- 	type instance Payload ('Send 'Silently 'Replying) Message
--- 		= Tagged ('Send 'Silently 'Replying Message) (Int64, Int, Text)
--- 	payload (untag -> (chat_id, reply_to_message_id, text)) = object
--- 		["chat_id" .= chat_id, "reply_to_message_id" .= reply_to_message_id,
--- 			"text" .= text, "disable_notification" .= True]
--- 	endpoint _ = "sendMessage"
---
--- instance Persistable 'Edit Message where
--- 	type instance Payload 'Edit Message = Tagged ('Edit Message) (Int64, Int, Text)
--- 	payload (untag -> (chat_id, message_id, text)) = object
--- 		["chat_id" .= chat_id, "message_id" .= message_id, "text" .= text]
--- 	endpoint _ = "editMessageText"
---
--- instance Persistable 'Purge Message where
--- 	type instance Payload 'Purge Message = Tagged ('Purge Message) (Int64, Int)
--- 	payload (untag -> (chat_id, message_id)) = object ["chat_id" .= chat_id, "message_id" .= message_id]
--- 	endpoint _ = "deleteMessage"

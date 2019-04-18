@@ -16,7 +16,6 @@ import "tagged" Data.Tagged (Tagged)
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
--- import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint), Capacity (Fetch))
 
 data Sender
 	= Bot Int (Maybe Text) Text (Maybe Text) (Maybe Text)
@@ -43,11 +42,6 @@ instance Identifiable Sender where
 	type instance Identificator Sender = Int
 	ident (Bot i _ _ _ _) = i
 	ident (User i _ _ _ _) = i
-
--- instance Persistable 'Fetch Sender where
--- 	type instance Payload 'Fetch Sender = Tagged ('Fetch Sender) ()
--- 	payload _ = null
--- 	endpoint _ = "getMe"
 
 nickname :: Lens' Sender (Maybe Text)
 nickname f (Bot uid nn fn ln lng) = (\nn' -> Bot uid nn' fn ln lng) <$> f nn
