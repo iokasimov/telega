@@ -1,15 +1,12 @@
-module Network.API.Telegram.Bot.Property.Persistable
-	(Persistable (..), Capacity (..), Silenlty (..)) where
+module Network.API.Telegram.Bot.Property.Persistable (Persistable (..)) where
 
-import "aeson" Data.Aeson (FromJSON, ToJSON (toJSON), Value (Object), Object, decode)
+import "aeson" Data.Aeson (FromJSON, Object, Value (Object), decode)
 import "base" Control.Exception (try)
-import "base" Control.Monad (Monad ((>>=)), join)
-import "base" Data.Bool (Bool (True))
+import "base" Control.Monad (join, (>>=))
 import "base" Data.Function (flip, (.), ($))
-import "base" Data.Functor (Functor (fmap), (<$>))
-import "base" Data.Int (Int)
+import "base" Data.Functor (fmap, (<$>))
 import "base" Data.Maybe (fromJust)
-import "base" Data.Semigroup (Semigroup ((<>)))
+import "base" Data.Semigroup ((<>))
 import "base" Data.String (String)
 import "base" Data.Tuple (snd)
 import "http-client" Network.HTTP.Client (Response (responseBody))
@@ -17,15 +14,9 @@ import "text" Data.Text (unpack)
 import "transformers" Control.Monad.Trans.Class (lift)
 import "transformers" Control.Monad.Trans.Except (ExceptT (ExceptT))
 import "transformers" Control.Monad.Trans.Reader (ask)
-import "unordered-containers" Data.HashMap.Strict (singleton)
-import "with" Data.With (type (:&:)((:&:)))
 import "wreq" Network.Wreq.Session (post)
 
 import Network.API.Telegram.Bot.Core (Telegram, Token (Token), Ok, result)
-
-data Capacity object = Send object | Reply object
-
-data Silenlty (capacity :: * -> Capacity *) object = Silenlty
 
 class Persistable action where
 	{-# MINIMAL payload, endpoint #-}
@@ -39,14 +30,3 @@ class Persistable action where
 		request e p = snd <$> ask >>= \(session, Token token) -> lift . ExceptT . try
 			. fmap (fromJust . join . fmap result . decode @(Ok a) . responseBody)
 				. flip (post session) p $ "https://api.telegram.org/" <> unpack token <> "/" <> e
-
-instance Persistable ('Send obj) => Persistable (Silenlty 'Send obj) where
-	type Payload (Silenlty 'Send obj) = (Silenlty 'Send obj :&: Payload ('Send obj))
-	payload (_ :&: x) = payload x <> singleton "disable_notification" (toJSON True)
-	endpoint (_ :&: x) = endpoint x
-
-instance Persistable ('Send obj) => Persistable ('Reply obj) where
-	type Payload ('Reply obj) = (Int :&: Payload ('Send obj))
-	payload (reply_to_message_id :&: x) = payload x <> singleton
-		"reply_to_message_id" (toJSON reply_to_message_id)
-	endpoint (_ :&: x) = endpoint x

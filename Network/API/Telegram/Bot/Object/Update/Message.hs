@@ -1,4 +1,5 @@
-module Network.API.Telegram.Bot.Object.Update.Message (Message (..), module Exports) where
+module Network.API.Telegram.Bot.Object.Update.Message (module Exports
+	, Message (..), Send (..), Reply (..), Forward (..), Silently (..)) where
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Keyboard as Exports
@@ -8,6 +9,7 @@ import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), Value (Object)
 import "aeson" Data.Aeson.Types (Object, Parser)
 import "base" Control.Applicative (Applicative ((<*>)), Alternative ((<|>)))
 import "base" Control.Monad (Monad ((>>=)), fail)
+import "base" Data.Bool (Bool (True))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int, Int64)
@@ -21,7 +23,7 @@ import Network.API.Telegram.Bot.Object.Update.Message.Content (Content)
 import Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin (Private, Group, Supergroup, Channel))
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
-import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint), Capacity (Send))
+import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint))
 
 data Message
 	= Direct Int Origin Content
@@ -75,12 +77,48 @@ instance Identifiable Message where
 	ident (Forwarded i _ _) = i
 	ident (Replied i _ _ _) = i
 
-instance Persistable ('Send Message) where
-	type instance Payload ('Send Message) = (Int64 :&: Text)
-	payload (chat_id :&: text) = singleton "chat_id" (toJSON chat_id) <> singleton "text" (toJSON text)
+data Forward a = Forward Int Int64 Int64
+
+instance Persistable (Forward Message) where
+	type instance Payload (Forward Message) = Forward Message
+	payload (Forward message_id from_chat_id to_chat_id) = singleton "message_id" (toJSON message_id)
+		<> singleton "from_chat_id" (toJSON from_chat_id) <> singleton "chat_id" (toJSON to_chat_id)
+	endpoint _ = "forwardMessage"
+
+data Send a = Send Int64 a
+
+instance Persistable (Send Text) where
+	type instance Payload (Send Text) = Send Text
+	payload (Send chat_id text) = singleton "chat_id" (toJSON chat_id) <> singleton "text" (toJSON text)
 	endpoint _ = "sendMessage"
 
-instance Persistable ('Send (Keyboard :&: Message)) where
-	type instance Payload ('Send (Keyboard :&: Message)) = Keyboard :&: Payload ('Send Message)
-	payload (reply_markup :&: msg) = payload msg <> singleton "reply_markup" (toJSON reply_markup)
+instance Persistable (Send (Text :&: Keyboard)) where
+	type instance Payload (Send (Text :&: Keyboard)) = Send (Text :&: Keyboard)
+	payload (Send chat_id (text :&: reply_markup)) = singleton "chat_id" (toJSON chat_id)
+		<> singleton "text" (toJSON text) <> singleton "reply_markup" (toJSON reply_markup)
 	endpoint _ = "sendMessage"
+
+data Reply a = Reply Int a
+
+instance Persistable (Send a) => Persistable (Reply a) where
+	type Payload (Reply a) = Reply (Payload (Send a))
+	payload (Reply reply_to_message_id x) = payload x <> singleton
+		"reply_to_message_id" (toJSON reply_to_message_id)
+	endpoint (Reply _ x) = endpoint x
+
+data Silently (todo :: * -> *) a = Silently a
+
+instance Persistable (Forward obj) => Persistable (Silently Forward obj) where
+	type Payload (Silently Forward obj) = Silently Forward (Payload (Forward obj))
+	payload (Silently x) = payload x <> singleton "disable_notification" (toJSON True)
+	endpoint (Silently x) = endpoint x
+
+instance Persistable (Send obj) => Persistable (Silently Send obj) where
+	type Payload (Silently Send obj) = Silently Send (Payload (Send obj))
+	payload (Silently x) = payload x <> singleton "disable_notification" (toJSON True)
+	endpoint (Silently x) = endpoint x
+
+instance Persistable (Reply obj) => Persistable (Silently Reply obj) where
+	type Payload (Silently Reply obj) = Silently Reply (Payload (Reply obj))
+	payload (Silently x) = payload x <> singleton "disable_notification" (toJSON True)
+	endpoint (Silently x) = endpoint x
