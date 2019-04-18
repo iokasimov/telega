@@ -50,7 +50,7 @@ library
     Network.API.Telegram.Bot.Property.Accessible
     Network.API.Telegram.Bot.Property.Identifiable
     Network.API.Telegram.Bot.Property.Persistable
-  build-depends: base == 4.*, transformers, tagged, with, lens, aeson, text, unordered-containers, time, http-client, wreq
+  build-depends: base == 4.*, transformers, with, lens, aeson, text, unordered-containers, time, http-client, wreq
   default-extensions: DataKinds, LambdaCase, OverloadedStrings, NoImplicitPrelude, PackageImports, ViewPatterns,
     AllowAmbiguousTypes, MultiParamTypeClasses, ScopedTypeVariables, UndecidableInstances, UndecidableSuperClasses,
     FlexibleInstances, TypeApplications, TypeFamilies, TypeFamilyDependencies, TypeOperators, PolyKinds

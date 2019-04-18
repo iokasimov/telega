@@ -12,7 +12,6 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 import "lens" Control.Lens (Lens')
-import "tagged" Data.Tagged (Tagged)
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))

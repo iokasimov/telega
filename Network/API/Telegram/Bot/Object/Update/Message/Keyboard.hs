@@ -8,7 +8,6 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int, Int64)
 import "base" Data.Semigroup ((<>))
 import "base" Text.Show (Show)
-import "tagged" Data.Tagged (Tagged, untag)
 import "text" Data.Text (Text)
 import "unordered-containers" Data.HashMap.Strict (singleton)
 

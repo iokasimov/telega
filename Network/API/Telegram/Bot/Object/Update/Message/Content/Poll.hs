@@ -11,7 +11,6 @@ import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int, Int64)
 import "base" Text.Show (Show)
-import "tagged" Data.Tagged (Tagged, untag)
 import "text" Data.Text (Text)
 
 data Poll
