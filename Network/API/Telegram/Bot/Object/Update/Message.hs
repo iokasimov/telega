@@ -1,5 +1,5 @@
-module Network.API.Telegram.Bot.Object.Update.Message (module Exports
-	, Message (..), Send (..), Reply (..), Forward (..), Silently (..)) where
+module Network.API.Telegram.Bot.Object.Update.Message (module Exports, Message (..)
+	, Send (..), Reply (..), Forward (..), Edit (..), Delete (..), Silently (..)) where
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Keyboard as Exports
@@ -106,6 +106,35 @@ instance Persistable (Send a) => Persistable (Reply a) where
 		"reply_to_message_id" (toJSON reply_to_message_id)
 	endpoint (Reply _ x) = endpoint x
 
+data Edit b = Edit Int64 Int b
+
+instance Persistable (Edit Text) where
+	type Payload (Edit Text) = Edit Text
+	payload (Edit chat_id message_id text) = singleton "chat_id" (toJSON chat_id)
+		<> singleton "message_id" (toJSON message_id) <> singleton "text" (toJSON text)
+	endpoint _ = "editMessageText"
+
+instance Persistable (Edit Keyboard) where
+	type Payload (Edit Keyboard) = Edit Keyboard
+	payload (Edit chat_id message_id reply_markup) = singleton "chat_id" (toJSON chat_id)
+		<> singleton "message_id" (toJSON message_id) <> singleton "reply_markup" (toJSON reply_markup)
+	endpoint _ = "editMessageText"
+
+instance Persistable (Edit (Text :&: Keyboard)) where
+	type Payload (Edit (Text :&: Keyboard)) = Edit (Text :&: Keyboard)
+	payload (Edit chat_id message_id (text :&: reply_markup)) =
+		singleton "chat_id" (toJSON chat_id) <> singleton "message_id" (toJSON message_id)
+		<> singleton "text" (toJSON text) <> singleton "reply_markup" (toJSON reply_markup)
+	endpoint _ = "editMessageText"
+
+data Delete a = Delete Int64 Int
+
+instance Persistable (Delete Message) where
+	type Payload (Delete Message) = Delete Message
+	payload (Delete chat_id message_id) = singleton "chat_id" (toJSON chat_id)
+		<> singleton "message_id" (toJSON message_id)
+	endpoint _ = "deleteMessage"
+
 data Silently (todo :: * -> *) a = Silently a
 
 instance Persistable (Forward obj) => Persistable (Silently Forward obj) where
@@ -122,25 +151,3 @@ instance Persistable (Reply obj) => Persistable (Silently Reply obj) where
 	type Payload (Silently Reply obj) = Silently Reply (Payload (Reply obj))
 	payload (Silently x) = payload x <> singleton "disable_notification" (toJSON True)
 	endpoint (Silently x) = endpoint x
-
-data Edit b = Edit Int64 Int b
-
-instance Persistable (Edit Text) where
-	type Payload (Edit Text) = Edit Text
-	payload (Edit chat_id message_id text) = singleton "chat_id" (toJSON chat_id)
-		<> singleton "message_id" (toJSON message_id) <> singleton "text" (toJSON text)
-	endpoint _ = "editMessageText"
-
-instance Persistable (Edit Keyboard) where
-	type Payload (Edit Keyboard) = Edit Keyboard
-	payload (Edit chat_id message_id reply_markup) = singleton "chat_id" (toJSON chat_id)
-		<> singleton "message_id" (toJSON message_id) <> singleton "reply_markup" (toJSON reply_markup)
-	endpoint _ = "editMessageText"
-
-data Delete a = Delete Int64 Int
-
-instance Persistable (Delete Message) where
-	type Payload (Delete Message) = Delete Message
-	payload (Delete chat_id message_id) = singleton "chat_id" (toJSON chat_id)
-		<> singleton "message_id" (toJSON message_id)
-	endpoint _ = "deleteMessage"
