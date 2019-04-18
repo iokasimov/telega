@@ -99,3 +99,6 @@
 * Rename `Message` constructors to use old name as `Capacity` constructors
 * Define `Persistable` instance for `Reply`-ing messages
 * Temporary delete old `Persistable` instances
+
+# 0.2.3
+* Define `Persistable` instance for `Keyboard :&: Message` union

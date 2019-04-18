@@ -79,3 +79,8 @@ instance Persistable ('Send Message) where
 	type instance Payload ('Send Message) = (Int64 :&: Text)
 	payload (chat_id :&: text) = singleton "chat_id" (toJSON chat_id) <> singleton "text" (toJSON text)
 	endpoint _ = "sendMessage"
+
+instance Persistable ('Send (Keyboard :&: Message)) where
+	type instance Payload ('Send (Keyboard :&: Message)) = Keyboard :&: Payload ('Send Message)
+	payload (reply_markup :&: msg) = payload msg <> singleton "reply_markup" (toJSON reply_markup)
+	endpoint _ = "sendMessage"
