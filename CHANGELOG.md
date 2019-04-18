@@ -103,3 +103,4 @@
 # 0.2.3
 * Define `Persistable` instance for `Send (Text :&: Keyboard)`
 * Move modified versions of `Capacity` and `Silently` datatypes to `Message` module
+* Define `Persistable` instances for `Edit` and `Delete` messages
