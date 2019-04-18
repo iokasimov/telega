@@ -23,6 +23,7 @@ class Persistable action where
 	type Payload action = payload | payload -> action
 	payload :: Payload action -> Object
 	endpoint :: Payload action -> String
+
 	persist :: FromJSON r => Payload action -> Telegram e r
 	persist x = request (endpoint x) (Object $ payload x) where
 
@@ -30,3 +31,6 @@ class Persistable action where
 		request e p = snd <$> ask >>= \(session, Token token) -> lift . ExceptT . try
 			. fmap (fromJust . join . fmap result . decode @(Ok a) . responseBody)
 				. flip (post session) p $ "https://api.telegram.org/" <> unpack token <> "/" <> e
+
+	persist_ :: Payload action -> Telegram e ()
+	persist_ x = persist @_ @() x where
