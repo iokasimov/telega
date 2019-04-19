@@ -107,3 +107,5 @@
 * Add `persist_` method in `Persistable` that not trying to decode JSON response
 * Extract file ID from `File` datatypes to use these datatypes for sending as messages
 * Define `Persistable` instance for dropping `Notification`s on pressing inline buttons
+* Remove thumb field from `Audio`, `Document`, `Video` and `Voice` datatypes
+* Define `Persistable` instances for `Audio`, `Document`, `Video` and `Voice` datatypes
