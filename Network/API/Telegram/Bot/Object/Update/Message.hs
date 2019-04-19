@@ -99,57 +99,51 @@ instance Persistable (Send (Text :&: Keyboard)) where
 	endpoint _ = "sendMessage"
 
 instance Persistable (Send Audio) where
-	type instance Payload (Send Audio) = Send Audio
-	payload (Send chat_id (Audio duration performer title mime_type file_size)) =
-		singleton "chat_id" (toJSON chat_id) <> singleton "duration" (toJSON duration)
-		<> singleton "performer" (toJSON performer) <> singleton "title" (toJSON title)
-		<> singleton "mime_type" (toJSON mime_type) <> singleton "file_size" (toJSON file_size)
+	type instance Payload (Send Audio) = Send (URI :&: Audio)
+	payload (Send chat_id (uri :&: Audio duration performer title mime_type file_size)) = singleton "file_id" (toJSON uri)
+		<> singleton "chat_id" (toJSON chat_id) <> singleton "duration" (toJSON duration) <> singleton "performer" (toJSON performer)
+		<> singleton "title" (toJSON title) <> singleton "mime_type" (toJSON mime_type) <> singleton "file_size" (toJSON file_size)
 	endpoint _ = "sendAudio"
 
-instance Persistable (Send (Text :&: Audio)) where
-	type instance Payload (Send (Text :&: Audio)) = Send (Text :&: Audio)
-	payload (Send chat_id (caption :&: audio)) =
-		payload (Send chat_id audio) <> singleton "caption" (toJSON caption)
+instance Persistable (Send (Caption :&: Audio)) where
+	type instance Payload (Send (Caption :&: Audio)) = Send (Caption :&: URI :&: Audio)
+	payload (Send chat_id (caption :&: audio)) = payload (Send chat_id audio) <> singleton "caption" (toJSON caption)
 	endpoint _ = "sendAudio"
 
 instance Persistable (Send Document) where
-	type instance Payload (Send Document) = Send Document
-	payload (Send chat_id (Document file_name mime_type file_size)) =
-		singleton "chat_id" (toJSON chat_id) <> singleton "file_name" (toJSON file_name)
+	type instance Payload (Send Document) = Send (URI :&: Document)
+	payload (Send chat_id (uri :&: Document file_name mime_type file_size)) = singleton "file_id" (toJSON uri)
+		<> singleton "chat_id" (toJSON chat_id) <> singleton "file_name" (toJSON file_name)
 		<> singleton "mime_type" (toJSON mime_type) <> singleton "file_size" (toJSON file_size)
 	endpoint _ = "sendDocument"
 
-instance Persistable (Send (Text :&: Document)) where
-	type instance Payload (Send (Text :&: Document)) = Send (Text :&: Document)
-	payload (Send chat_id (caption :&: document)) =
-		payload (Send chat_id document) <> singleton "caption" (toJSON caption)
+instance Persistable (Send (Caption :&: Document)) where
+	type instance Payload (Send (Caption :&: Document)) = Send (Caption :&: URI :&: Document)
+	payload (Send chat_id (caption :&: document)) = payload (Send chat_id document) <> singleton "caption" (toJSON caption)
 	endpoint _ = "sendDocument"
 
 instance Persistable (Send Video) where
-	type instance Payload (Send Video) = Send Video
-	payload (Send chat_id (Video width height duration mime_type file_size)) =
-		singleton "chat_id" (toJSON chat_id) <> singleton "duration" (toJSON duration)
-		<> singleton "width" (toJSON width) <> singleton "height" (toJSON height)
-		<> singleton "mime_type" (toJSON mime_type) <> singleton "file_size" (toJSON file_size)
+	type instance Payload (Send Video) = Send (URI :&: Video)
+	payload (Send chat_id (uri :&: Video width height duration mime_type file_size)) = singleton "file_id" (toJSON uri)
+		<> singleton "chat_id" (toJSON chat_id) <> singleton "duration" (toJSON duration) <> singleton "width" (toJSON width)
+		<> singleton "height" (toJSON height) <> singleton "mime_type" (toJSON mime_type) <> singleton "file_size" (toJSON file_size)
 	endpoint _ = "sendVideo"
 
-instance Persistable (Send (Text :&: Video)) where
-	type instance Payload (Send (Text :&: Video)) = Send (Text :&: Video)
-	payload (Send chat_id (caption :&: video)) =
-		payload (Send chat_id video) <> singleton "caption" (toJSON caption)
+instance Persistable (Send (Caption :&: Video)) where
+	type instance Payload (Send (Caption :&: Video)) = Send (Caption :&: URI :&: Video)
+	payload (Send chat_id (caption :&: video)) = payload (Send chat_id video) <> singleton "caption" (toJSON caption)
 	endpoint _ = "sendVideo"
-
+--
 instance Persistable (Send Voice) where
-	type instance Payload (Send Voice) = Send Voice
-	payload (Send chat_id (Voice duration mime_type file_size)) =
-		singleton "chat_id" (toJSON chat_id) <> singleton "duration" (toJSON duration)
+	type instance Payload (Send Voice) = Send (URI :&: Voice)
+	payload (Send chat_id (uri :&: Voice duration mime_type file_size)) = singleton "file_id" (toJSON uri)
+		<> singleton "chat_id" (toJSON chat_id) <> singleton "duration" (toJSON duration)
 		<> singleton "mime_type" (toJSON mime_type) <> singleton "file_size" (toJSON file_size)
 	endpoint _ = "sendVoice"
-
-instance Persistable (Send (Text :&: Voice)) where
-	type instance Payload (Send (Text :&: Voice)) = Send (Text :&: Voice)
-	payload (Send chat_id (caption :&: voice)) =
-		payload (Send chat_id voice) <> singleton "caption" (toJSON caption)
+--
+instance Persistable (Send (Caption :&: Voice)) where
+	type instance Payload (Send (Caption :&: Voice)) = Send (Caption :&: URI :&: Voice)
+	payload (Send chat_id (caption :&: voice)) = payload (Send chat_id voice) <> singleton "caption" (toJSON caption)
 	endpoint _ = "sendVoice"
 
 instance Persistable (Send Location) where
