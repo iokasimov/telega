@@ -109,3 +109,6 @@
 * Define `Persistable` instance for dropping `Notification`s on pressing inline buttons
 * Remove thumb field from `Audio`, `Document`, `Video` and `Voice` datatypes
 * Define `Persistable` instances for `Audio`, `Document`, `Video` and `Voice` datatypes
+
+# 0.2.4
+* Define `Persistable` instances for `Location` and `Live Location` datatypes

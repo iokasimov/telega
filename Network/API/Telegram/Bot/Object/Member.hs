@@ -3,11 +3,10 @@ module Network.API.Telegram.Bot.Object.Member (Member (..), module Exports) wher
 import Network.API.Telegram.Bot.Object.Member.Powers as Exports
 import Network.API.Telegram.Bot.Object.Member.Restrictions as Exports
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), Value (Object), object, withObject, (.:), (.=))
-import "base" Control.Applicative (Applicative ((<*>)))
-import "base" Control.Monad (Monad ((>>=)), fail)
+import "aeson" Data.Aeson (FromJSON (parseJSON), Value (Object), withObject, (.:))
+import "base" Control.Applicative ((<*>))
+import "base" Control.Monad (fail, (>>=))
 import "base" Data.Bool (Bool)
-import "base" Data.Int (Int, Int64)
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)

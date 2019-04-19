@@ -1,15 +1,16 @@
-module Network.API.Telegram.Bot.Object.Update.Message.Content.Info.Location (Location (..)) where
+module Network.API.Telegram.Bot.Object.Update.Message.Content.Info.Location (Location (..), Live (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), object, withObject, (.:), (.=))
 import "base" Control.Applicative ((<*>))
 import "base" Data.Bool (Bool (True, False))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
-import "base" Data.Int (Int, Int64)
+import "base" Data.Int (Int)
 import "base" GHC.Float (Float)
 import "base" Text.Show (Show)
 
-data Location = Location Float Float deriving Show
+data Location = Location Float Float
+	deriving Show
 
 instance FromJSON Location where
 	parseJSON = withObject "Location" $ \v -> Location
@@ -18,3 +19,7 @@ instance FromJSON Location where
 instance ToJSON Location where
 	toJSON (Location latitude longitude) = object
 		["latitude" .= latitude, "longitude" .= longitude]
+
+data Live a where Live :: Int -> Location -> Live Location
+
+deriving instance Show a => Show (Live a)

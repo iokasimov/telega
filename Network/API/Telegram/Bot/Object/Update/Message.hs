@@ -106,11 +106,23 @@ instance Persistable (Send Audio) where
 		<> singleton "mime_type" (toJSON mime_type) <> singleton "file_size" (toJSON file_size)
 	endpoint _ = "sendAudio"
 
+instance Persistable (Send (Text :&: Audio)) where
+	type instance Payload (Send (Text :&: Audio)) = Send (Text :&: Audio)
+	payload (Send chat_id (caption :&: audio)) =
+		payload (Send chat_id audio) <> singleton "caption" (toJSON caption)
+	endpoint _ = "sendAudio"
+
 instance Persistable (Send Document) where
 	type instance Payload (Send Document) = Send Document
 	payload (Send chat_id (Document file_name mime_type file_size)) =
 		singleton "chat_id" (toJSON chat_id) <> singleton "file_name" (toJSON file_name)
 		<> singleton "mime_type" (toJSON mime_type) <> singleton "file_size" (toJSON file_size)
+	endpoint _ = "sendDocument"
+
+instance Persistable (Send (Text :&: Document)) where
+	type instance Payload (Send (Text :&: Document)) = Send (Text :&: Document)
+	payload (Send chat_id (caption :&: document)) =
+		payload (Send chat_id document) <> singleton "caption" (toJSON caption)
 	endpoint _ = "sendDocument"
 
 instance Persistable (Send Video) where
@@ -121,11 +133,23 @@ instance Persistable (Send Video) where
 		<> singleton "mime_type" (toJSON mime_type) <> singleton "file_size" (toJSON file_size)
 	endpoint _ = "sendVideo"
 
+instance Persistable (Send (Text :&: Video)) where
+	type instance Payload (Send (Text :&: Video)) = Send (Text :&: Video)
+	payload (Send chat_id (caption :&: video)) =
+		payload (Send chat_id video) <> singleton "caption" (toJSON caption)
+	endpoint _ = "sendVideo"
+
 instance Persistable (Send Voice) where
 	type instance Payload (Send Voice) = Send Voice
 	payload (Send chat_id (Voice duration mime_type file_size)) =
 		singleton "chat_id" (toJSON chat_id) <> singleton "duration" (toJSON duration)
 		<> singleton "mime_type" (toJSON mime_type) <> singleton "file_size" (toJSON file_size)
+	endpoint _ = "sendVoice"
+
+instance Persistable (Send (Text :&: Voice)) where
+	type instance Payload (Send (Text :&: Voice)) = Send (Text :&: Voice)
+	payload (Send chat_id (caption :&: voice)) =
+		payload (Send chat_id voice) <> singleton "caption" (toJSON caption)
 	endpoint _ = "sendVoice"
 
 data Reply a = Reply Int a
@@ -156,6 +180,19 @@ instance Persistable (Edit (Text :&: Keyboard)) where
 		singleton "chat_id" (toJSON chat_id) <> singleton "message_id" (toJSON message_id)
 		<> singleton "text" (toJSON text) <> singleton "reply_markup" (toJSON reply_markup)
 	endpoint _ = "editMessageText"
+
+instance Persistable (Send Location) where
+	type instance Payload (Send Location) = Send Location
+	payload (Send chat_id (Location latitude longitude)) = singleton "chat_id" (toJSON chat_id)
+		<> singleton "latitude" (toJSON latitude) <> singleton "longitude" (toJSON longitude)
+	endpoint _ = "sendLocation"
+
+instance Persistable (Send (Live Location)) where
+	type instance Payload (Send (Live Location)) = Send (Live Location)
+	payload (Send chat_id (Live live_period (Location latitude longitude))) =
+		singleton "chat_id" (toJSON chat_id) <> singleton "live_period" (toJSON live_period)
+		<> singleton "latitude" (toJSON latitude) <> singleton "longitude" (toJSON longitude)
+	endpoint _ = "sendLocation"
 
 data Delete a = Delete Int64 Int
 
