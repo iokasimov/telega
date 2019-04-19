@@ -152,6 +152,19 @@ instance Persistable (Send (Text :&: Voice)) where
 		payload (Send chat_id voice) <> singleton "caption" (toJSON caption)
 	endpoint _ = "sendVoice"
 
+instance Persistable (Send Location) where
+	type instance Payload (Send Location) = Send Location
+	payload (Send chat_id (Location latitude longitude)) = singleton "chat_id" (toJSON chat_id)
+		<> singleton "latitude" (toJSON latitude) <> singleton "longitude" (toJSON longitude)
+	endpoint _ = "sendLocation"
+
+instance Persistable (Send (Live Location)) where
+	type instance Payload (Send (Live Location)) = Send (Live Location)
+	payload (Send chat_id (Live live_period (Location latitude longitude))) =
+		singleton "chat_id" (toJSON chat_id) <> singleton "live_period" (toJSON live_period)
+		<> singleton "latitude" (toJSON latitude) <> singleton "longitude" (toJSON longitude)
+	endpoint _ = "sendLocation"
+
 data Reply a = Reply Int a
 
 instance Persistable (Send a) => Persistable (Reply a) where
@@ -181,18 +194,18 @@ instance Persistable (Edit (Text :&: Keyboard)) where
 		<> singleton "text" (toJSON text) <> singleton "reply_markup" (toJSON reply_markup)
 	endpoint _ = "editMessageText"
 
-instance Persistable (Send Location) where
-	type instance Payload (Send Location) = Send Location
-	payload (Send chat_id (Location latitude longitude)) = singleton "chat_id" (toJSON chat_id)
+instance Persistable (Edit (Live Location)) where
+	type instance Payload (Edit (Live Location)) = Edit Location
+	payload (Edit chat_id message_id (Location latitude longitude)) =
+		singleton "chat_id" (toJSON chat_id) <> singleton "message_id" (toJSON message_id)
 		<> singleton "latitude" (toJSON latitude) <> singleton "longitude" (toJSON longitude)
-	endpoint _ = "sendLocation"
+	endpoint _ = "editMessageLiveLocation"
 
-instance Persistable (Send (Live Location)) where
-	type instance Payload (Send (Live Location)) = Send (Live Location)
-	payload (Send chat_id (Live live_period (Location latitude longitude))) =
-		singleton "chat_id" (toJSON chat_id) <> singleton "live_period" (toJSON live_period)
-		<> singleton "latitude" (toJSON latitude) <> singleton "longitude" (toJSON longitude)
-	endpoint _ = "sendLocation"
+instance Persistable (Edit (Freeze (Live Location))) where
+	type instance Payload (Edit (Freeze (Live Location))) = Edit (Freeze (Live Location))
+	payload (Edit chat_id message_id Freeze) = singleton "chat_id" (toJSON chat_id)
+		<> singleton "message_id" (toJSON message_id)
+	endpoint _ = "stopMessageLiveLocation"
 
 data Delete a = Delete Int64 Int
 

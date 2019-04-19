@@ -1,8 +1,8 @@
-module Network.API.Telegram.Bot.Object.Update.Message.Content.Info.Location (Location (..), Live (..)) where
+module Network.API.Telegram.Bot.Object.Update.Message.Content.Info.Location
+	(Location (..), Live (..), Freeze (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), object, withObject, (.:), (.=))
 import "base" Control.Applicative ((<*>))
-import "base" Data.Bool (Bool (True, False))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int)
@@ -20,6 +20,8 @@ instance ToJSON Location where
 	toJSON (Location latitude longitude) = object
 		["latitude" .= latitude, "longitude" .= longitude]
 
-data Live a where Live :: Int -> Location -> Live Location
+data Live a where
+	Live :: Int -> Location -> Live Location
 
-deriving instance Show a => Show (Live a)
+data Freeze a where
+	Freeze :: Freeze (Live Location)
