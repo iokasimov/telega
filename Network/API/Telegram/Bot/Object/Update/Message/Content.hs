@@ -20,7 +20,7 @@ import "text" Data.Text (Text, drop, take)
 data Content
 	= Textual Text
 	| Command Text
-	| Attachment (Maybe Text) File
+	| Attachment (Maybe Caption) File
 	| Polling Text Poll
 	| Information Info
 	deriving Show

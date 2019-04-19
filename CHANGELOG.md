@@ -114,3 +114,4 @@
 * Define `Persistable` instances for `Location` and `Live Location` datatypes
 * Define `Stop` `Persistable` instances for `Poll` and `Live Location` datatypes
 * Move `Group` module into `Moving` submodule
+* Define `Caption` and `URI` datatypes to distinct specialized `Text` values
