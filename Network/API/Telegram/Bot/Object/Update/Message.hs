@@ -165,6 +165,14 @@ instance Persistable (Send (Live Location)) where
 		<> singleton "latitude" (toJSON latitude) <> singleton "longitude" (toJSON longitude)
 	endpoint _ = "sendLocation"
 
+instance Persistable (Send Poll) where
+	type instance Payload (Send Poll) = Send Poll
+	payload (Send chat_id (Opened question options)) = singleton "chat_id" (toJSON chat_id)
+		<> singleton "question" (toJSON question) <> singleton "options" (toJSON options)
+	payload (Send chat_id (Closed question options)) = singleton "chat_id" (toJSON chat_id)
+		<> singleton "question" (toJSON question) <> singleton "options" (toJSON options)
+	endpoint _ = "sendPoll"
+
 data Reply a = Reply Int a
 
 instance Persistable (Send a) => Persistable (Reply a) where
@@ -201,12 +209,6 @@ instance Persistable (Edit (Live Location)) where
 		<> singleton "latitude" (toJSON latitude) <> singleton "longitude" (toJSON longitude)
 	endpoint _ = "editMessageLiveLocation"
 
-instance Persistable (Edit (Freeze (Live Location))) where
-	type instance Payload (Edit (Freeze (Live Location))) = Edit (Freeze (Live Location))
-	payload (Edit chat_id message_id Freeze) = singleton "chat_id" (toJSON chat_id)
-		<> singleton "message_id" (toJSON message_id)
-	endpoint _ = "stopMessageLiveLocation"
-
 data Delete a = Delete Int64 Int
 
 instance Persistable (Delete Message) where
@@ -214,6 +216,20 @@ instance Persistable (Delete Message) where
 	payload (Delete chat_id message_id) = singleton "chat_id" (toJSON chat_id)
 		<> singleton "message_id" (toJSON message_id)
 	endpoint _ = "deleteMessage"
+
+data Stop a = Stop Int64 Int
+
+instance Persistable (Stop (Live Location)) where
+	type instance Payload (Stop (Live Location)) = Stop (Live Location)
+	payload (Stop chat_id message_id) = singleton "chat_id" (toJSON chat_id)
+		<> singleton "message_id" (toJSON message_id)
+	endpoint _ = "stopMessageLiveLocation"
+
+instance Persistable (Stop Poll) where
+	type instance Payload (Stop Poll) = Stop (Stop Poll)
+	payload (Stop chat_id message_id) = singleton "chat_id" (toJSON chat_id)
+		<> singleton "message_id" (toJSON message_id)
+	endpoint _ = "stopPoll"
 
 data Silently (todo :: * -> *) a = Silently a
 

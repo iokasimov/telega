@@ -1,6 +1,7 @@
 module Network.API.Telegram.Bot.Object.Update.Message.Content.Poll.Option (Option (..)) where
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
+import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON)
+	, Value (String), withObject, (.:))
 import "base" Control.Applicative ((<*>))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
@@ -13,3 +14,6 @@ data Option = Option Text Int deriving Show
 instance FromJSON Option where
 	parseJSON = withObject "Option" $ \v -> Option
 		<$> v .: "text" <*> v .: "voter_counter"
+
+instance ToJSON Option where
+	toJSON (Option opt _) = String opt

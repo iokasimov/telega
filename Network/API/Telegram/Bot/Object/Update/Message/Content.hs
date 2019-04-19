@@ -21,7 +21,7 @@ data Content
 	= Textual Text
 	| Command Text
 	| Attachment (Maybe Text) File
-	| Polling Poll
+	| Polling Text Poll
 	| Information Info
 	deriving Show
 
@@ -50,7 +50,10 @@ instance FromJSON Content where
 		information v = Information <$> parseJSON (Object v)
 
 		polling :: Object -> Parser Content
-		polling v = Polling <$> v .: "poll"
+		polling v = Polling <$> (v .: "poll" >>= poll_id) <*> v .: "poll" where
+
+			poll_id :: Value -> Parser Text
+			poll_id = withObject "Poll" $ \p -> p .: "id"
 
 		textual :: Object -> Parser Content
 		textual v = Textual <$> v .: "text"

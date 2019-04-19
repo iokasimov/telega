@@ -112,3 +112,4 @@
 
 # 0.2.4
 * Define `Persistable` instances for `Location` and `Live Location` datatypes
+* Define `Stop` `Persistable` instances for `Poll` and `Live Location` datatypes
