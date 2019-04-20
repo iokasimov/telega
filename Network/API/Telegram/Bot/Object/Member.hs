@@ -1,5 +1,5 @@
 module Network.API.Telegram.Bot.Object.Member
-	( module Exports, Member (..), Until (..)
+	( module Exports, Member (..), Until (..), Can (..), Cannot (..)
 	, Kick (..), Unban (..), Restrict (..), Promote (..)) where
 
 import Network.API.Telegram.Bot.Object.Member.Powers as Exports
@@ -8,12 +8,13 @@ import Network.API.Telegram.Bot.Object.Member.Restrictions as Exports
 import "aeson" Data.Aeson (FromJSON (parseJSON), Value (Object), withObject, (.:))
 import "base" Control.Applicative ((<*>))
 import "base" Control.Monad (fail, (>>=))
-import "base" Data.Bool (Bool)
+import "base" Data.Bool (Bool (True, False))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int, Int64)
 import "base" Data.Semigroup ((<>))
 import "base" Text.Show (Show)
+import "data-default" Data.Default (Default (def))
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Object.Sender (Sender)
@@ -38,6 +39,22 @@ instance FromJSON Member where
 		("left" :: Text) -> Left <$> v .: "user"
 		("kicked" :: Text) -> Kicked <$> v .: "user" <*> v.: "until_date"
 		_ -> fail "Status of chat member is not defined"
+
+newtype Can a = Can a
+
+instance Default (Can Restrictions) where
+	def = Can $ Restrictions True True True True
+
+instance Default (Can Powers) where
+	def = Can $ Powers True True True True True True True True
+
+newtype Cannot a = Cannot a
+
+instance Default (Cannot Restrictions) where
+	def = Cannot $ Restrictions False False False False
+
+instance Default (Cannot Powers) where
+	def = Cannot $ Powers False False False False False False False False
 
 -- | Ban forever or until some date (between 30 seconds and 366 days)
 data Until = Forever | Until Int
