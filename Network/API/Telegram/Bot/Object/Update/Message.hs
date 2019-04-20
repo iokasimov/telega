@@ -5,7 +5,7 @@ import Network.API.Telegram.Bot.Object.Update.Message.Content as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Keyboard as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Origin as Exports
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), Value (Object), withObject, (.:))
+import "aeson" Data.Aeson (FromJSON (parseJSON), Value (Object), withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser)
 import "base" Control.Applicative (Applicative ((<*>)), Alternative ((<|>)))
 import "base" Control.Monad (Monad ((>>=)), fail)
@@ -16,7 +16,6 @@ import "base" Data.Int (Int, Int64)
 import "base" Data.Semigroup ((<>))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
-import "unordered-containers" Data.HashMap.Strict (singleton)
 import "with" Data.With (type (:&:)((:&:)))
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content (Content)
@@ -24,6 +23,7 @@ import Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin (Private, G
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint))
+import Network.API.Telegram.Bot.Utils (field)
 
 data Message
 	= Direct Int Origin Content
@@ -81,163 +81,163 @@ data Forward a = Forward Int Int64 Int64
 
 instance Persistable (Forward Message) where
 	type instance Payload (Forward Message) = Forward Message
-	payload (Forward message_id from_chat_id to_chat_id) = singleton "message_id" (toJSON message_id)
-		<> singleton "from_chat_id" (toJSON from_chat_id) <> singleton "chat_id" (toJSON to_chat_id)
+	payload (Forward message_id from_chat_id to_chat_id) = field "message_id" message_id
+		<> field "from_chat_id" from_chat_id <> field "chat_id" to_chat_id
 	endpoint _ = "forwardMessage"
 
 data Send a = Send Int64 a
 
 instance Persistable (Send Text) where
 	type instance Payload (Send Text) = Send Text
-	payload (Send chat_id text) = singleton "chat_id" (toJSON chat_id) <> singleton "text" (toJSON text)
+	payload (Send chat_id text) = field "chat_id" chat_id <> field "text" text
 	endpoint _ = "sendMessage"
 
 instance Persistable (Send (Text :&: Keyboard)) where
 	type instance Payload (Send (Text :&: Keyboard)) = Send (Text :&: Keyboard)
-	payload (Send chat_id (text :&: reply_markup)) = singleton "chat_id" (toJSON chat_id)
-		<> singleton "text" (toJSON text) <> singleton "reply_markup" (toJSON reply_markup)
+	payload (Send chat_id (text :&: reply_markup)) = field "chat_id" chat_id
+		<> field "text" text <> field "reply_markup" reply_markup
 	endpoint _ = "sendMessage"
 
 instance Persistable (Send Audio) where
 	type instance Payload (Send Audio) = Send (URI :&: Audio)
-	payload (Send chat_id (uri :&: Audio duration performer title mime_type file_size)) = singleton "file_id" (toJSON uri)
-		<> singleton "chat_id" (toJSON chat_id) <> singleton "duration" (toJSON duration) <> singleton "performer" (toJSON performer)
-		<> singleton "title" (toJSON title) <> singleton "mime_type" (toJSON mime_type) <> singleton "file_size" (toJSON file_size)
+	payload (Send chat_id (uri :&: Audio duration performer title mime_type file_size)) = field "file_id" uri
+		<> field "chat_id" chat_id <> field "duration" duration <> field "performer" performer
+		<> field "title" title <> field "mime_type" mime_type <> field "file_size" file_size
 	endpoint _ = "sendAudio"
 
 instance Persistable (Send (Caption :&: Audio)) where
 	type instance Payload (Send (Caption :&: Audio)) = Send (Caption :&: URI :&: Audio)
-	payload (Send chat_id (caption :&: audio)) = payload (Send chat_id audio) <> singleton "caption" (toJSON caption)
+	payload (Send chat_id (caption :&: audio)) = payload (Send chat_id audio) <> field "caption" caption
 	endpoint _ = "sendAudio"
 
 instance Persistable (Send Document) where
 	type instance Payload (Send Document) = Send (URI :&: Document)
-	payload (Send chat_id (uri :&: Document file_name mime_type file_size)) = singleton "file_id" (toJSON uri)
-		<> singleton "chat_id" (toJSON chat_id) <> singleton "file_name" (toJSON file_name)
-		<> singleton "mime_type" (toJSON mime_type) <> singleton "file_size" (toJSON file_size)
+	payload (Send chat_id (uri :&: Document file_name mime_type file_size)) = field "file_id" uri
+		<> field "chat_id" chat_id <> field "file_name" file_name
+		<> field "mime_type" mime_type <> field "file_size" file_size
 	endpoint _ = "sendDocument"
 
 instance Persistable (Send (Caption :&: Document)) where
 	type instance Payload (Send (Caption :&: Document)) = Send (Caption :&: URI :&: Document)
-	payload (Send chat_id (caption :&: document)) = payload (Send chat_id document) <> singleton "caption" (toJSON caption)
+	payload (Send chat_id (caption :&: document)) = payload (Send chat_id document) <> field "caption" caption
 	endpoint _ = "sendDocument"
 
 instance Persistable (Send Video) where
 	type instance Payload (Send Video) = Send (URI :&: Video)
-	payload (Send chat_id (uri :&: Video width height duration mime_type file_size)) = singleton "file_id" (toJSON uri)
-		<> singleton "chat_id" (toJSON chat_id) <> singleton "duration" (toJSON duration) <> singleton "width" (toJSON width)
-		<> singleton "height" (toJSON height) <> singleton "mime_type" (toJSON mime_type) <> singleton "file_size" (toJSON file_size)
+	payload (Send chat_id (uri :&: Video width height duration mime_type file_size)) = field "file_id" uri
+		<> field "chat_id" chat_id <> field "duration" duration <> field "width" width
+		<> field "height" height <> field "mime_type" mime_type <> field "file_size" file_size
 	endpoint _ = "sendVideo"
 
 instance Persistable (Send (Caption :&: Video)) where
 	type instance Payload (Send (Caption :&: Video)) = Send (Caption :&: URI :&: Video)
-	payload (Send chat_id (caption :&: video)) = payload (Send chat_id video) <> singleton "caption" (toJSON caption)
+	payload (Send chat_id (caption :&: video)) = payload (Send chat_id video) <> field "caption" caption
 	endpoint _ = "sendVideo"
 
 instance Persistable (Send Voice) where
 	type instance Payload (Send Voice) = Send (URI :&: Voice)
-	payload (Send chat_id (uri :&: Voice duration mime_type file_size)) = singleton "file_id" (toJSON uri)
-		<> singleton "chat_id" (toJSON chat_id) <> singleton "duration" (toJSON duration)
-		<> singleton "mime_type" (toJSON mime_type) <> singleton "file_size" (toJSON file_size)
+	payload (Send chat_id (uri :&: Voice duration mime_type file_size)) = field "file_id" uri
+		<> field "chat_id" chat_id <> field "duration" duration
+		<> field "mime_type" mime_type <> field "file_size" file_size
 	endpoint _ = "sendVoice"
 
 instance Persistable (Send (Caption :&: Voice)) where
 	type instance Payload (Send (Caption :&: Voice)) = Send (Caption :&: URI :&: Voice)
-	payload (Send chat_id (caption :&: voice)) = payload (Send chat_id voice) <> singleton "caption" (toJSON caption)
+	payload (Send chat_id (caption :&: voice)) = payload (Send chat_id voice) <> field "caption" caption
 	endpoint _ = "sendVoice"
 
 instance Persistable (Send Location) where
 	type instance Payload (Send Location) = Send Location
-	payload (Send chat_id (Location latitude longitude)) = singleton "chat_id" (toJSON chat_id)
-		<> singleton "latitude" (toJSON latitude) <> singleton "longitude" (toJSON longitude)
+	payload (Send chat_id (Location latitude longitude)) = field "chat_id" chat_id
+		<> field "latitude" latitude <> field "longitude" longitude
 	endpoint _ = "sendLocation"
 
 instance Persistable (Send (Live Location)) where
 	type instance Payload (Send (Live Location)) = Send (Live Location)
 	payload (Send chat_id (Live live_period (Location latitude longitude))) =
-		singleton "chat_id" (toJSON chat_id) <> singleton "live_period" (toJSON live_period)
-		<> singleton "latitude" (toJSON latitude) <> singleton "longitude" (toJSON longitude)
+		field "chat_id" chat_id <> field "live_period" live_period
+		<> field "latitude" latitude <> field "longitude" longitude
 	endpoint _ = "sendLocation"
 
 instance Persistable (Send Poll) where
 	type instance Payload (Send Poll) = Send Poll
-	payload (Send chat_id (Opened question options)) = singleton "chat_id" (toJSON chat_id)
-		<> singleton "question" (toJSON question) <> singleton "options" (toJSON options)
-	payload (Send chat_id (Closed question options)) = singleton "chat_id" (toJSON chat_id)
-		<> singleton "question" (toJSON question) <> singleton "options" (toJSON options)
+	payload (Send chat_id (Opened question options)) = field "chat_id" chat_id
+		<> field "question" question <> field "options" options
+	payload (Send chat_id (Closed question options)) = field "chat_id" chat_id
+		<> field "question" question <> field "options" options
 	endpoint _ = "sendPoll"
 
 data Reply a = Reply Int a
 
 instance Persistable (Send a) => Persistable (Reply a) where
 	type Payload (Reply a) = Reply (Payload (Send a))
-	payload (Reply reply_to_message_id x) = payload x <> singleton
-		"reply_to_message_id" (toJSON reply_to_message_id)
+	payload (Reply reply_to_message_id x) = payload x <> field
+		"reply_to_message_id" reply_to_message_id
 	endpoint (Reply _ x) = endpoint x
 
 data Edit b = Edit Int64 Int b
 
 instance Persistable (Edit Text) where
 	type Payload (Edit Text) = Edit Text
-	payload (Edit chat_id message_id text) = singleton "chat_id" (toJSON chat_id)
-		<> singleton "message_id" (toJSON message_id) <> singleton "text" (toJSON text)
+	payload (Edit chat_id message_id text) = field "chat_id" chat_id
+		<> field "message_id" message_id <> field "text" text
 	endpoint _ = "editMessageText"
 
 instance Persistable (Edit Keyboard) where
 	type Payload (Edit Keyboard) = Edit Keyboard
-	payload (Edit chat_id message_id reply_markup) = singleton "chat_id" (toJSON chat_id)
-		<> singleton "message_id" (toJSON message_id) <> singleton "reply_markup" (toJSON reply_markup)
+	payload (Edit chat_id message_id reply_markup) = field "chat_id" chat_id
+		<> field "message_id" message_id <> field "reply_markup" reply_markup
 	endpoint _ = "editMessageText"
 
 instance Persistable (Edit (Text :&: Keyboard)) where
 	type Payload (Edit (Text :&: Keyboard)) = Edit (Text :&: Keyboard)
 	payload (Edit chat_id message_id (text :&: reply_markup)) =
-		singleton "chat_id" (toJSON chat_id) <> singleton "message_id" (toJSON message_id)
-		<> singleton "text" (toJSON text) <> singleton "reply_markup" (toJSON reply_markup)
+		field "chat_id" chat_id <> field "message_id" message_id
+		<> field "text" text <> field "reply_markup" reply_markup
 	endpoint _ = "editMessageText"
 
 instance Persistable (Edit (Live Location)) where
 	type instance Payload (Edit (Live Location)) = Edit Location
 	payload (Edit chat_id message_id (Location latitude longitude)) =
-		singleton "chat_id" (toJSON chat_id) <> singleton "message_id" (toJSON message_id)
-		<> singleton "latitude" (toJSON latitude) <> singleton "longitude" (toJSON longitude)
+		field "chat_id" chat_id <> field "message_id" message_id
+		<> field "latitude" latitude <> field "longitude" longitude
 	endpoint _ = "editMessageLiveLocation"
 
 data Delete a = Delete Int64 Int
 
 instance Persistable (Delete Message) where
 	type Payload (Delete Message) = Delete Message
-	payload (Delete chat_id message_id) = singleton "chat_id" (toJSON chat_id)
-		<> singleton "message_id" (toJSON message_id)
+	payload (Delete chat_id message_id) = field "chat_id" chat_id
+		<> field "message_id" message_id
 	endpoint _ = "deleteMessage"
 
 data Stop a = Stop Int64 Int
 
 instance Persistable (Stop (Live Location)) where
 	type instance Payload (Stop (Live Location)) = Stop (Live Location)
-	payload (Stop chat_id message_id) = singleton "chat_id" (toJSON chat_id)
-		<> singleton "message_id" (toJSON message_id)
+	payload (Stop chat_id message_id) = field "chat_id" chat_id
+		<> field "message_id" message_id
 	endpoint _ = "stopMessageLiveLocation"
 
 instance Persistable (Stop Poll) where
 	type instance Payload (Stop Poll) = Stop (Stop Poll)
-	payload (Stop chat_id message_id) = singleton "chat_id" (toJSON chat_id)
-		<> singleton "message_id" (toJSON message_id)
+	payload (Stop chat_id message_id) = field "chat_id" chat_id
+		<> field "message_id" message_id
 	endpoint _ = "stopPoll"
 
 data Silently (todo :: * -> *) a = Silently a
 
 instance Persistable (Forward obj) => Persistable (Silently Forward obj) where
 	type Payload (Silently Forward obj) = Silently Forward (Payload (Forward obj))
-	payload (Silently x) = payload x <> singleton "disable_notification" (toJSON True)
+	payload (Silently x) = payload x <> field "disable_notification" True
 	endpoint (Silently x) = endpoint x
 
 instance Persistable (Send obj) => Persistable (Silently Send obj) where
 	type Payload (Silently Send obj) = Silently Send (Payload (Send obj))
-	payload (Silently x) = payload x <> singleton "disable_notification" (toJSON True)
+	payload (Silently x) = payload x <> field "disable_notification" True
 	endpoint (Silently x) = endpoint x
 
 instance Persistable (Reply obj) => Persistable (Silently Reply obj) where
 	type Payload (Silently Reply obj) = Silently Reply (Payload (Reply obj))
-	payload (Silently x) = payload x <> singleton "disable_notification" (toJSON True)
+	payload (Silently x) = payload x <> field "disable_notification" True
 	endpoint (Silently x) = endpoint x

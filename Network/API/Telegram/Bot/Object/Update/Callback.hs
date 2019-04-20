@@ -10,13 +10,13 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Semigroup ((<>))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
-import "unordered-containers" Data.HashMap.Strict (singleton)
 
 import Network.API.Telegram.Bot.Object.Update.Message (Message)
 import Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin)
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint))
+import Network.API.Telegram.Bot.Utils (field)
 
 data Callback = Datatext Text Message Text deriving Show
 
@@ -36,6 +36,5 @@ data Trigger a = Trigger Text Text
 
 instance Persistable (Trigger Notification) where
 	type instance Payload (Trigger Notification) = Trigger Notification
-	payload (Trigger cbq_id text) = singleton "text" (toJSON text)
-		<> singleton "callback_query_id" (toJSON cbq_id)
+	payload (Trigger cbq_id text) = field "text" text <> field "callback_query_id" cbq_id
 	endpoint _ = "answerCallbackQuery"

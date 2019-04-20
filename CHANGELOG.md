@@ -117,3 +117,6 @@
 * Define `Caption` and `URI` datatypes to distinct specialized `Text` values
 * Include `URI` field into `Send` `Persistable` instances for `File` objects
 * Define `Persistable` instance to kick, unban, restrict and promote `Member`
+
+# 0.2.5
+* Create `Utils` module with `field` function to create singleton hash table from key an value
