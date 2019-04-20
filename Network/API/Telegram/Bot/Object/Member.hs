@@ -1,5 +1,6 @@
 module Network.API.Telegram.Bot.Object.Member
-	(module Exports, Member (..), Ban (..), Kick (..), Unban (..)) where
+	( module Exports, Member (..), Until (..)
+	, Kick (..), Unban (..), Restrict (..)) where
 
 import Network.API.Telegram.Bot.Object.Member.Powers as Exports
 import Network.API.Telegram.Bot.Object.Member.Restrictions as Exports
@@ -39,10 +40,10 @@ instance FromJSON Member where
 		_ -> fail "Status of chat member is not defined"
 
 -- | Ban forever or until some date (between 30 seconds and 366 days)
-data Ban = Forever | Until Int
+data Until = Forever | Until Int
 
 data Kick a where
-	Kick :: Int64 -> Int -> Ban -> Kick Member
+	Kick :: Int64 -> Int -> Until -> Kick Member
 
 instance Persistable (Kick Member) where
 	type Payload (Kick Member) = Kick Member
@@ -61,3 +62,18 @@ instance Persistable (Unban Member) where
 		singleton "chat_id" (toJSON chat_id)
 		<> singleton "user_id" (toJSON user_id)
 	endpoint _ = "unbanChatMember"
+
+data Restrict a where
+	Restrict :: Int64 -> Int -> Until -> Restrictions -> Restrict Member
+
+instance Persistable (Restrict Member) where
+	type Payload (Restrict Member) = Restrict Member
+	payload (Restrict chat_id user_id Forever (Restrictions send_msgs send_media_msgs send_other_msgs wp_previews)) =
+		singleton "chat_id" (toJSON chat_id) <> singleton "user_id" (toJSON user_id)
+		<> singleton "can_send_messages" (toJSON send_msgs) <> singleton "can_send_media_messages" (toJSON send_media_msgs)
+		<> singleton "can_send_other_messages" (toJSON send_other_msgs) <> singleton "can_add_web_page_previews" (toJSON wp_previews)
+	payload (Restrict chat_id user_id (Until until_date) (Restrictions send_msgs send_media_msgs send_other_msgs wp_previews)) =
+		singleton "chat_id" (toJSON chat_id) <> singleton "user_id" (toJSON user_id) <> singleton "until_date" (toJSON until_date)
+		<> singleton "can_send_messages" (toJSON send_msgs) <> singleton "can_send_media_messages" (toJSON send_media_msgs)
+		<> singleton "can_send_other_messages" (toJSON send_other_msgs) <> singleton "can_add_web_page_previews" (toJSON wp_previews)
+	endpoint _ = "restrictChatMember"

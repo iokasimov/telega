@@ -116,4 +116,4 @@
 * Move `Group` module into `Moving` submodule
 * Define `Caption` and `URI` datatypes to distinct specialized `Text` values
 * Include `URI` field into `Send` `Persistable` instances for `File` objects
-* Define `Persistable` instance for kicking (banning) and unbanning `Member`s
+* Define `Persistable` instance to kick, unban, restrict `Member`
