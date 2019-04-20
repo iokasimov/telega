@@ -1,5 +1,5 @@
 module Network.API.Telegram.Bot.Object.Member
-	(module Exports, Member (..), Ban (..), Kick (..)) where
+	(module Exports, Member (..), Ban (..), Kick (..), Unban (..)) where
 
 import Network.API.Telegram.Bot.Object.Member.Powers as Exports
 import Network.API.Telegram.Bot.Object.Member.Restrictions as Exports
@@ -46,6 +46,18 @@ data Kick a where
 
 instance Persistable (Kick Member) where
 	type Payload (Kick Member) = Kick Member
-	payload (Kick chat_id user_id Forever) = singleton "chat_id" (toJSON chat_id) <> singleton "user_id" (toJSON user_id)
-	payload (Kick chat_id user_id (Until until_date)) = singleton "chat_id" (toJSON chat_id) <> singleton "user_id" (toJSON user_id) <> singleton "until_date" (toJSON until_date)
+	payload (Kick chat_id user_id Forever) =
+		singleton "chat_id" (toJSON chat_id) <> singleton "user_id" (toJSON user_id)
+	payload (Kick chat_id user_id (Until until_date)) = singleton "chat_id" (toJSON chat_id)
+		<> singleton "user_id" (toJSON user_id) <> singleton "until_date" (toJSON until_date)
 	endpoint _ = "kickChatMember"
+
+data Unban a where
+	Unban :: Int64 -> Int -> Unban Member
+
+instance Persistable (Unban Member) where
+	type Payload (Unban Member) = Unban Member
+	payload (Unban chat_id user_id) =
+		singleton "chat_id" (toJSON chat_id)
+		<> singleton "user_id" (toJSON user_id)
+	endpoint _ = "unbanChatMember"
