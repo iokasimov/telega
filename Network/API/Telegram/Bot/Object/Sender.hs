@@ -1,6 +1,6 @@
 module Network.API.Telegram.Bot.Object.Sender (Sender (..), nickname, firstname, lastname) where
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), Object, object, withObject, (.:), (.:?))
+import "aeson" Data.Aeson (FromJSON (parseJSON), Object, withObject, (.:), (.:?))
 import "aeson" Data.Aeson.Types (Parser)
 import "base" Control.Applicative (Applicative ((<*>)))
 import "base" Control.Monad (Monad ((>>=)))
@@ -26,6 +26,11 @@ instance Eq Sender where
 	User i _ _ _ _ == User i' _ _ _ _ = i == i'
 	_ == _ = False
 
+instance Identifiable Sender where
+	type instance Identificator Sender = Int
+	ident (Bot i _ _ _ _) = i
+	ident (User i _ _ _ _) = i
+
 type Whom = Int -> Maybe Text -> Text -> Maybe Text -> Maybe Text -> Sender
 
 instance FromJSON Sender where
@@ -36,11 +41,6 @@ instance FromJSON Sender where
 		sender v f = f <$> v .: "id" <*> v .:? "username"
 			<*> v .: "first_name" <*> v .:? "last_name"
 			<*> v .:? "language_code"
-
-instance Identifiable Sender where
-	type instance Identificator Sender = Int
-	ident (Bot i _ _ _ _) = i
-	ident (User i _ _ _ _) = i
 
 nickname :: Lens' Sender (Maybe Text)
 nickname f (Bot uid nn fn ln lng) = (\nn' -> Bot uid nn' fn ln lng) <$> f nn

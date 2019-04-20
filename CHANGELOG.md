@@ -115,3 +115,5 @@
 * Define `Stop` `Persistable` instances for `Poll` and `Live Location` datatypes
 * Move `Group` module into `Moving` submodule
 * Define `Caption` and `URI` datatypes to distinct specialized `Text` values
+* Include `URI` field into `Send` `Persistable` instances for `File` objects
+* Define `Persistable` instance for kicking (banning) `Member`

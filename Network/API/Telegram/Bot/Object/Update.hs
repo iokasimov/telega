@@ -23,6 +23,12 @@ data Update
 	| Incoming Int Message
 	deriving Show
 
+instance Identifiable Update where
+	type instance Identificator Update = Int
+	ident (Query i _) = i
+	ident (Membership i _) = i
+	ident (Incoming i _) = i
+
 instance FromJSON Update where
 	parseJSON = withObject "Update" $ \v ->
 		query v <|> membership v <|> incoming v where
@@ -35,9 +41,3 @@ instance FromJSON Update where
 
 		incoming :: Object -> Parser Update
 		incoming v = Incoming <$> v .: "update_id" <*> v .: "message"
-
-instance Identifiable Update where
-	type instance Identificator Update = Int
-	ident (Query i _) = i
-	ident (Membership i _) = i
-	ident (Incoming i _) = i

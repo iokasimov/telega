@@ -133,14 +133,14 @@ instance Persistable (Send (Caption :&: Video)) where
 	type instance Payload (Send (Caption :&: Video)) = Send (Caption :&: URI :&: Video)
 	payload (Send chat_id (caption :&: video)) = payload (Send chat_id video) <> singleton "caption" (toJSON caption)
 	endpoint _ = "sendVideo"
---
+
 instance Persistable (Send Voice) where
 	type instance Payload (Send Voice) = Send (URI :&: Voice)
 	payload (Send chat_id (uri :&: Voice duration mime_type file_size)) = singleton "file_id" (toJSON uri)
 		<> singleton "chat_id" (toJSON chat_id) <> singleton "duration" (toJSON duration)
 		<> singleton "mime_type" (toJSON mime_type) <> singleton "file_size" (toJSON file_size)
 	endpoint _ = "sendVoice"
---
+
 instance Persistable (Send (Caption :&: Voice)) where
 	type instance Payload (Send (Caption :&: Voice)) = Send (Caption :&: URI :&: Voice)
 	payload (Send chat_id (caption :&: voice)) = payload (Send chat_id voice) <> singleton "caption" (toJSON caption)

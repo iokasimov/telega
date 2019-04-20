@@ -1,27 +1,31 @@
-module Network.API.Telegram.Bot.Object.Member (Member (..), module Exports) where
+module Network.API.Telegram.Bot.Object.Member
+	(module Exports, Member (..), Ban (..), Kick (..)) where
 
 import Network.API.Telegram.Bot.Object.Member.Powers as Exports
 import Network.API.Telegram.Bot.Object.Member.Restrictions as Exports
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), Value (Object), withObject, (.:))
+import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), Value (Object), withObject, (.:))
 import "base" Control.Applicative ((<*>))
 import "base" Control.Monad (fail, (>>=))
 import "base" Data.Bool (Bool)
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
+import "base" Data.Int (Int, Int64)
+import "base" Data.Semigroup ((<>))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
-import "time" Data.Time.Clock.POSIX (POSIXTime)
+import "unordered-containers" Data.HashMap.Strict (singleton)
 
 import Network.API.Telegram.Bot.Object.Sender (Sender)
+import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint))
 
 data Member
 	= Creator Sender
 	| Administrator Sender Bool Powers
 	| Member Sender
-	| Restricted Sender Restrictions POSIXTime
+	| Restricted Sender Restrictions Int
 	| Left Sender
-	| Kicked Sender POSIXTime
+	| Kicked Sender Int
 	deriving Show
 
 instance FromJSON Member where
@@ -33,3 +37,15 @@ instance FromJSON Member where
 		("left" :: Text) -> Left <$> v .: "user"
 		("kicked" :: Text) -> Kicked <$> v .: "user" <*> v.: "until_date"
 		_ -> fail "Status of chat member is not defined"
+
+-- | Ban forever or until some date (between 30 seconds and 366 days)
+data Ban = Forever | Until Int
+
+data Kick a where
+	Kick :: Int64 -> Int -> Ban -> Kick Member
+
+instance Persistable (Kick Member) where
+	type Payload (Kick Member) = Kick Member
+	payload (Kick chat_id user_id Forever) = singleton "chat_id" (toJSON chat_id) <> singleton "user_id" (toJSON user_id)
+	payload (Kick chat_id user_id (Until until_date)) = singleton "chat_id" (toJSON chat_id) <> singleton "user_id" (toJSON user_id) <> singleton "until_date" (toJSON until_date)
+	endpoint _ = "kickChatMember"
