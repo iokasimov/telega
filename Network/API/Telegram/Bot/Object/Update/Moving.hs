@@ -3,7 +3,6 @@ module Network.API.Telegram.Bot.Object.Update.Moving (module Exports, Moving (..
 import Network.API.Telegram.Bot.Object.Update.Moving.Group as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
-import "aeson" Data.Aeson.Types (Object, Parser)
 import "base" Control.Applicative ((<*>), (<|>))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
@@ -17,10 +16,6 @@ data Moving
 	deriving Show
 
 instance FromJSON Moving where
-	parseJSON = withObject "Moving" $ \v -> gone v <|> joined v where
-
-		gone :: Object -> Parser Moving
-		gone v = Gone <$> v .: "left_chat_member" <*> v .: "chat"
-
-		joined :: Object -> Parser Moving
-		joined v = Joined <$> v .: "new_chat_members" <*> v .: "chat"
+	parseJSON = withObject "Moving" $ \v ->
+		(Gone <$> v .: "left_chat_member" <*> v .: "chat") <|>
+		(Joined <$> v .: "new_chat_members" <*> v .: "chat")

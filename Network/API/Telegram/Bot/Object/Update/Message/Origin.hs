@@ -4,6 +4,7 @@ import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser, Value)
 import "base" Control.Applicative (Applicative ((<*>)))
 import "base" Control.Monad (Monad ((>>=)), fail)
+import "base" Data.Eq (Eq ((==)))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int64)
@@ -20,6 +21,16 @@ data Origin
 	| Channel Int64 Text
 	deriving Show
 
+instance Eq Origin where
+	o == o' = ident o == ident o'
+
+instance Identifiable Origin where
+	type Identificator Origin = Int64
+	ident (Private i _) = i
+	ident (Group i _ _) = i
+	ident (Supergroup i _ _) = i
+	ident (Channel i _) = i
+
 instance FromJSON Origin where
 	parseJSON = withObject "Message" $ \v -> v .: "chat" >>= chat v where
 
@@ -30,10 +41,3 @@ instance FromJSON Origin where
 			("supergroup" :: Text) -> Supergroup <$> c .: "id" <*> c .: "title" <*> v .: "from"
 			("channel" :: Text) -> Channel <$> c .: "id" <*> c .: "title"
 			_ -> fail "Type of chat is not defined"
-
-instance Identifiable Origin where
-	type Identificator Origin = Int64
-	ident (Private i _) = i
-	ident (Group i _ _) = i
-	ident (Supergroup i _ _) = i
-	ident (Channel i _) = i

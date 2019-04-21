@@ -2,6 +2,7 @@ module Network.API.Telegram.Bot.Object.Update.Message.Content.File.Size (Size (.
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Control.Applicative ((<*>))
+import "base" Data.Eq (Eq ((==)))
 import "base" Data.Int (Int)
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
@@ -12,6 +13,9 @@ import "text" Data.Text (Text)
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 
 data Size = Size Text Int Int (Maybe Int) deriving Show
+
+instance Eq Size where
+	s == s' = ident s == ident s'
 
 instance Identifiable Size where
 	type Identificator Size = Text

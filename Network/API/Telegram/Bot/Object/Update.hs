@@ -1,20 +1,17 @@
-module Network.API.Telegram.Bot.Object.Update (Update (..), module Exports) where
+module Network.API.Telegram.Bot.Object.Update (module Exports, Update (..)) where
 
 import Network.API.Telegram.Bot.Object.Update.Callback as Exports
 import Network.API.Telegram.Bot.Object.Update.Message as Exports
 import Network.API.Telegram.Bot.Object.Update.Moving as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
-import "aeson" Data.Aeson.Types (Object, Parser)
-import "base" Control.Applicative (Applicative ((<*>)), Alternative ((<|>)))
+import "base" Control.Applicative ((<*>), (<|>))
+import "base" Data.Eq (Eq ((==)))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int)
 import "base" Text.Show (Show)
 
-import Network.API.Telegram.Bot.Object.Update.Callback (Callback)
-import Network.API.Telegram.Bot.Object.Update.Message (Message)
-import Network.API.Telegram.Bot.Object.Update.Moving (Moving)
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 
 data Update
@@ -22,6 +19,9 @@ data Update
 	| Membership Int Moving
 	| Incoming Int Message
 	deriving Show
+
+instance Eq Update where
+	u == u' = ident u == ident u'
 
 instance Identifiable Update where
 	type Identificator Update = Int
@@ -31,13 +31,6 @@ instance Identifiable Update where
 
 instance FromJSON Update where
 	parseJSON = withObject "Update" $ \v ->
-		query v <|> membership v <|> incoming v where
-
-		query :: Object -> Parser Update
-		query v = Query <$> v .: "update_id" <*> v .: "callback_query"
-
-		membership :: Object -> Parser Update
-		membership v = Membership <$> v .: "update_id" <*> v .: "message"
-
-		incoming :: Object -> Parser Update
-		incoming v = Incoming <$> v .: "update_id" <*> v .: "message"
+		(Query <$> v .: "update_id" <*> v .: "callback_query") <|>
+		(Membership <$> v .: "update_id" <*> v .: "message") <|>
+		(Incoming <$> v .: "update_id" <*> v .: "message")

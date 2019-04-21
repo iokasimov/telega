@@ -126,3 +126,6 @@
 * Define `Persistable` instance for sending `Photo`
 * Separate `Venue` and `Contact` into module and datatype from `Info` datatype
 * Rename `User` constructor of `Sender` datatype to `Human`
+
+# 0.2.6
+* Define `Eq` instance for `Update`, `Message`, `Callback`, `Origin`, `File` and `Size`

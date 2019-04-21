@@ -5,6 +5,7 @@ import Network.API.Telegram.Bot.Object.Update.Callback.Notification as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Control.Applicative (Applicative ((<*>)))
+import "base" Data.Eq (Eq ((==)))
 import "base" Data.Function (flip, ($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Semigroup ((<>))
@@ -19,6 +20,9 @@ import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, Retu
 import Network.API.Telegram.Bot.Utils (field)
 
 data Callback = Datatext Text Message Text deriving Show
+
+instance Eq Callback where
+	c == c' = ident c == ident c'
 
 instance Accessible Origin Callback where
 	access f (Datatext cq_id msg dttxt) = flip

@@ -10,6 +10,7 @@ import "aeson" Data.Aeson.Types (Object, Parser)
 import "base" Control.Applicative (Applicative ((<*>)), Alternative ((<|>)))
 import "base" Control.Monad (Monad ((>>=)), fail)
 import "base" Data.Bool (Bool (True))
+import "base" Data.Eq (Eq ((==)))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int, Int64)
@@ -31,6 +32,9 @@ data Message
 	| Replied Int Origin Content Message
 	deriving Show
 
+instance Eq Message where
+	m == m' = ident m == ident m'
+
 instance Accessible Content Message where
 	access f (Direct msg_id origin content) = (\content' -> Direct msg_id origin content') <$> f content
 	access f (Forwarded msg_id origin content) = (\content' -> Forwarded msg_id origin content') <$> f content
@@ -40,6 +44,12 @@ instance Accessible Origin Message where
 	access f (Direct msg_id origin content) = (\origin' -> Direct msg_id origin' content) <$> f origin
 	access f (Forwarded msg_id origin content) = (\origin' -> Forwarded msg_id origin' content) <$> f origin
 	access f (Replied msg_id origin content msg) = (\origin' -> Replied msg_id origin' content msg) <$> f origin
+
+instance Identifiable Message where
+	type Identificator Message = Int
+	ident (Direct i _ _) = i
+	ident (Forwarded i _ _) = i
+	ident (Replied i _ _ _) = i
 
 instance FromJSON Message where
 	parseJSON = withObject "Message" $ \v ->
@@ -70,12 +80,6 @@ instance FromJSON Message where
 		direct :: Object -> Parser Message
 		direct v = Direct <$> v .: "message_id"
 			<*> parseJSON (Object v) <*> parseJSON (Object v)
-
-instance Identifiable Message where
-	type Identificator Message = Int
-	ident (Direct i _ _) = i
-	ident (Forwarded i _ _) = i
-	ident (Replied i _ _ _) = i
 
 data Forward a = Forward Int Int64 Int64
 

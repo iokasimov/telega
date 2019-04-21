@@ -8,8 +8,6 @@ import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
-import Network.API.Telegram.Bot.Object.Update.Message.Content.Info.Location (Location)
-
 data Contact = Contact Text (Maybe Text) (Maybe Text) Text (Maybe Text)
 	deriving Show
 
