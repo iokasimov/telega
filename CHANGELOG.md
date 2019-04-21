@@ -124,3 +124,4 @@
 * Introduce `Returning` type family to automatically decode the API response
 * Move `Poll` status info from `Poll` datatype to `Polling` constructor of `Content` datatype
 * Define `Persistable` instance for sending `Photo`
+* Separate `Venue` into module and datatype from `Info` datatype

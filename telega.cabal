@@ -42,6 +42,7 @@ library
     Network.API.Telegram.Bot.Object.Update.Message.Content.File.Voice
     Network.API.Telegram.Bot.Object.Update.Message.Content.Info
     Network.API.Telegram.Bot.Object.Update.Message.Content.Info.Location
+    Network.API.Telegram.Bot.Object.Update.Message.Content.Info.Venue
     Network.API.Telegram.Bot.Object.Update.Message.Content.Poll
     Network.API.Telegram.Bot.Object.Update.Message.Content.Poll.Option
     Network.API.Telegram.Bot.Object.Update.Message.Keyboard
