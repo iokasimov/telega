@@ -157,6 +157,19 @@ instance Persistable (Send (Caption :&: Voice)) where
 	payload (Send chat_id (caption :&: voice)) = payload (Send chat_id voice) <> field "caption" caption
 	endpoint _ = "sendVoice"
 
+instance Persistable (Send Photo) where
+	type Payload (Send Photo) = Send URI
+	type Returning (Send Photo) = Message
+	payload (Send chat_id uri) = field "chat_id" chat_id <> field "photo" uri
+	endpoint _ = "sendPhoto"
+
+instance Persistable (Send (Caption :&: Photo)) where
+	type Payload (Send (Caption :&: Photo)) = Send (Caption :&: URI)
+	type Returning (Send (Caption :&: Photo)) = Message
+	payload (Send chat_id (caption :&: uri)) = field "chat_id" chat_id
+		<> field "photo" uri <> field "caption" caption
+	endpoint _ = "sendPhoto"
+
 instance Persistable (Send Location) where
 	type Payload (Send Location) = Send Location
 	type Returning (Send Location) = Message
