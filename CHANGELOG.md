@@ -122,3 +122,4 @@
 * Create `Utils` module with `field` function to create singleton hash table from key an value
 * Define `Can` and `Cannot` to define `Default` instances for `Powers` and `Restrictions`
 * Introduce `Returning` type family to automatically decode the API response
+* Move `Poll` status info from `Poll` datatype to `Polling` constructor of `Content` datatype

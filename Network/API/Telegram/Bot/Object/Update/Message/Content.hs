@@ -1,4 +1,5 @@
-module Network.API.Telegram.Bot.Object.Update.Message.Content (Content (..), module Exports) where
+module Network.API.Telegram.Bot.Object.Update.Message.Content
+	(module Exports, Content (..), Status (..)) where
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.Info as Exports
@@ -8,6 +9,7 @@ import "aeson" Data.Aeson (FromJSON (parseJSON), withArray, withObject, (.:), (.
 import "aeson" Data.Aeson.Types (Object, Parser, Value (Object))
 import "base" Control.Applicative (Applicative ((<*>)), Alternative (empty, (<|>)))
 import "base" Control.Monad (Monad ((>>=)), fail)
+import "base" Data.Bool (bool)
 import "base" Data.Function ((.), ($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Foldable (Foldable (foldr))
@@ -17,11 +19,14 @@ import "base" Text.Show (Show)
 import "base" Prelude ((+))
 import "text" Data.Text (Text, drop, take)
 
+data Status = Opened | Closed
+	deriving Show
+
 data Content
 	= Textual Text
 	| Command Text
 	| Attachment (Maybe Caption) File
-	| Polling Text Poll
+	| Polling Text Status Poll
 	| Information Info
 	deriving Show
 
@@ -50,10 +55,15 @@ instance FromJSON Content where
 		information v = Information <$> parseJSON (Object v)
 
 		polling :: Object -> Parser Content
-		polling v = Polling <$> (v .: "poll" >>= poll_id) <*> v .: "poll" where
+		polling v = Polling <$> (v .: "poll" >>= poll_id)
+			<*> (v .: "poll" >>= poll_status) <*> v .: "poll" where
 
 			poll_id :: Value -> Parser Text
 			poll_id = withObject "Poll" $ \p -> p .: "id"
+
+			poll_status :: Value -> Parser Status
+			poll_status = withObject "Poll" $ \p ->
+				bool Opened Closed <$> p .: "is_closed"
 
 		textual :: Object -> Parser Content
 		textual v = Textual <$> v .: "text"
