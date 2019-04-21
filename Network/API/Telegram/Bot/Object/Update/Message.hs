@@ -22,7 +22,7 @@ import Network.API.Telegram.Bot.Object.Update.Message.Content (Content)
 import Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin (Private, Group, Supergroup, Channel))
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
-import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint))
+import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, Returning, payload, endpoint))
 import Network.API.Telegram.Bot.Utils (field)
 
 data Message
@@ -72,7 +72,7 @@ instance FromJSON Message where
 			<*> parseJSON (Object v) <*> parseJSON (Object v)
 
 instance Identifiable Message where
-	type instance Identificator Message = Int
+	type Identificator Message = Int
 	ident (Direct i _ _) = i
 	ident (Forwarded i _ _) = i
 	ident (Replied i _ _ _) = i
@@ -80,7 +80,8 @@ instance Identifiable Message where
 data Forward a = Forward Int Int64 Int64
 
 instance Persistable (Forward Message) where
-	type instance Payload (Forward Message) = Forward Message
+	type Payload (Forward Message) = Forward Message
+	type Returning (Forward Message) = Message
 	payload (Forward message_id from_chat_id to_chat_id) = field "message_id" message_id
 		<> field "from_chat_id" from_chat_id <> field "chat_id" to_chat_id
 	endpoint _ = "forwardMessage"
@@ -88,79 +89,92 @@ instance Persistable (Forward Message) where
 data Send a = Send Int64 a
 
 instance Persistable (Send Text) where
-	type instance Payload (Send Text) = Send Text
+	type Payload (Send Text) = Send Text
+	type Returning (Send Text) = Message
 	payload (Send chat_id text) = field "chat_id" chat_id <> field "text" text
 	endpoint _ = "sendMessage"
 
 instance Persistable (Send (Text :&: Keyboard)) where
-	type instance Payload (Send (Text :&: Keyboard)) = Send (Text :&: Keyboard)
+	type Payload (Send (Text :&: Keyboard)) = Send (Text :&: Keyboard)
+	type Returning (Send (Text :&: Keyboard)) = Message
 	payload (Send chat_id (text :&: reply_markup)) = field "chat_id" chat_id
 		<> field "text" text <> field "reply_markup" reply_markup
 	endpoint _ = "sendMessage"
 
 instance Persistable (Send Audio) where
-	type instance Payload (Send Audio) = Send (URI :&: Audio)
+	type Payload (Send Audio) = Send (URI :&: Audio)
+	type Returning (Send Audio) = Message
 	payload (Send chat_id (uri :&: Audio duration performer title mime_type file_size)) = field "file_id" uri
 		<> field "chat_id" chat_id <> field "duration" duration <> field "performer" performer
 		<> field "title" title <> field "mime_type" mime_type <> field "file_size" file_size
 	endpoint _ = "sendAudio"
 
 instance Persistable (Send (Caption :&: Audio)) where
-	type instance Payload (Send (Caption :&: Audio)) = Send (Caption :&: URI :&: Audio)
+	type Payload (Send (Caption :&: Audio)) = Send (Caption :&: URI :&: Audio)
+	type Returning (Send (Caption :&: Audio)) = Message
 	payload (Send chat_id (caption :&: audio)) = payload (Send chat_id audio) <> field "caption" caption
 	endpoint _ = "sendAudio"
 
 instance Persistable (Send Document) where
-	type instance Payload (Send Document) = Send (URI :&: Document)
+	type Payload (Send Document) = Send (URI :&: Document)
+	type Returning (Send Document) = Message
 	payload (Send chat_id (uri :&: Document file_name mime_type file_size)) = field "file_id" uri
 		<> field "chat_id" chat_id <> field "file_name" file_name
 		<> field "mime_type" mime_type <> field "file_size" file_size
 	endpoint _ = "sendDocument"
 
 instance Persistable (Send (Caption :&: Document)) where
-	type instance Payload (Send (Caption :&: Document)) = Send (Caption :&: URI :&: Document)
+	type Payload (Send (Caption :&: Document)) = Send (Caption :&: URI :&: Document)
+	type Returning (Send (Caption :&: Document)) = Message
 	payload (Send chat_id (caption :&: document)) = payload (Send chat_id document) <> field "caption" caption
 	endpoint _ = "sendDocument"
 
 instance Persistable (Send Video) where
-	type instance Payload (Send Video) = Send (URI :&: Video)
+	type Payload (Send Video) = Send (URI :&: Video)
+	type Returning (Send Video) = Message
 	payload (Send chat_id (uri :&: Video width height duration mime_type file_size)) = field "file_id" uri
 		<> field "chat_id" chat_id <> field "duration" duration <> field "width" width
 		<> field "height" height <> field "mime_type" mime_type <> field "file_size" file_size
 	endpoint _ = "sendVideo"
 
 instance Persistable (Send (Caption :&: Video)) where
-	type instance Payload (Send (Caption :&: Video)) = Send (Caption :&: URI :&: Video)
+	type Payload (Send (Caption :&: Video)) = Send (Caption :&: URI :&: Video)
+	type Returning (Send (Caption :&: Video)) = Message
 	payload (Send chat_id (caption :&: video)) = payload (Send chat_id video) <> field "caption" caption
 	endpoint _ = "sendVideo"
 
 instance Persistable (Send Voice) where
-	type instance Payload (Send Voice) = Send (URI :&: Voice)
+	type Payload (Send Voice) = Send (URI :&: Voice)
+	type Returning (Send Voice) = Message
 	payload (Send chat_id (uri :&: Voice duration mime_type file_size)) = field "file_id" uri
 		<> field "chat_id" chat_id <> field "duration" duration
 		<> field "mime_type" mime_type <> field "file_size" file_size
 	endpoint _ = "sendVoice"
 
 instance Persistable (Send (Caption :&: Voice)) where
-	type instance Payload (Send (Caption :&: Voice)) = Send (Caption :&: URI :&: Voice)
+	type Payload (Send (Caption :&: Voice)) = Send (Caption :&: URI :&: Voice)
+	type Returning (Send (Caption :&: Voice)) = Message
 	payload (Send chat_id (caption :&: voice)) = payload (Send chat_id voice) <> field "caption" caption
 	endpoint _ = "sendVoice"
 
 instance Persistable (Send Location) where
-	type instance Payload (Send Location) = Send Location
+	type Payload (Send Location) = Send Location
+	type Returning (Send Location) = Message
 	payload (Send chat_id (Location latitude longitude)) = field "chat_id" chat_id
 		<> field "latitude" latitude <> field "longitude" longitude
 	endpoint _ = "sendLocation"
 
 instance Persistable (Send (Live Location)) where
-	type instance Payload (Send (Live Location)) = Send (Live Location)
+	type Payload (Send (Live Location)) = Send (Live Location)
+	type Returning (Send (Live Location)) = Message
 	payload (Send chat_id (Live live_period (Location latitude longitude))) =
 		field "chat_id" chat_id <> field "live_period" live_period
 		<> field "latitude" latitude <> field "longitude" longitude
 	endpoint _ = "sendLocation"
 
 instance Persistable (Send Poll) where
-	type instance Payload (Send Poll) = Send Poll
+	type Payload (Send Poll) = Send Poll
+	type Returning (Send Poll) = Message
 	payload (Send chat_id (Opened question options)) = field "chat_id" chat_id
 		<> field "question" question <> field "options" options
 	payload (Send chat_id (Closed question options)) = field "chat_id" chat_id
@@ -171,6 +185,7 @@ data Reply a = Reply Int a
 
 instance Persistable (Send a) => Persistable (Reply a) where
 	type Payload (Reply a) = Reply (Payload (Send a))
+	type Returning (Reply a) = Returning (Send a)
 	payload (Reply reply_to_message_id x) = payload x <> field
 		"reply_to_message_id" reply_to_message_id
 	endpoint (Reply _ x) = endpoint x
@@ -179,25 +194,29 @@ data Edit b = Edit Int64 Int b
 
 instance Persistable (Edit Text) where
 	type Payload (Edit Text) = Edit Text
+	type Returning (Edit Text) = Message
 	payload (Edit chat_id message_id text) = field "chat_id" chat_id
 		<> field "message_id" message_id <> field "text" text
 	endpoint _ = "editMessageText"
 
 instance Persistable (Edit Keyboard) where
 	type Payload (Edit Keyboard) = Edit Keyboard
+	type Returning (Edit Keyboard) = Message
 	payload (Edit chat_id message_id reply_markup) = field "chat_id" chat_id
 		<> field "message_id" message_id <> field "reply_markup" reply_markup
 	endpoint _ = "editMessageText"
 
 instance Persistable (Edit (Text :&: Keyboard)) where
 	type Payload (Edit (Text :&: Keyboard)) = Edit (Text :&: Keyboard)
+	type Returning (Edit (Text :&: Keyboard)) = Message
 	payload (Edit chat_id message_id (text :&: reply_markup)) =
 		field "chat_id" chat_id <> field "message_id" message_id
 		<> field "text" text <> field "reply_markup" reply_markup
 	endpoint _ = "editMessageText"
 
 instance Persistable (Edit (Live Location)) where
-	type instance Payload (Edit (Live Location)) = Edit Location
+	type Payload (Edit (Live Location)) = Edit Location
+	type Returning (Edit (Live Location)) = Message
 	payload (Edit chat_id message_id (Location latitude longitude)) =
 		field "chat_id" chat_id <> field "message_id" message_id
 		<> field "latitude" latitude <> field "longitude" longitude
@@ -207,6 +226,7 @@ data Delete a = Delete Int64 Int
 
 instance Persistable (Delete Message) where
 	type Payload (Delete Message) = Delete Message
+	type Returning (Delete Message) = ()
 	payload (Delete chat_id message_id) = field "chat_id" chat_id
 		<> field "message_id" message_id
 	endpoint _ = "deleteMessage"
@@ -214,13 +234,15 @@ instance Persistable (Delete Message) where
 data Stop a = Stop Int64 Int
 
 instance Persistable (Stop (Live Location)) where
-	type instance Payload (Stop (Live Location)) = Stop (Live Location)
+	type Payload (Stop (Live Location)) = Stop (Live Location)
+	type Returning (Stop (Live Location)) = Message
 	payload (Stop chat_id message_id) = field "chat_id" chat_id
 		<> field "message_id" message_id
 	endpoint _ = "stopMessageLiveLocation"
 
 instance Persistable (Stop Poll) where
-	type instance Payload (Stop Poll) = Stop (Stop Poll)
+	type Payload (Stop Poll) = Stop (Stop Poll)
+	type Returning (Stop Poll) = Poll
 	payload (Stop chat_id message_id) = field "chat_id" chat_id
 		<> field "message_id" message_id
 	endpoint _ = "stopPoll"
@@ -229,15 +251,18 @@ data Silently (todo :: * -> *) a = Silently a
 
 instance Persistable (Forward obj) => Persistable (Silently Forward obj) where
 	type Payload (Silently Forward obj) = Silently Forward (Payload (Forward obj))
+	type Returning (Silently Forward obj) = Message
 	payload (Silently x) = payload x <> field "disable_notification" True
 	endpoint (Silently x) = endpoint x
 
 instance Persistable (Send obj) => Persistable (Silently Send obj) where
 	type Payload (Silently Send obj) = Silently Send (Payload (Send obj))
+	type Returning (Silently Send obj) = Message
 	payload (Silently x) = payload x <> field "disable_notification" True
 	endpoint (Silently x) = endpoint x
 
 instance Persistable (Reply obj) => Persistable (Silently Reply obj) where
 	type Payload (Silently Reply obj) = Silently Reply (Payload (Reply obj))
+	type Returning (Silently Reply obj) = Message
 	payload (Silently x) = payload x <> field "disable_notification" True
 	endpoint (Silently x) = endpoint x

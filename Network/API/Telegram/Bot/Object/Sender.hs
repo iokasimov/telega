@@ -27,7 +27,7 @@ instance Eq Sender where
 	_ == _ = False
 
 instance Identifiable Sender where
-	type instance Identificator Sender = Int
+	type Identificator Sender = Int
 	ident (Bot i _ _ _ _) = i
 	ident (User i _ _ _ _) = i
 

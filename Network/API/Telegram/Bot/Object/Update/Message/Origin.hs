@@ -32,7 +32,7 @@ instance FromJSON Origin where
 			_ -> fail "Type of chat is not defined"
 
 instance Identifiable Origin where
-	type instance Identificator Origin = Int64
+	type Identificator Origin = Int64
 	ident (Private i _) = i
 	ident (Group i _ _) = i
 	ident (Supergroup i _ _) = i

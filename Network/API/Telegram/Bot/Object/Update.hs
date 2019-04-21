@@ -24,7 +24,7 @@ data Update
 	deriving Show
 
 instance Identifiable Update where
-	type instance Identificator Update = Int
+	type Identificator Update = Int
 	ident (Query i _) = i
 	ident (Membership i _) = i
 	ident (Incoming i _) = i

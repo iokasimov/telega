@@ -3,7 +3,7 @@ module Network.API.Telegram.Bot.Object.Update.Callback
 
 import Network.API.Telegram.Bot.Object.Update.Callback.Notification as Exports
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), withObject, (.:))
+import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Control.Applicative (Applicative ((<*>)))
 import "base" Data.Function (flip, ($))
 import "base" Data.Functor ((<$>))
@@ -15,7 +15,7 @@ import Network.API.Telegram.Bot.Object.Update.Message (Message)
 import Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin)
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
-import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint))
+import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, Returning, payload, endpoint))
 import Network.API.Telegram.Bot.Utils (field)
 
 data Callback = Datatext Text Message Text deriving Show
@@ -29,12 +29,13 @@ instance FromJSON Callback where
 		Datatext <$> v .: "id" <*> v .: "message" <*> v .: "data"
 
 instance Identifiable Callback where
-	type instance Identificator Callback = Text
+	type Identificator Callback = Text
 	ident (Datatext i _ _) = i
 
 data Trigger a = Trigger Text Text
 
 instance Persistable (Trigger Notification) where
-	type instance Payload (Trigger Notification) = Trigger Notification
+	type Payload (Trigger Notification) = Trigger Notification
+	type Returning (Trigger Notification) = ()
 	payload (Trigger cbq_id text) = field "text" text <> field "callback_query_id" cbq_id
 	endpoint _ = "answerCallbackQuery"

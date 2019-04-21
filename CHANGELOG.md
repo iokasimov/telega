@@ -121,3 +121,4 @@
 # 0.2.5
 * Create `Utils` module with `field` function to create singleton hash table from key an value
 * Define `Can` and `Cannot` to define `Default` instances for `Powers` and `Restrictions`
+* Introduce `Returning` type family to automatically decode the API response

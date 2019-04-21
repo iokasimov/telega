@@ -18,7 +18,7 @@ import "data-default" Data.Default (Default (def))
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Object.Sender (Sender)
-import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, payload, endpoint))
+import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, Returning, payload, endpoint))
 import Network.API.Telegram.Bot.Utils (field)
 
 data Member
@@ -64,6 +64,7 @@ data Kick a where
 
 instance Persistable (Kick Member) where
 	type Payload (Kick Member) = Kick Member
+	type Returning (Kick Member) = ()
 	payload (Kick chat_id user_id Forever) =
 		field "chat_id" chat_id <> field "user_id" user_id
 	payload (Kick chat_id user_id (Until until_date)) = field "chat_id" chat_id
@@ -75,6 +76,7 @@ data Unban a where
 
 instance Persistable (Unban Member) where
 	type Payload (Unban Member) = Unban Member
+	type Returning (Unban Member) = ()
 	payload (Unban chat_id user_id) =
 		field "chat_id" chat_id
 		<> field "user_id" user_id
@@ -85,6 +87,7 @@ data Restrict a where
 
 instance Persistable (Restrict Member) where
 	type Payload (Restrict Member) = Restrict Member
+	type Returning (Restrict Member) = ()
 	payload (Restrict chat_id user_id Forever (Restrictions send_msgs send_media_msgs send_other_msgs wp_previews)) =
 		field "chat_id" chat_id <> field "user_id" user_id
 		<> field "can_send_messages" send_msgs <> field "can_send_media_messages" send_media_msgs
@@ -100,6 +103,7 @@ data Promote a where
 
 instance Persistable (Promote Member) where
 	type Payload (Promote Member) = Promote Member
+	type Returning (Promote Member) = ()
 	payload (Promote chat_id user_id Forever (Powers change_info post_msgs edit_msgs delete_msgs invite_users restrict_members pin_msgs promote_members)) =
 		field "chat_id" chat_id <> field "user_id" user_id
 		<> field "can_change_info" change_info <> field "can_post_messages" post_msgs
