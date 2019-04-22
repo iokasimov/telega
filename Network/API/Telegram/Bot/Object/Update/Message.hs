@@ -219,15 +219,7 @@ instance Persistable (Edit Keyboard) where
 	type Returning (Edit Keyboard) = Message
 	payload (Edit chat_id message_id reply_markup) = field "chat_id" chat_id
 		<> field "message_id" message_id <> field "reply_markup" reply_markup
-	endpoint _ = "editMessageText"
-
-instance Persistable (Edit (Text :&: Keyboard)) where
-	type Payload (Edit (Text :&: Keyboard)) = Edit (Text :&: Keyboard)
-	type Returning (Edit (Text :&: Keyboard)) = Message
-	payload (Edit chat_id message_id (text :&: reply_markup)) =
-		field "chat_id" chat_id <> field "message_id" message_id
-		<> field "text" text <> field "reply_markup" reply_markup
-	endpoint _ = "editMessageText"
+	endpoint _ = "editMessageReplyMarkup"
 
 instance Persistable (Edit (Live Location)) where
 	type Payload (Edit (Live Location)) = Edit Location

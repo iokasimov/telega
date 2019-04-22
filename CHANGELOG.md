@@ -131,3 +131,4 @@
 * Define `Eq` instance for `Update`, `Message`, `Callback`, `Origin`, `File` and `Size`
 * Start to write documentation step-by-step, show three simple examples
 * Add `Sender` field into `Callback` datatype to understand from whom action goes
+* Change endpoint for `Edit`ing `Keyboard` object, remove `Edit` `Text :&: Keyboard` instance
