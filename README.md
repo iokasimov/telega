@@ -4,40 +4,29 @@ Work in progress, there is an application for testing design of this library:
 https://github.com/iokasimov/elections-bot
 
 ### Introduction
-------------
 
 This library provides ORM-like toolkit to deal with methods of Telegram Bot API - types and classes were designed in terms of `Objects` and their `Properties`.
 
-### Objects description
--------------------
+##### Objects description:
 
-#### Update
-Object that webhook consumes, can be either an incoming
-[Message](#message), [Callback](#callback) query or [Moving](#moving) in/out some group chat.
+* `Update`: object that webhook consumes, can be either an incoming
+`Message`, `Callback` query or `Moving` in/out some group chat.
 
-#### Message
-Every message contains [Origin](#origin) and [Content](#content). Can be either `Direct`, `Forwarded` or `Replied`.
+* `Message`: every object contains `Origin` and `Content`, can be either `Direct`, `Forwarded` or `Replied`.
 
-#### Content
-Can be either `Command`, `Text`, [File](#file), [Poll](#poll), [Contact](#contact), [Location](#location) or [Venue](#venue).
+* `Content`: can be either `Command`, `Text`, `File`, `Poll`, `Contact`, `Location` or `Venue`.
 
-#### File
-Can be either `Audio`, `Document`, `Photo`, `Video` or `Voice`.
+* `File`: Can be either `Audio`, `Document`, `Photo`, `Video` or `Voice`.
 
-#### Origin
-Indicates from where is message from, contains [Sender](#sender).
+* `Origin`: indicates from where is message from, contains `Sender`.
 
-#### Callback
-This is what webhook consumes on pressing inline keyboard's button.
+* `Callback`: this is what webhook consumes on pressing inline keyboard's button.
 
-#### Moving
-Indicates who joined or leaved some chat, contains [Sender](#sender).
+* `Moving`: indicates who joined or leaved some chat, contains `Sender`.
 
-#### Sender
-Can be either a `Bot` or a `Human`.
+* `Sender`: can be either a `Bot` or a `Human`.
 
 ### Simple examples
--------------------
 
 #### Sending inline keyboard
 
