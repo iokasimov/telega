@@ -7,7 +7,7 @@ https://github.com/iokasimov/elections-bot
 
 This library provides ORM-like toolkit to deal with methods of Telegram Bot API - types and classes were designed in terms of `Objects` and their `Properties`.
 
-##### Objects description:
+#### Objects description:
 
 * `Update`: object that webhook consumes, can be either an incoming
 `Message`, `Callback` query or `Moving` in/out some group chat.
@@ -18,13 +18,21 @@ This library provides ORM-like toolkit to deal with methods of Telegram Bot API 
 
 * `File`: Can be either `Audio`, `Document`, `Photo`, `Video` or `Voice`.
 
-* `Origin`: indicates from where is message from, contains `Sender`.
+* `Origin`: indicates where is message from, contains `Sender`.
 
 * `Callback`: this is what webhook consumes on pressing inline keyboard's button.
 
 * `Moving`: indicates who joined or leaved some chat, contains `Sender`.
 
 * `Sender`: can be either a `Bot` or a `Human`.
+
+#### Properties description:
+
+* `Accessible`: provides lens for objects within other objects.
+
+* `Identifiable`: provides identification of objects to use it for requests.
+
+* `Persistable`: provides `persist` methods that returns you some type on success. The "on success" definition is rather vague, for example: if you try to edit object and it remains the same, nothing will returns. Use `persist_` to not decode API answer (because if decoding fails the next applicative or monadic action will not happen).
 
 ### Simple examples
 
