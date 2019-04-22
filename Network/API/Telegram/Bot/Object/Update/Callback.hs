@@ -12,6 +12,7 @@ import "base" Data.Semigroup ((<>))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
+import Network.API.Telegram.Bot.Object.Sender (Sender)
 import Network.API.Telegram.Bot.Object.Update.Message (Message)
 import Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin)
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
@@ -19,22 +20,23 @@ import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificat
 import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, Returning, payload, endpoint))
 import Network.API.Telegram.Bot.Utils (field)
 
-data Callback = Datatext Text Message Text deriving Show
+data Callback = Datatext Text Sender Message Text deriving Show
 
 instance Eq Callback where
 	c == c' = ident c == ident c'
 
 instance Accessible Origin Callback where
-	access f (Datatext cq_id msg dttxt) = flip
-		(Datatext cq_id) dttxt <$> access f msg
+	access f (Datatext cq_id from msg dttxt) = flip
+		(Datatext cq_id from) dttxt <$> access f msg
 
 instance FromJSON Callback where
 	parseJSON = withObject "Callback" $ \v ->
-		Datatext <$> v .: "id" <*> v .: "message" <*> v .: "data"
+		Datatext <$> v .: "id" <*> v .: "from"
+			<*> v .: "message" <*> v .: "data"
 
 instance Identifiable Callback where
 	type Identificator Callback = Text
-	ident (Datatext i _ _) = i
+	ident (Datatext i _ _ _) = i
 
 data Trigger a = Trigger Text Text
 
