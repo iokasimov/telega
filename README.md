@@ -22,9 +22,13 @@ This library provides ORM-like toolkit to deal with methods of Telegram Bot API 
 
 * `Callback`: this is what webhook consumes on pressing inline keyboard's button.
 
-* `Moving`: indicates who joined or leaved some chat, contains `Sender`.
+* `Group`: can be either `Basic` or `Super`, contains chat ID and title.
+
+* `Moving`: indicates which `Sender` leaved some chat or which `Sender`s joined, also contains `Group`.
 
 * `Sender`: can be either a `Bot` or a `Human`.
+
+* `Member`: shows the status of a bot or user in group chat, contains `Sender`.
 
 #### Properties description:
 
@@ -32,7 +36,25 @@ This library provides ORM-like toolkit to deal with methods of Telegram Bot API 
 
 * `Identifiable`: provides identification of objects to use it for requests.
 
-* `Persistable`: provides `persist` methods that returns you some type on success. The "on success" definition is rather vague, for example: if you try to edit object and it remains the same, nothing will returns. Use `persist_` to not decode API answer (because if decoding fails the next applicative or monadic action will not happen).
+* `Persistable`: provides `persist` methods that returns you value of some type on success. The "on success" definition is rather vague, for example: if you try to edit object and it remains the same, nothing will returns. Use `persist_` to not decode API answer (because if decoding fails the next applicative or monadic action will not happen).
+
+#### Available persistent actions over objects:
+
+* `Forward`: only `Message`.
+* `Reply`: everything that you can `Send`.
+* `Send`: `Text`, `Keyboard`, `Audio`, `Document`, `Video`, `Voice`, `Photo`, `Location`, `Live Location`, `Poll`.
+* `Delete`: `Message`.
+* `Edit`: `Text`, `Keyboard`, `Live Location`.
+* `Stop`: `Live Location`, `Poll`.
+
+See payload and returning value in `Persistable` instances.
+
+Also, you can `Forward`, `Reply` and `Send` objects `Silently`.
+
+Also, there are special persistent actions for chat members:
+* `Kick`: kick user from group, user can not return unless unbanned first
+* `Restrict`: change what some member in group can do.
+* `Promote`: change what some admin in group can do.
 
 ### Simple examples
 
