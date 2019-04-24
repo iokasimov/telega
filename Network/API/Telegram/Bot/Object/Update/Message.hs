@@ -20,7 +20,7 @@ import "text" Data.Text (Text)
 import "with" Data.With (type (:&:)((:&:)))
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content (Content)
-import Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin (Private, Group, Supergroup, Channel))
+import Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin (Private, Group, Channel))
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, Returning, payload, endpoint))
@@ -69,8 +69,8 @@ instance FromJSON Message where
 			chat :: Value -> Parser Origin
 			chat = withObject "Origin" $ \c -> c .: "type" >>= \case
 				("private" :: Text) -> Private <$> c .: "id" <*> v .: "forward_from"
-				("group" :: Text) -> Group <$> c .: "id" <*> c .: "title" <*> v .: "forward_from"
-				("supergroup" :: Text) -> Supergroup <$> c .: "id" <*> c .: "title" <*> v .: "forward_from"
+				("group" :: Text) -> Group <$> parseJSON (Object c) <*> v .: "forward_from"
+				("supergroup" :: Text) -> Group <$> parseJSON (Object c) <*> v .: "forward_from"
 				_ -> fail "Type of chat is not defined"
 
 		reply :: Object -> Parser Message

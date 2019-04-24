@@ -10,10 +10,17 @@ import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
+import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
+
 data Group
 	= Basic Int64 Text
 	| Super Int64 Text (Maybe Text)
 	deriving Show
+
+instance Identifiable Group where
+	type Identificator Group = Int64
+	ident (Basic i _ ) = i
+	ident (Super i _ _) = i
 
 instance FromJSON Group where
 	parseJSON = withObject "Group" $ \v -> v .: "type" >>= \case
