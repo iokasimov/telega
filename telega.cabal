@@ -58,7 +58,7 @@ library
     Network.API.Telegram.Bot.Utils
   build-depends: base == 4.*, data-default, transformers, with, lens, aeson, text, unordered-containers, http-client, wreq
   default-extensions: DataKinds, LambdaCase, OverloadedStrings, NoImplicitPrelude, PackageImports, GADTs,
-    FlexibleContexts, FlexibleInstances, MultiParamTypeClasses, UndecidableInstances, UndecidableSuperClasses,
-    TypeApplications, TypeFamilies, TypeFamilyDependencies, TypeOperators, ScopedTypeVariables, PolyKinds
+    FlexibleContexts, FlexibleInstances, MultiParamTypeClasses, UndecidableInstances
+    TypeApplications, TypeFamilies, TypeFamilyDependencies, TypeOperators, ScopedTypeVariables
   default-language: Haskell2010
-  ghc-options: -Wall -fno-warn-tabs -fprint-explicit-kinds
+  ghc-options: -Wall -fno-warn-tabs
