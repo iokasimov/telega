@@ -36,6 +36,7 @@ library
     Network.API.Telegram.Bot.Object.Update.Message.Content.File.Audio
     Network.API.Telegram.Bot.Object.Update.Message.Content.File.Caption
     Network.API.Telegram.Bot.Object.Update.Message.Content.File.Document
+    Network.API.Telegram.Bot.Object.Update.Message.Content.File.Duration
     Network.API.Telegram.Bot.Object.Update.Message.Content.File.Photo
     Network.API.Telegram.Bot.Object.Update.Message.Content.File.Size
     Network.API.Telegram.Bot.Object.Update.Message.Content.File.URI

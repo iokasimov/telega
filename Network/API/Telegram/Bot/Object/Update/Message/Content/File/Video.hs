@@ -9,7 +9,9 @@ import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
-data Video = Video Int Int Int (Maybe Text) (Maybe Int)
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Duration (Duration)
+
+data Video = Video Duration Int Int (Maybe Text) (Maybe Int)
 	deriving Show
 
 instance FromJSON Video where

@@ -3,6 +3,7 @@ module Network.API.Telegram.Bot.Object.Update.Message.Content.File (File (..), m
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Audio as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Caption as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Document as Exports
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Duration as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Photo as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Size as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.URI as Exports

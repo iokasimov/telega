@@ -9,7 +9,9 @@ import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
-data Audio = Audio Int (Maybe Text) (Maybe Text) (Maybe Text) (Maybe Int)
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Duration (Duration)
+
+data Audio = Audio Duration (Maybe Text) (Maybe Text) (Maybe Text) (Maybe Int)
 	deriving Show
 
 instance FromJSON Audio where

@@ -9,7 +9,9 @@ import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
-data Voice = Voice Int (Maybe Text) (Maybe Int) deriving Show
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Duration (Duration)
+
+data Voice = Voice Duration (Maybe Text) (Maybe Int) deriving Show
 
 instance FromJSON Voice where
 	parseJSON = withObject "Voice" $ \v -> Voice <$>

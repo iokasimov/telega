@@ -136,3 +136,4 @@
 
 # 0.2.7
 * Define `Name` module to make `Accessible` instances for `Nick`/`First`/`Last` names
+* Define `Duration` module to avoid vague raw types
