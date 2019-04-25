@@ -25,6 +25,7 @@ library
     Network.API.Telegram.Bot.Object.Member
     Network.API.Telegram.Bot.Object.Member.Powers
     Network.API.Telegram.Bot.Object.Member.Restrictions
+    Network.API.Telegram.Bot.Object.Name
     Network.API.Telegram.Bot.Object.Sender
     Network.API.Telegram.Bot.Object.Update
     Network.API.Telegram.Bot.Object.Update.Callback
@@ -58,7 +59,7 @@ library
     Network.API.Telegram.Bot.Utils
   build-depends: base == 4.*, data-default, transformers, with, lens, aeson, text, unordered-containers, http-client, wreq
   default-extensions: DataKinds, LambdaCase, OverloadedStrings, NoImplicitPrelude, PackageImports, GADTs,
-    FlexibleContexts, FlexibleInstances, MultiParamTypeClasses, UndecidableInstances
+    FlexibleContexts, FlexibleInstances, MultiParamTypeClasses, UndecidableInstances, StandaloneDeriving
     TypeApplications, TypeFamilies, TypeFamilyDependencies, TypeOperators, ScopedTypeVariables
   default-language: Haskell2010
   ghc-options: -Wall -fno-warn-tabs

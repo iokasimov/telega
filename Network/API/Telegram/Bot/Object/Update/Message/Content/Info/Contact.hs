@@ -8,8 +8,9 @@ import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
-data Contact = Contact Text (Maybe Text) (Maybe Text) Text (Maybe Text)
-	deriving Show
+import Network.API.Telegram.Bot.Object.Name (Name, First, Last)
+
+data Contact = Contact (First Name) (Maybe (Last Name)) (Maybe Text) Text (Maybe Text) deriving Show
 
 instance FromJSON Contact where
 	parseJSON = withObject "Contact" $ \i -> Contact
