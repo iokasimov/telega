@@ -106,57 +106,57 @@ instance Persistable (Send (Text :&: Keyboard)) where
 	endpoint _ = "sendMessage"
 
 instance Persistable (Send Audio) where
-	type Payload (Send Audio) = Send (URI :&: Audio)
+	type Payload (Send Audio) = Send Audio
 	type Returning (Send Audio) = Message
-	payload (Send chat_id (uri :&: Audio duration performer title mime_type file_size)) = field "file_id" uri
+	payload (Send chat_id (Audio uri duration performer title mime_type file_size)) = field "file_id" uri
 		<> field "chat_id" chat_id <> field "duration" duration <> field "performer" performer
 		<> field "title" title <> field "mime_type" mime_type <> field "file_size" file_size
 	endpoint _ = "sendAudio"
 
 instance Persistable (Send (Caption :&: Audio)) where
-	type Payload (Send (Caption :&: Audio)) = Send (Caption :&: URI :&: Audio)
+	type Payload (Send (Caption :&: Audio)) = Send (Caption :&: Audio)
 	type Returning (Send (Caption :&: Audio)) = Message
 	payload (Send chat_id (caption :&: audio)) = payload (Send chat_id audio) <> field "caption" caption
 	endpoint _ = "sendAudio"
 
 instance Persistable (Send Document) where
-	type Payload (Send Document) = Send (URI :&: Document)
+	type Payload (Send Document) = Send Document
 	type Returning (Send Document) = Message
-	payload (Send chat_id (uri :&: Document file_name mime_type file_size)) = field "file_id" uri
+	payload (Send chat_id (Document uri file_name mime_type file_size)) = field "file_id" uri
 		<> field "chat_id" chat_id <> field "file_name" file_name
 		<> field "mime_type" mime_type <> field "file_size" file_size
 	endpoint _ = "sendDocument"
 
 instance Persistable (Send (Caption :&: Document)) where
-	type Payload (Send (Caption :&: Document)) = Send (Caption :&: URI :&: Document)
+	type Payload (Send (Caption :&: Document)) = Send (Caption :&: Document)
 	type Returning (Send (Caption :&: Document)) = Message
 	payload (Send chat_id (caption :&: document)) = payload (Send chat_id document) <> field "caption" caption
 	endpoint _ = "sendDocument"
 
 instance Persistable (Send Video) where
-	type Payload (Send Video) = Send (URI :&: Video)
+	type Payload (Send Video) = Send Video
 	type Returning (Send Video) = Message
-	payload (Send chat_id (uri :&: Video width height duration mime_type file_size)) = field "file_id" uri
+	payload (Send chat_id (Video uri width height duration mime_type file_size)) = field "file_id" uri
 		<> field "chat_id" chat_id <> field "duration" duration <> field "width" width
 		<> field "height" height <> field "mime_type" mime_type <> field "file_size" file_size
 	endpoint _ = "sendVideo"
 
 instance Persistable (Send (Caption :&: Video)) where
-	type Payload (Send (Caption :&: Video)) = Send (Caption :&: URI :&: Video)
+	type Payload (Send (Caption :&: Video)) = Send (Caption :&: Video)
 	type Returning (Send (Caption :&: Video)) = Message
 	payload (Send chat_id (caption :&: video)) = payload (Send chat_id video) <> field "caption" caption
 	endpoint _ = "sendVideo"
 
 instance Persistable (Send Voice) where
-	type Payload (Send Voice) = Send (URI :&: Voice)
+	type Payload (Send Voice) = Send Voice
 	type Returning (Send Voice) = Message
-	payload (Send chat_id (uri :&: Voice duration mime_type file_size)) = field "file_id" uri
+	payload (Send chat_id (Voice uri duration mime_type file_size)) = field "file_id" uri
 		<> field "chat_id" chat_id <> field "duration" duration
 		<> field "mime_type" mime_type <> field "file_size" file_size
 	endpoint _ = "sendVoice"
 
 instance Persistable (Send (Caption :&: Voice)) where
-	type Payload (Send (Caption :&: Voice)) = Send (Caption :&: URI :&: Voice)
+	type Payload (Send (Caption :&: Voice)) = Send (Caption :&: Voice)
 	type Returning (Send (Caption :&: Voice)) = Message
 	payload (Send chat_id (caption :&: voice)) = payload (Send chat_id voice) <> field "caption" caption
 	endpoint _ = "sendVoice"

@@ -9,11 +9,14 @@ import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.URI (URI)
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Duration (Duration)
 
-data Video = Video Duration Int Int (Maybe Text) (Maybe Int)
+data Video = Video URI Duration Int Int (Maybe Text) (Maybe Int)
 	deriving Show
 
 instance FromJSON Video where
-	parseJSON = withObject "Video" $ \v -> Video <$> v .: "width" <*> v .: "height"
-		<*> v .: "duration" <*> v .:? "mime_type" <*> v .:? "file_size"
+	parseJSON = withObject "Video" $ \v -> Video
+		<$> v .: "file_id" <*> v .: "duration"
+		<*> v .: "width" <*> v .: "height"
+		<*> v .:? "mime_type" <*> v .:? "file_size"
