@@ -11,8 +11,13 @@ import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.URI (URI)
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Duration (Duration)
+import Network.API.Telegram.Bot.Property (Identifiable (Identificator, ident))
 
 data Voice = Voice URI Duration (Maybe Text) (Maybe Int) deriving Show
+
+instance Identifiable Voice where
+	type Identificator Voice = URI
+	ident (Voice uri _ _ _) = uri
 
 instance FromJSON Voice where
 	parseJSON = withObject "Voice" $ \v -> Voice <$> v .: "file_id"
