@@ -1,6 +1,6 @@
 module Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.URI (URI (..)) where
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), Value (String), withText)
+import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), withText)
 import "base" Control.Applicative (pure)
 import "base" Data.Eq (Eq)
 import "base" Data.Function ((.))
@@ -24,4 +24,4 @@ instance FromJSON URI where
 	parseJSON = withText "URI" (pure . URI)
 
 instance ToJSON URI where
-	toJSON (URI txt) = String txt
+	toJSON (URI txt) = toJSON txt

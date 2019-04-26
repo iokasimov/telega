@@ -1,6 +1,6 @@
 module Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.MIME (MIME (..)) where
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), Value (String), withText)
+import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), withText)
 import "base" Control.Applicative (pure)
 import "base" Data.Function ((.))
 import "base" Data.Functor ((<$>))
@@ -18,4 +18,4 @@ instance FromJSON MIME where
 	parseJSON = withText "MIME" (pure . MIME)
 
 instance ToJSON MIME where
-	toJSON (MIME txt) = String txt
+	toJSON (MIME txt) = toJSON txt

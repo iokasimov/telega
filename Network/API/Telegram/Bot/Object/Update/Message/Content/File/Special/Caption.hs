@@ -1,6 +1,6 @@
 module Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Caption (Caption (..)) where
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), Value (String), withText)
+import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), withText)
 import "base" Control.Applicative (pure)
 import "base" Data.Function ((.))
 import "base" Data.Functor ((<$>))
@@ -18,4 +18,4 @@ instance FromJSON Caption where
 	parseJSON = withText "Caption" (pure . Caption)
 
 instance ToJSON Caption where
-	toJSON (Caption txt) = String txt
+	toJSON (Caption txt) = toJSON txt

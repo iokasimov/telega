@@ -148,3 +148,4 @@
 
 # 0.2.8
 * Define `Filesize`, `Height` and `Width` newtypes in `Special` submodule to replace vague `Int`
+* Move all `Special` fields of `File` object into exported submodule
