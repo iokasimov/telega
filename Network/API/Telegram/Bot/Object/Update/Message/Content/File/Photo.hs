@@ -10,11 +10,12 @@ import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Filesize (Filesize)
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 
 data Photo
 
-data Photosize = Photosize Text Int Int (Maybe Int) deriving Show
+data Photosize = Photosize Text Int Int (Maybe Filesize) deriving Show
 
 instance Eq Photosize where
 	s == s' = ident s == ident s'

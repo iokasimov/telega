@@ -145,3 +145,6 @@
 * Move `Caption`, `Duration` and `URI` modules into `Special` submodule
 * Define `MIME` newtype in `Special` submodule to replace vague `Text`
 * Rename `Size` to `Photosize` and move its content to `Photo` module
+
+# 0.2.8
+* Define `Filesize` newtype in `Special` submodule to replace vague `Int`
