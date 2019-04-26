@@ -1,4 +1,4 @@
-module Network.API.Telegram.Bot.Object.Language (Language (..)) where
+module Network.API.Telegram.Bot.Object.Special.Language (Language (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON)
 	, ToJSON (toJSON), Value (String), withText)

@@ -12,10 +12,8 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 
-import Network.API.Telegram.Bot.Object.Language (Language)
-import Network.API.Telegram.Bot.Object.Name (Name, First, Last, Nick)
-import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
-import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
+import Network.API.Telegram.Bot.Object.Special (Language, Name, First, Last, Nick)
+import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Identificator, ident))
 
 data Sender
 	= Bot Int (Maybe (Nick Name)) (First Name) (Maybe (Last Name)) (Maybe Language)

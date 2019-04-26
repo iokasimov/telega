@@ -150,3 +150,4 @@
 * Define `Filesize`, `Height` and `Width` newtypes in `Special` submodule to replace vague `Int`
 * Move all `Special` fields of `File` object into exported submodule
 * Define `Accessible` instances for `Audio`, `Document`, `Photo`, `Video`, `Voice`, `Moving`, `Callback`
+* Move `Language` and `Name` into `Special` submodule

@@ -22,11 +22,9 @@ library
     Network.API.Telegram.Bot
     Network.API.Telegram.Bot.Core
     Network.API.Telegram.Bot.Object
-    Network.API.Telegram.Bot.Object.Language
     Network.API.Telegram.Bot.Object.Member
     Network.API.Telegram.Bot.Object.Member.Powers
     Network.API.Telegram.Bot.Object.Member.Restrictions
-    Network.API.Telegram.Bot.Object.Name
     Network.API.Telegram.Bot.Object.Sender
     Network.API.Telegram.Bot.Object.Update
     Network.API.Telegram.Bot.Object.Update.Callback
@@ -58,6 +56,9 @@ library
     Network.API.Telegram.Bot.Object.Update.Message.Origin
     Network.API.Telegram.Bot.Object.Update.Moving
     Network.API.Telegram.Bot.Object.Update.Moving.Group
+    Network.API.Telegram.Bot.Object.Special
+    Network.API.Telegram.Bot.Object.Special.Language
+    Network.API.Telegram.Bot.Object.Special.Name
     Network.API.Telegram.Bot.Property
     Network.API.Telegram.Bot.Property.Accessible
     Network.API.Telegram.Bot.Property.Identifiable
