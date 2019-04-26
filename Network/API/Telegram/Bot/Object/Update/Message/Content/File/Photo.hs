@@ -3,19 +3,20 @@ module Network.API.Telegram.Bot.Object.Update.Message.Content.File.Photo (Photo,
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Control.Applicative ((<*>))
 import "base" Data.Eq (Eq ((==)))
-import "base" Data.Int (Int)
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Height (Height)
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Width (Width)
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Filesize (Filesize)
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 
 data Photo
 
-data Photosize = Photosize Text Int Int (Maybe Filesize) deriving Show
+data Photosize = Photosize Text Height Width (Maybe Filesize) deriving Show
 
 instance Eq Photosize where
 	s == s' = ident s == ident s'
