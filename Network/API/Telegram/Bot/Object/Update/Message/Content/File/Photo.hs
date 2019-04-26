@@ -7,23 +7,28 @@ import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
-import "text" Data.Text (Text)
 
-import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Height (Height)
-import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Width (Width)
-import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Filesize (Filesize)
-import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special (Height, Width, Filesize, URI)
+import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Identificator, ident))
 
 data Photo
 
-data Photosize = Photosize Text Height Width (Maybe Filesize) deriving Show
+data Photosize = Photosize URI Height Width (Maybe Filesize) deriving Show
 
 instance Eq Photosize where
 	s == s' = ident s == ident s'
 
+instance Accessible Height Photosize where
+	access f (Photosize uri height width fs) =
+		(\height' -> Photosize uri height' width fs) <$> f height
+
+instance Accessible Width Photosize where
+	access f (Photosize uri height width fs) =
+		(\width' -> Photosize uri height width' fs) <$> f width
+
 instance Identifiable Photosize where
-	type Identificator Photosize = Text
-	ident (Photosize file_id _ _ _) = file_id
+	type Identificator Photosize = URI
+	ident (Photosize uri _ _ _) = uri
 
 instance FromJSON Photosize where
 	parseJSON = withObject "Photosize" $ \v -> Photosize <$> v .: "file_id"
