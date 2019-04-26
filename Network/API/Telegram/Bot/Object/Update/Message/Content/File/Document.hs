@@ -9,10 +9,11 @@ import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.MIME (MIME)
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.URI (URI)
 import Network.API.Telegram.Bot.Property (Identifiable (Identificator, ident))
 
-data Document = Document URI (Maybe Text) (Maybe Text) (Maybe Int) deriving Show
+data Document = Document URI (Maybe Text) (Maybe MIME) (Maybe Int) deriving Show
 
 instance Identifiable Document where
 	type Identificator Document = URI

@@ -143,3 +143,4 @@
 * Define `Accessible` and `Identifiable` instances for `Member` object
 * Define `Accessible` instance for newtypes to not use generated accessors records
 * Move `Caption`, `Duration` and `URI` modules into `Special` submodule
+* Define `MIME` newtype in `Special` submodule to replace vague `Text`
