@@ -140,3 +140,4 @@
 * Define `Language` newtype to replace raw `Text` in `Sender` object
 * Remove `URI` newtype from `File` to `Audio`, `Video`, `Document` and `Voice` objects
 * Define `Identifiable` instances for `URI`, `Audio`, `Video`, `Document` and `Voice` objects
+* Define `Accessible` and `Identifiable` instances for `Member` object

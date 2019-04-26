@@ -6,8 +6,7 @@ import "base" Data.Function ((.))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
-newtype Caption = Caption Text
-	deriving Show
+newtype Caption = Caption Text deriving Show
 
 instance FromJSON Caption where
 	parseJSON = withText "Caption" (pure . Caption)

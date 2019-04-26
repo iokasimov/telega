@@ -13,8 +13,7 @@ import Network.API.Telegram.Bot.Object.Update.Message.Content.File.URI (URI)
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Duration (Duration)
 import Network.API.Telegram.Bot.Property (Identifiable (Identificator, ident))
 
-data Audio = Audio URI Duration (Maybe Text) (Maybe Text) (Maybe Text) (Maybe Int)
-	deriving Show
+data Audio = Audio URI Duration (Maybe Text) (Maybe Text) (Maybe Text) (Maybe Int) deriving Show
 
 instance Identifiable Audio where
 	type Identificator Audio = URI

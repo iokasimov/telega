@@ -18,6 +18,8 @@ import "data-default" Data.Default (Default (def))
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Object.Sender (Sender)
+import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
+import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, Returning, payload, endpoint))
 import Network.API.Telegram.Bot.Utils (field)
 
@@ -29,6 +31,23 @@ data Member
 	| Left Sender
 	| Kicked Sender Int
 	deriving Show
+
+instance Accessible Sender Member where
+	access f (Creator sender) = (\sender' -> Creator sender') <$> f sender
+	access f (Administrator sender cbe powers) = (\sender' -> Administrator sender' cbe powers) <$> f sender
+	access f (Member sender) = (\sender' -> Member sender') <$> f sender
+	access f (Restricted sender restrictions until) = (\sender' -> Restricted sender' restrictions until) <$> f sender
+	access f (Left sender) = (\sender' -> Left sender') <$> f sender
+	access f (Kicked sender until) = (\sender' -> Kicked sender' until) <$> f sender
+
+instance Identifiable Member where
+	type Identificator Member = Sender
+	ident (Creator sender) = sender
+	ident (Administrator sender _ _) = sender
+	ident (Member sender) = sender
+	ident (Restricted sender _ _) = sender
+	ident (Left sender) = sender
+	ident (Kicked sender _) = sender
 
 instance FromJSON Member where
 	parseJSON = withObject "Member" $ \v -> v .: "status" >>= \case

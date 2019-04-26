@@ -13,8 +13,7 @@ import Network.API.Telegram.Bot.Object.Update.Message.Content.File.URI (URI)
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Duration (Duration)
 import Network.API.Telegram.Bot.Property (Identifiable (Identificator, ident))
 
-data Video = Video URI Duration Int Int (Maybe Text) (Maybe Int)
-	deriving Show
+data Video = Video URI Duration Int Int (Maybe Text) (Maybe Int) deriving Show
 
 instance Identifiable Video where
 	type Identificator Video = URI
