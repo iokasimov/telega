@@ -1,4 +1,4 @@
-module Network.API.Telegram.Bot.Object.Update.Message.Content.File.Duration (Duration) where
+module Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Duration (Duration) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON))
 import "base" Data.Functor ((<$>))

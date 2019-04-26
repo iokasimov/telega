@@ -142,3 +142,4 @@
 * Define `Identifiable` instances for `URI`, `Audio`, `Video`, `Document` and `Voice` objects
 * Define `Accessible` and `Identifiable` instances for `Member` object
 * Define `Accessible` instance for newtypes to not use generated accessors records
+* Move `Caption`, `Duration` and `URI` modules into `Special` submodule

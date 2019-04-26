@@ -1,14 +1,14 @@
 module Network.API.Telegram.Bot.Object.Update.Message.Content.File (File (..), module Exports) where
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Audio as Exports
-import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Caption as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Document as Exports
-import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Duration as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Photo as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Size as Exports
-import Network.API.Telegram.Bot.Object.Update.Message.Content.File.URI as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Video as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Voice as Exports
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Caption as Exports
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Duration as Exports
+import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.URI as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Control.Applicative ((<|>))
