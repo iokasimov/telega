@@ -3,7 +3,6 @@ module Network.API.Telegram.Bot.Object.Update.Message.Content.File (File (..), m
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Audio as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Document as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Photo as Exports
-import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Size as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Video as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Voice as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Caption as Exports
@@ -21,7 +20,7 @@ data File
 	| Videofile Video
 	| General Document
 	| Voicerecord Voice
-	| Photography [Size]
+	| Photography [Photosize]
 	deriving Show
 
 instance FromJSON File where
