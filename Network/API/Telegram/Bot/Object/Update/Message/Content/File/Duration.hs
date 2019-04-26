@@ -5,7 +5,12 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int)
 import "base" Text.Show (Show)
 
+import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
+
 newtype Duration = Duration Int deriving Show
+
+instance Accessible Int Duration where
+	access f (Duration int) = (\int' -> Duration int') <$> f int
 
 instance FromJSON Duration where
 	parseJSON o = Duration <$> parseJSON o

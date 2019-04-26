@@ -141,3 +141,4 @@
 * Remove `URI` newtype from `File` to `Audio`, `Video`, `Document` and `Voice` objects
 * Define `Identifiable` instances for `URI`, `Audio`, `Video`, `Document` and `Voice` objects
 * Define `Accessible` and `Identifiable` instances for `Member` object
+* Define `Accessible` instance for newtypes to not use generated accessors records

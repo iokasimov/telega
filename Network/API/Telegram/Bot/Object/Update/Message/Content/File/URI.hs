@@ -4,12 +4,17 @@ import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), Value (String)
 import "base" Control.Applicative (pure)
 import "base" Data.Eq (Eq)
 import "base" Data.Function ((.))
+import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
+import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 import Network.API.Telegram.Bot.Property (Identifiable (Identificator, ident))
 
 newtype URI = URI Text deriving (Eq, Show)
+
+instance Accessible Text URI where
+	access f (URI txt) = (\txt' -> URI txt') <$> f txt
 
 instance Identifiable URI where
 	type Identificator URI = Text

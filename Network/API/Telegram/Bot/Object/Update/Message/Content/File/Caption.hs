@@ -3,10 +3,16 @@ module Network.API.Telegram.Bot.Object.Update.Message.Content.File.Caption (Capt
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), Value (String), withText)
 import "base" Control.Applicative (pure)
 import "base" Data.Function ((.))
+import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
+import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
+
 newtype Caption = Caption Text deriving Show
+
+instance Accessible Text Caption where
+	access f (Caption txt) = (\txt' -> Caption txt') <$> f txt
 
 instance FromJSON Caption where
 	parseJSON = withText "Caption" (pure . Caption)
