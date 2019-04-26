@@ -7,7 +7,13 @@ import "base" Data.Function ((.))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
+import Network.API.Telegram.Bot.Property (Identifiable (Identificator, ident))
+
 newtype URI = URI Text deriving (Eq, Show)
+
+instance Identifiable URI where
+	type Identificator URI = Text
+	ident (URI txt) = txt
 
 instance FromJSON URI where
 	parseJSON = withText "URI" (pure . URI)

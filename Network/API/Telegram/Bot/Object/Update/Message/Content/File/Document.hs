@@ -21,4 +21,5 @@ instance Identifiable Document where
 
 instance FromJSON Document where
 	parseJSON = withObject "Document" $ \v -> Document
-		<$> v .: "file_id" <*>  v .:? "file_name" <*> v .:? "mime_type" <*> v .:? "file_size"
+		<$> v .: "file_id" <*>  v .:? "file_name"
+		<*> v .:? "mime_type" <*> v .:? "file_size"
