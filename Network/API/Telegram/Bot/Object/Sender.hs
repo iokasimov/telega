@@ -11,15 +11,15 @@ import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
-import "text" Data.Text (Text)
 
+import Network.API.Telegram.Bot.Object.Language (Language)
 import Network.API.Telegram.Bot.Object.Name (Name, First, Last, Nick)
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 
 data Sender
-	= Bot Int (Maybe (Nick Name)) (First Name) (Maybe (Last Name)) (Maybe Text)
-	| Human Int (Maybe (Nick Name)) (First Name) (Maybe (Last Name)) (Maybe Text)
+	= Bot Int (Maybe (Nick Name)) (First Name) (Maybe (Last Name)) (Maybe Language)
+	| Human Int (Maybe (Nick Name)) (First Name) (Maybe (Last Name)) (Maybe Language)
 	deriving Show
 
 instance Eq Sender where
@@ -44,7 +44,11 @@ instance Accessible (Maybe (Nick Name)) Sender where
 	access f (Bot uid nn fn ln lng) = (\nn' -> Bot uid nn' fn ln lng) <$> f nn
 	access f (Human uid nn fn ln lng) = (\nn' -> Human uid nn' fn ln lng) <$> f nn
 
-type Whom = Int -> Maybe (Nick Name) -> First Name -> Maybe (Last Name) -> Maybe Text -> Sender
+instance Accessible (Maybe Language) Sender where
+	access f (Bot uid nn fn ln lng) = (\lng' -> Bot uid nn fn ln lng') <$> f lng
+	access f (Human uid nn fn ln lng) = (\lng' -> Human uid nn fn ln lng') <$> f lng
+
+type Whom = Int -> Maybe (Nick Name) -> First Name -> Maybe (Last Name) -> Maybe Language -> Sender
 
 instance FromJSON Sender where
 	parseJSON = withObject "Sender" $ \v -> v .: "is_bot"

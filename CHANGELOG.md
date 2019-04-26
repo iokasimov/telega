@@ -136,4 +136,5 @@
 
 # 0.2.7
 * Define `Name` module to make `Accessible` instances for `Nick`/`First`/`Last` names
-* Define `Duration` module to avoid vague raw types
+* Define `Duration` newtype to avoid vague raw `Text` in `Audio`, `Video` and `Voice` objects
+* Define `Language` newtype to replace raw `Text` in `Sender` object
