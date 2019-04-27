@@ -11,6 +11,7 @@ import "base" Data.Int (Int64)
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
+import Network.API.Telegram.Bot.Field (Title)
 import Network.API.Telegram.Bot.Object.Sender (Sender)
 import Network.API.Telegram.Bot.Object.Update.Moving.Group (Group)
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
@@ -18,7 +19,7 @@ import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificat
 data Origin
 	= Private Int64 Sender
 	| Group Group Sender
-	| Channel Int64 Text
+	| Channel Int64 Title
 	deriving Show
 
 instance Eq Origin where

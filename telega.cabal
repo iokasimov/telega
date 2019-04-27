@@ -28,6 +28,7 @@ library
     Network.API.Telegram.Bot.Field.Name
     Network.API.Telegram.Bot.Field.Filesize
     Network.API.Telegram.Bot.Field.MIME
+    Network.API.Telegram.Bot.Field.Title
     Network.API.Telegram.Bot.Field.URI
     Network.API.Telegram.Bot.Field.Height
     Network.API.Telegram.Bot.Field.Width

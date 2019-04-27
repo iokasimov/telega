@@ -6,12 +6,11 @@ import "base" Data.Maybe (Maybe)
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
-import "text" Data.Text (Text)
 
-import Network.API.Telegram.Bot.Field (Filesize, MIME, URI)
+import Network.API.Telegram.Bot.Field (Filesize, MIME, Title, URI)
 import Network.API.Telegram.Bot.Property (Identifiable (Identificator, ident))
 
-data Document = Document URI (Maybe Text) (Maybe MIME) (Maybe Filesize) deriving Show
+data Document = Document URI (Maybe Title) (Maybe MIME) (Maybe Filesize) deriving Show
 
 instance Identifiable Document where
 	type Identificator Document = URI

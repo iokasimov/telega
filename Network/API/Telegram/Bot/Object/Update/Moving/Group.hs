@@ -10,11 +10,12 @@ import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
+import Network.API.Telegram.Bot.Field (Title)
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 
 data Group
-	= Basic Int64 Text
-	| Super Int64 Text (Maybe Text)
+	= Basic Int64 Title
+	| Super Int64 Title (Maybe Text)
 	deriving Show
 
 instance Identifiable Group where
