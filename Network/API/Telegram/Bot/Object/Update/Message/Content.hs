@@ -19,6 +19,8 @@ import "base" Text.Show (Show)
 import "base" Prelude ((+))
 import "text" Data.Text (Text, drop, take)
 
+import Network.API.Telegram.Bot.Field (Caption)
+
 data Status = Opened | Closed
 	deriving Show
 

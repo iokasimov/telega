@@ -9,7 +9,7 @@ import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
-import Network.API.Telegram.Bot.Object.Special.Name (Name, First, Last)
+import Network.API.Telegram.Bot.Field (Name, First, Last)
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 
 data Contact = Contact (First Name) (Maybe (Last Name)) (Maybe Int) Text (Maybe Text) deriving Show

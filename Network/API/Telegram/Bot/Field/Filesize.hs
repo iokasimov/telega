@@ -1,4 +1,4 @@
-module Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Filesize (Filesize) where
+module Network.API.Telegram.Bot.Field.Filesize (Filesize) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON))
 import "base" Data.Functor ((<$>))

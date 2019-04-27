@@ -21,6 +21,16 @@ library
   exposed-modules:
     Network.API.Telegram.Bot
     Network.API.Telegram.Bot.Core
+    Network.API.Telegram.Bot.Field
+    Network.API.Telegram.Bot.Field.Caption
+    Network.API.Telegram.Bot.Field.Duration
+    Network.API.Telegram.Bot.Field.Language
+    Network.API.Telegram.Bot.Field.Name
+    Network.API.Telegram.Bot.Field.Filesize
+    Network.API.Telegram.Bot.Field.MIME
+    Network.API.Telegram.Bot.Field.URI
+    Network.API.Telegram.Bot.Field.Height
+    Network.API.Telegram.Bot.Field.Width
     Network.API.Telegram.Bot.Object
     Network.API.Telegram.Bot.Object.Member
     Network.API.Telegram.Bot.Object.Member.Powers
@@ -32,14 +42,6 @@ library
     Network.API.Telegram.Bot.Object.Update.Message
     Network.API.Telegram.Bot.Object.Update.Message.Content
     Network.API.Telegram.Bot.Object.Update.Message.Content.File
-    Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special
-    Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Caption
-    Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Duration
-    Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Filesize
-    Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.MIME
-    Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.URI
-    Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Height
-    Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Width
     Network.API.Telegram.Bot.Object.Update.Message.Content.File.Audio
     Network.API.Telegram.Bot.Object.Update.Message.Content.File.Document
     Network.API.Telegram.Bot.Object.Update.Message.Content.File.Photo
@@ -56,9 +58,6 @@ library
     Network.API.Telegram.Bot.Object.Update.Message.Origin
     Network.API.Telegram.Bot.Object.Update.Moving
     Network.API.Telegram.Bot.Object.Update.Moving.Group
-    Network.API.Telegram.Bot.Object.Special
-    Network.API.Telegram.Bot.Object.Special.Language
-    Network.API.Telegram.Bot.Object.Special.Name
     Network.API.Telegram.Bot.Property
     Network.API.Telegram.Bot.Property.Accessible
     Network.API.Telegram.Bot.Property.Identifiable

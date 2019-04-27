@@ -12,7 +12,7 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 
-import Network.API.Telegram.Bot.Object.Special (Language, Name, First, Last, Nick)
+import Network.API.Telegram.Bot.Field (Language, Name, First, Last, Nick)
 import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Identificator, ident))
 
 data Sender

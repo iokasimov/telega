@@ -5,7 +5,6 @@ import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Document as E
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Photo as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Video as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Voice as Exports
-import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Control.Applicative ((<|>))

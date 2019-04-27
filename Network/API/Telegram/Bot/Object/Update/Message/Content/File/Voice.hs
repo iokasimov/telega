@@ -7,7 +7,7 @@ import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 
-import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special (Duration, Filesize, MIME, URI)
+import Network.API.Telegram.Bot.Field (Duration, Filesize, MIME, URI)
 import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Identificator, ident))
 
 data Voice = Voice URI Duration (Maybe MIME) (Maybe Filesize) deriving Show

@@ -1,4 +1,4 @@
-module Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.Caption (Caption (..)) where
+module Network.API.Telegram.Bot.Field.Caption (Caption (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), withText)
 import "base" Control.Applicative (pure)

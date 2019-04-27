@@ -8,7 +8,7 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (Maybe)
 import "base" Text.Show (Show)
 
-import Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special (Height, Width, Filesize, URI)
+import Network.API.Telegram.Bot.Field (Height, Width, Filesize, URI)
 import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Identificator, ident))
 
 data Photo

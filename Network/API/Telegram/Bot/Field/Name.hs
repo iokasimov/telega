@@ -1,5 +1,4 @@
-module Network.API.Telegram.Bot.Object.Special.Name
-	(Name (..), First (..), Last (..), Nick (..)) where
+module Network.API.Telegram.Bot.Field.Name (Name (..), First (..), Last (..), Nick (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON)
 	, ToJSON (toJSON), Value (String), withText)

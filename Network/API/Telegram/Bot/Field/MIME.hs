@@ -1,4 +1,4 @@
-module Network.API.Telegram.Bot.Object.Update.Message.Content.File.Special.MIME (MIME (..)) where
+module Network.API.Telegram.Bot.Field.MIME (MIME (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), withText)
 import "base" Control.Applicative (pure)
