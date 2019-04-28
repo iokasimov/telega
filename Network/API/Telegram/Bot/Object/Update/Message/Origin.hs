@@ -1,7 +1,6 @@
 module Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
-import "aeson" Data.Aeson.Types (Object, Parser, Value (Object))
 import "base" Control.Applicative ((<*>), (<|>))
 import "base" Control.Monad (Monad ((>>=)))
 import "base" Data.Function (flip, ($))
@@ -27,12 +26,7 @@ instance Identifiable Origin where
 	ident (Blog c) = ident c
 
 instance FromJSON Origin where
-	parseJSON = withObject "Message" $ \msg -> msg .: "chat" >>= origin msg where
-
-		origin :: Object -> Value -> Parser Origin
-		origin msg = withObject "Origin" $ \chat -> channel chat <|> conversation chat <|> group chat where
-
-			channel, conversation, group :: Object -> Parser Origin
-			channel chat = Blog <$> parseJSON (Object chat)
-			conversation chat = Private <$> parseJSON (Object chat) <*> msg .: "from"
-			group chat = Group <$> parseJSON (Object chat) <*> msg .: "from"
+	parseJSON = withObject "Message" $ \msg -> msg .: "chat" >>= \chat ->
+		(Group <$> parseJSON chat <*> msg .: "from") <|>
+		(Private <$> parseJSON chat <*> msg .: "from") <|>
+		(Blog <$> parseJSON chat)

@@ -24,7 +24,7 @@ instance Identifiable Group where
 	ident (Super i _ _) = i
 
 instance FromJSON Group where
-	parseJSON = withObject "Group" $ \v -> v .: "type" >>= \case
-		("group" :: Text) -> Basic <$> v .: "id" <*> v .: "title"
-		("supergroup" :: Text) -> Super <$> v .: "id" <*> v .: "title" <*> v .:? "description"
+	parseJSON = withObject "Group" $ \chat -> chat .: "type" >>= \case
+		("group" :: Text) -> Basic <$> chat .: "id" <*> chat .: "title"
+		("supergroup" :: Text) -> Super <$> chat .: "id" <*> chat .: "title" <*> chat .:? "description"
 		_ -> fail "Neither group nor supergroup!"

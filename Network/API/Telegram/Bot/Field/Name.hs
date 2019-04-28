@@ -25,7 +25,7 @@ data First a where First :: Name -> First Name
 
 deriving instance Show a => Show (First a)
 
-instance Accessible Text (First a) where
+instance Accessible Text (First Name) where
 	access f (First (Name txt)) = (\txt' -> First $ Name txt') <$> f txt
 
 instance FromJSON (First Name) where
@@ -38,7 +38,7 @@ data Last a where Last :: Name -> Last Name
 
 deriving instance Show a => Show (Last a)
 
-instance Accessible Text (Last a) where
+instance Accessible Text (Last Name) where
 	access f (Last (Name txt)) = (\txt' -> Last $ Name txt') <$> f txt
 
 instance FromJSON (Last Name) where
@@ -51,7 +51,7 @@ data Nick a where Nick :: Name -> Nick Name
 
 deriving instance Show a => Show (Nick a)
 
-instance Accessible Text (Nick a) where
+instance Accessible Text (Nick Name) where
 	access f (Nick (Name txt)) = (\txt' -> Nick $ Name txt') <$> f txt
 
 instance FromJSON (Nick Name) where
