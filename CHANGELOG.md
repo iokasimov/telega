@@ -152,3 +152,4 @@
 * Define `Accessible` instances for `Audio`, `Document`, `Photo`, `Video`, `Voice`, `Moving`, `Callback`
 * Move all modules from `Special`s up one level into `Field` submodule (add `Title` newtype)
 * Create `Chat` submodule that contains `Conversation`, `Channel` and `Group` object
+* Define `ID` data family to use its instances for `Accessible` instances
