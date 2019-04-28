@@ -1,6 +1,4 @@
-module Network.API.Telegram.Bot.Object.Update.Moving (module Exports, Moving (..)) where
-
-import Network.API.Telegram.Bot.Object.Update.Moving.Group as Exports
+module Network.API.Telegram.Bot.Object.Update.Moving (Moving (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Control.Applicative ((<*>), (<|>))
@@ -8,6 +6,7 @@ import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 
+import Network.API.Telegram.Bot.Object.Chat.Group (Group)
 import Network.API.Telegram.Bot.Object.Sender (Sender)
 import Network.API.Telegram.Bot.Property (Accessible (access))
 

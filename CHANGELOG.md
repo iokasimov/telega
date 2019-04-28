@@ -151,3 +151,4 @@
 * Move all `Special` fields of `File` object into exported submodule
 * Define `Accessible` instances for `Audio`, `Document`, `Photo`, `Video`, `Voice`, `Moving`, `Callback`
 * Move all modules from `Special`s up one level into `Field` submodule (add `Title` newtype)
+* Create `Chat` submodule that contains `Group` object

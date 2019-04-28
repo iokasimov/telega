@@ -1,4 +1,4 @@
-module Network.API.Telegram.Bot.Object.Update.Moving.Group (Group (..)) where
+module Network.API.Telegram.Bot.Object.Chat.Group (Group (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:), (.:?))
 import "base" Control.Applicative ((<*>))

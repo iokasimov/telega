@@ -33,6 +33,7 @@ library
     Network.API.Telegram.Bot.Field.Height
     Network.API.Telegram.Bot.Field.Width
     Network.API.Telegram.Bot.Object
+    Network.API.Telegram.Bot.Object.Chat.Group
     Network.API.Telegram.Bot.Object.Member
     Network.API.Telegram.Bot.Object.Member.Powers
     Network.API.Telegram.Bot.Object.Member.Restrictions
@@ -58,7 +59,6 @@ library
     Network.API.Telegram.Bot.Object.Update.Message.Keyboard.Button
     Network.API.Telegram.Bot.Object.Update.Message.Origin
     Network.API.Telegram.Bot.Object.Update.Moving
-    Network.API.Telegram.Bot.Object.Update.Moving.Group
     Network.API.Telegram.Bot.Property
     Network.API.Telegram.Bot.Property.Accessible
     Network.API.Telegram.Bot.Property.Identifiable
