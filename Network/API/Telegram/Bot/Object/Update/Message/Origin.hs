@@ -4,22 +4,21 @@ import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser, Value (Object))
 import "base" Control.Applicative ((<*>), (<|>))
 import "base" Control.Monad (Monad ((>>=)))
-import "base" Data.Eq (Eq ((==)))
-import "base" Data.Function (($))
+import "base" Data.Function (flip, ($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int64)
 import "base" Text.Show (Show)
 
-import Network.API.Telegram.Bot.Object.Chat.Channel (Channel)
-import Network.API.Telegram.Bot.Object.Chat.Conversation (Conversation)
-import Network.API.Telegram.Bot.Object.Chat.Group (Group)
+import Network.API.Telegram.Bot.Object.Chat (Chat, ID, Channel, Conversation, Group)
 import Network.API.Telegram.Bot.Object.Sender (Sender)
-import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
+import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Identificator, ident))
 
 data Origin = Private Conversation Sender | Group Group Sender | Blog Channel deriving Show
 
-instance Eq Origin where
-	o == o' = ident o == ident o'
+instance Accessible (ID Chat) Origin where
+	access f (Private conversation sender) = flip Private sender <$> access f conversation
+	access f (Group group sender) = flip Group sender <$> access f group
+	access f (Blog channel) = Blog <$> access f channel
 
 instance Identifiable Origin where
 	type Identificator Origin = Int64
