@@ -17,6 +17,6 @@ instance Identifiable Conversation where
 	ident (Conversation i) = i
 
 instance FromJSON Conversation where
-	parseJSON = withObject "Conversation" $ \v -> v .: "type" >>= \case
-		("private" :: Text) -> Conversation <$> v .: "id"
+	parseJSON = withObject "Conversation" $ \chat -> chat .: "type" >>= \case
+		("private" :: Text) -> Conversation <$> chat .: "id"
 		_ -> fail "Not a private chat!"

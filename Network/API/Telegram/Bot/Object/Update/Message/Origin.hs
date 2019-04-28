@@ -9,19 +9,14 @@ import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int64)
 import "base" Text.Show (Show)
-import "text" Data.Text (Text)
 
-import Network.API.Telegram.Bot.Field (Title)
+import Network.API.Telegram.Bot.Object.Chat.Channel (Channel)
 import Network.API.Telegram.Bot.Object.Chat.Conversation (Conversation)
 import Network.API.Telegram.Bot.Object.Chat.Group (Group)
 import Network.API.Telegram.Bot.Object.Sender (Sender)
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 
-data Origin
-	= Private Conversation Sender
-	| Group Group Sender
-	| Channel Int64 Title
-	deriving Show
+data Origin = Private Conversation Sender | Group Group Sender | Blog Channel deriving Show
 
 instance Eq Origin where
 	o == o' = ident o == ident o'
@@ -30,16 +25,15 @@ instance Identifiable Origin where
 	type Identificator Origin = Int64
 	ident (Private c _) = ident c
 	ident (Group g _) = ident g
-	ident (Channel i _) = i
+	ident (Blog c) = ident c
 
 instance FromJSON Origin where
-	parseJSON = withObject "Message" $ \msg -> msg .: "chat" >>= chat msg where
+	parseJSON = withObject "Message" $ \msg -> msg .: "chat" >>= origin msg where
 
-		chat :: Object -> Value -> Parser Origin
-		chat msg = withObject "Origin" $ \c -> c .: "type" >>= \case
-			("channel" :: Text) -> Channel <$> c .: "id" <*> c .: "title"
-			_ -> conversation <|> group where
+		origin :: Object -> Value -> Parser Origin
+		origin msg = withObject "Origin" $ \chat -> channel chat <|> conversation chat <|> group chat where
 
-				conversation, group :: Parser Origin
-				conversation = Private <$> parseJSON (Object c) <*> msg .: "from"
-				group = Group <$> parseJSON (Object c) <*> msg .: "from"
+			channel, conversation, group :: Object -> Parser Origin
+			channel chat = Blog <$> parseJSON (Object chat)
+			conversation chat = Private <$> parseJSON (Object chat) <*> msg .: "from"
+			group chat = Group <$> parseJSON (Object chat) <*> msg .: "from"

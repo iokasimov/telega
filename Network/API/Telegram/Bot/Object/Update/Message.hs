@@ -59,7 +59,7 @@ instance FromJSON Message where
 			<*> (v .: "forward_from_chat" >>= channel) <*> parseJSON (Object v) where
 
 			channel :: Value -> Parser Origin
-			channel = withObject "Channel" $ \c -> Channel <$> c .: "id" <*> c .: "title"
+			channel = withObject "Channel" $ \c -> Blog <$> c .: "id"
 
 		forward_chat :: Object -> Parser Message
 		forward_chat v = Forwarded <$> v .: "message_id"
