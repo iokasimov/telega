@@ -11,13 +11,19 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int)
 import "base" Text.Show (Show)
 
-import Network.API.Telegram.Bot.Property (Identifiable (Identificator, ident))
+import Network.API.Telegram.Bot.Object.Chat (Chat)
+import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Identificator, ident), ID)
 
 data Update
 	= Query Int Callback
 	| Membership Int Moving
 	| Incoming Int Message
 	deriving Show
+
+instance Accessible (ID Chat) Update where
+	access f (Query i callback) = Query i <$> access f callback
+	access f (Membership i moving) = Membership i <$> access f moving
+	access f (Incoming i message) = Incoming i <$> access f message
 
 instance Identifiable Update where
 	type Identificator Update = Int

@@ -6,9 +6,10 @@ import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 
+import Network.API.Telegram.Bot.Object.Chat (Chat)
 import Network.API.Telegram.Bot.Object.Chat.Group (Group)
 import Network.API.Telegram.Bot.Object.Sender (Sender)
-import Network.API.Telegram.Bot.Property (Accessible (access))
+import Network.API.Telegram.Bot.Property (Accessible (access), ID)
 
 data Moving
 	= Gone Sender Group
@@ -18,6 +19,10 @@ data Moving
 instance Accessible Group Moving where
 	access f (Gone sender group) = (\group' -> Gone sender group') <$> f group
 	access f (Joined senders group) = (\group' -> Joined senders group') <$> f group
+
+instance Accessible (ID Chat) Moving where
+	access f (Gone sender group) = Gone sender <$> access f group
+	access f (Joined senders group) = Joined senders <$> access f group
 
 instance FromJSON Moving where
 	parseJSON = withObject "Moving" $ \v ->

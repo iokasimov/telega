@@ -7,11 +7,11 @@ import Network.API.Telegram.Bot.Object.Update.Message.Origin as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), Value (Object), withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser)
-import "base" Control.Applicative (Applicative ((<*>)), Alternative ((<|>)))
+import "base" Control.Applicative ((<*>), (<|>))
 import "base" Control.Monad (Monad ((>>=)), fail)
 import "base" Data.Bool (Bool (True))
 import "base" Data.Eq (Eq ((==)))
-import "base" Data.Function (($))
+import "base" Data.Function (flip, ($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int, Int64)
 import "base" Data.Semigroup ((<>))
@@ -20,6 +20,7 @@ import "text" Data.Text (Text)
 import "with" Data.With (type (:&:)((:&:)))
 
 import Network.API.Telegram.Bot.Field (Caption, URI)
+import Network.API.Telegram.Bot.Object.Chat (Chat, ID)
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, Returning, payload, endpoint))
@@ -43,6 +44,11 @@ instance Accessible Origin Message where
 	access f (Direct msg_id origin content) = (\origin' -> Direct msg_id origin' content) <$> f origin
 	access f (Forwarded msg_id origin content) = (\origin' -> Forwarded msg_id origin' content) <$> f origin
 	access f (Replied msg_id origin content msg) = (\origin' -> Replied msg_id origin' content msg) <$> f origin
+
+instance Accessible (ID Chat) Message where
+	access f (Direct msg_id origin content) = flip (Direct msg_id) content <$> access f origin
+	access f (Forwarded msg_id origin content) = flip (Forwarded msg_id) content <$> access f origin
+	access f (Replied msg_id origin content msg) = Replied msg_id origin content <$> access f msg
 
 instance Identifiable Message where
 	type Identificator Message = Int
