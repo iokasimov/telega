@@ -13,7 +13,7 @@ import "base" Data.Bool (Bool (True))
 import "base" Data.Eq (Eq ((==)))
 import "base" Data.Function (flip, ($))
 import "base" Data.Functor ((<$>))
-import "base" Data.Int (Int, Int64)
+import "base" Data.Int (Int)
 import "base" Data.Semigroup ((<>))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
@@ -86,7 +86,7 @@ instance FromJSON Message where
 		direct v = Direct <$> v .: "message_id"
 			<*> parseJSON (Object v) <*> parseJSON (Object v)
 
-data Forward a = Forward Int Int64 Int64
+data Forward a = Forward Int (ID Chat) (ID Chat)
 
 instance Persistable (Forward Message) where
 	type Payload (Forward Message) = Forward Message
@@ -95,7 +95,7 @@ instance Persistable (Forward Message) where
 		<> field "from_chat_id" from_chat_id <> field "chat_id" to_chat_id
 	endpoint _ = "forwardMessage"
 
-data Send a = Send Int64 a
+data Send a = Send (ID Chat) a
 
 instance Persistable (Send Text) where
 	type Payload (Send Text) = Send Text
@@ -210,7 +210,7 @@ instance Persistable (Send a) => Persistable (Reply a) where
 		"reply_to_message_id" reply_to_message_id
 	endpoint (Reply _ x) = endpoint x
 
-data Edit b = Edit Int64 Int b
+data Edit b = Edit (ID Chat) Int b
 
 instance Persistable (Edit Text) where
 	type Payload (Edit Text) = Edit Text
@@ -234,7 +234,7 @@ instance Persistable (Edit (Live Location)) where
 		<> field "latitude" latitude <> field "longitude" longitude
 	endpoint _ = "editMessageLiveLocation"
 
-data Delete a = Delete Int64 Int
+data Delete a = Delete (ID Chat) Int
 
 instance Persistable (Delete Message) where
 	type Payload (Delete Message) = Delete Message
@@ -243,7 +243,7 @@ instance Persistable (Delete Message) where
 		<> field "message_id" message_id
 	endpoint _ = "deleteMessage"
 
-data Stop a = Stop Int64 Int
+data Stop a = Stop (ID Chat) Int
 
 instance Persistable (Stop (Live Location)) where
 	type Payload (Stop (Live Location)) = Stop (Live Location)

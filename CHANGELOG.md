@@ -153,3 +153,6 @@
 * Move all modules from `Special`s up one level into `Field` submodule (add `Title` newtype)
 * Create `Chat` submodule that contains `Conversation`, `Channel` and `Group` object
 * Define `ID` data family to use its instances for `Accessible` instances
+
+# 0.2.9
+* Replace `Int64` in `Send`, `Forward`, `Edit`, `Delete`, `Stop` message's `Persistable` methods on `ID Chat`
