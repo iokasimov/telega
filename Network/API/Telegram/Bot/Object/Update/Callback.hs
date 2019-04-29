@@ -1,5 +1,5 @@
 module Network.API.Telegram.Bot.Object.Update.Callback
-	(module Exports, Callback (..), Trigger (..)) where
+	(module Exports, Callback (..), Trigger (..), ID (CB)) where
 
 import Network.API.Telegram.Bot.Object.Update.Callback.Notification as Exports
 

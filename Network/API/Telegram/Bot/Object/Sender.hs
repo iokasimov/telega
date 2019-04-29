@@ -1,4 +1,4 @@
-module Network.API.Telegram.Bot.Object.Sender (Sender (..)) where
+module Network.API.Telegram.Bot.Object.Sender (Sender (..), ID (SNDR)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON)
 	, Object, withObject, (.:), (.:?))

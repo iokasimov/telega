@@ -1,5 +1,6 @@
-module Network.API.Telegram.Bot.Object.Update.Message (module Exports, Message (..), ID
-	, Send (..), Reply (..), Forward (..), Edit (..), Delete (..), Silently (..)) where
+module Network.API.Telegram.Bot.Object.Update.Message (module Exports
+	, Message (..), ID (MSG), Send (..), Reply (..), Forward (..)
+	, Edit (..), Delete (..), Silently (..)) where
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Keyboard as Exports

@@ -1,4 +1,4 @@
-module Network.API.Telegram.Bot.Object.Chat (module Exports, Chat, ID (..)) where
+module Network.API.Telegram.Bot.Object.Chat (module Exports, Chat, ID (CHAT)) where
 
 import Network.API.Telegram.Bot.Object.Chat.Group as Exports
 import Network.API.Telegram.Bot.Object.Chat.Channel as Exports

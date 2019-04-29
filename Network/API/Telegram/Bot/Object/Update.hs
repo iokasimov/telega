@@ -1,4 +1,4 @@
-module Network.API.Telegram.Bot.Object.Update (module Exports, Update (..)) where
+module Network.API.Telegram.Bot.Object.Update (module Exports, Update (..), ID (UPD)) where
 
 import Network.API.Telegram.Bot.Object.Update.Callback as Exports
 import Network.API.Telegram.Bot.Object.Update.Message as Exports
