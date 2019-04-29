@@ -156,5 +156,5 @@
 
 # 0.2.9
 * Replace `Int64` in `Send`, `Forward`, `Edit`, `Delete`, `Stop` message's `Persistable` methods on `ID Chat`
-* Move chat identifiers from `Conversation`, `Channel` and `Group` to `Origin`, delete `Conversation`
+* Move chat identifiers from `Channel` and `Group` to `Origin` and `Moving`, delete `Conversation` module
 * Define `Identifier` submodule that contains `Chat` identifiers

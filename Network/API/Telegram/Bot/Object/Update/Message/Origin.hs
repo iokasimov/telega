@@ -20,6 +20,11 @@ data Origin
 	| Blog (ID Chat) Channel
 	deriving Show
 
+instance Accessible (ID Chat) Origin where
+	access f (Private i sender) = (\i' -> Private i' sender) <$> f i
+	access f (Group i group sender) = (\i' -> Group i' group sender) <$> f i
+	access f (Blog i channel) = (\i' -> Blog i' channel) <$> f i
+
 instance Identifiable Origin where
 	type Identificator Origin = ID Chat
 	ident (Private i _) = i

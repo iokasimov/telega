@@ -32,6 +32,10 @@ instance Accessible Message Callback where
 	access f (Datatext cq_id sender msg dttxt) =
 		(\msg' -> Datatext cq_id sender msg' dttxt) <$> f msg
 
+instance Accessible (ID Chat) Callback where
+	access f (Datatext cq_id sender msg dttxt) =
+		flip (Datatext cq_id sender) dttxt <$> access f msg
+
 instance FromJSON Callback where
 	parseJSON = withObject "Callback" $ \v ->
 		Datatext <$> v .: "id" <*> v .: "from"

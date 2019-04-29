@@ -46,6 +46,11 @@ instance Accessible Origin Message where
 	access f (Forwarded msg_id origin content) = (\origin' -> Forwarded msg_id origin' content) <$> f origin
 	access f (Replied msg_id origin content msg) = (\origin' -> Replied msg_id origin' content msg) <$> f origin
 
+instance Accessible (ID Chat) Message where
+	access f (Direct msg_id origin content) = flip (Direct msg_id) content <$> access f origin
+	access f (Forwarded msg_id origin content) = flip (Forwarded msg_id) content <$> access f origin
+	access f (Replied msg_id origin content msg) = Replied msg_id origin content <$> access f msg
+
 instance Identifiable Message where
 	type Identificator Message = Int
 	ident (Direct i _ _) = i
