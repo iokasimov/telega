@@ -14,17 +14,12 @@ import Network.API.Telegram.Bot.Field (Title)
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 
 data Group
-	= Basic Int64 Title
-	| Super Int64 Title (Maybe Text)
+	= Basic Title
+	| Super Title (Maybe Text)
 	deriving Show
-
-instance Identifiable Group where
-	type Identificator Group = Int64
-	ident (Basic i _ ) = i
-	ident (Super i _ _) = i
 
 instance FromJSON Group where
 	parseJSON = withObject "Group" $ \chat -> chat .: "type" >>= \case
-		("group" :: Text) -> Basic <$> chat .: "id" <*> chat .: "title"
-		("supergroup" :: Text) -> Super <$> chat .: "id" <*> chat .: "title" <*> chat .:? "description"
+		("supergroup" :: Text) -> Super <$> chat .: "title" <*> chat .:? "description"
+		("group" :: Text) -> Basic <$> chat .: "title"
 		_ -> fail "Neither group nor supergroup!"

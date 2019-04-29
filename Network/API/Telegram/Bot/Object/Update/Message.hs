@@ -61,7 +61,8 @@ instance FromJSON Message where
 			<*> (v .: "forward_from_chat" >>= channel) <*> parseJSON (Object v) where
 
 			channel :: Value -> Parser Origin
-			channel = withObject "Channel" $ \c -> Blog <$> c .: "id"
+			channel = withObject "Channel" $ \c -> Blog
+				<$> c .: "id" <*> parseJSON (Object c)
 
 		forward_chat :: Object -> Parser Message
 		forward_chat v = Forwarded <$> v .: "message_id"
@@ -70,8 +71,8 @@ instance FromJSON Message where
 			chat :: Value -> Parser Origin
 			chat = withObject "Origin" $ \c -> c .: "type" >>= \case
 				("private" :: Text) -> Private <$> c .: "id" <*> v .: "forward_from"
-				("group" :: Text) -> Group <$> parseJSON (Object c) <*> v .: "forward_from"
-				("supergroup" :: Text) -> Group <$> parseJSON (Object c) <*> v .: "forward_from"
+				("group" :: Text) -> Group <$> c .: "id" <*> parseJSON (Object c) <*> v .: "forward_from"
+				("supergroup" :: Text) -> Group <$> c .: "id" <*> parseJSON (Object c) <*> v .: "forward_from"
 				_ -> fail "Type of chat is not defined"
 
 		reply :: Object -> Parser Message

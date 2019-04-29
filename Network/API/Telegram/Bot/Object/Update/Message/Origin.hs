@@ -1,27 +1,36 @@
 module Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
+import "aeson" Data.Aeson.Types (Object, Parser, Value (Object))
 import "base" Control.Applicative ((<*>), (<|>))
 import "base" Control.Monad (Monad ((>>=)))
 import "base" Data.Function (flip, ($))
 import "base" Data.Functor ((<$>))
-import "base" Data.Int (Int64)
 import "base" Text.Show (Show)
+import "text" Data.Text (Text)
 
-import Network.API.Telegram.Bot.Object.Chat (Chat, Channel, Conversation, Group)
+import Network.API.Telegram.Bot.Identifier.Chat (ID)
+import Network.API.Telegram.Bot.Object.Chat (Chat, Channel, Group)
 import Network.API.Telegram.Bot.Object.Sender (Sender)
 import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Identificator, ident))
 
-data Origin = Private Conversation Sender | Group Group Sender | Blog Channel deriving Show
+data Origin
+	= Private (ID Chat) Sender
+	| Group (ID Chat) Group Sender
+	| Blog (ID Chat) Channel
+	deriving Show
 
 instance Identifiable Origin where
-	type Identificator Origin = Int64
-	ident (Private c _) = ident c
-	ident (Group g _) = ident g
-	ident (Blog c) = ident c
+	type Identificator Origin = ID Chat
+	ident (Private i _) = i
+	ident (Group i _ _) = i
+	ident (Blog i _) = i
 
 instance FromJSON Origin where
-	parseJSON = withObject "Message" $ \msg -> msg .: "chat" >>= \chat ->
-		(Group <$> parseJSON chat <*> msg .: "from") <|>
-		(Private <$> parseJSON chat <*> msg .: "from") <|>
-		(Blog <$> parseJSON chat)
+	parseJSON = withObject "Message" $ \msg -> msg .: "chat" >>= chat msg where
+
+		chat :: Object -> Value -> Parser Origin
+		chat msg = withObject "Chat" $ \ch -> ch .: "type" >>= \case
+			("private" :: Text) -> Private <$> ch .: "id" <*> msg .: "from"
+			("channel" :: Text) -> Blog <$> ch .: "id" <*> parseJSON (Object ch)
+			_ -> Group <$> ch .: "id" <*> parseJSON (Object ch) <*> msg .: "from"

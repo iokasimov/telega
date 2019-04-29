@@ -37,7 +37,6 @@ library
     Network.API.Telegram.Bot.Object
     Network.API.Telegram.Bot.Object.Chat
     Network.API.Telegram.Bot.Object.Chat.Channel
-    Network.API.Telegram.Bot.Object.Chat.Conversation
     Network.API.Telegram.Bot.Object.Chat.Group
     Network.API.Telegram.Bot.Object.Member
     Network.API.Telegram.Bot.Object.Member.Powers

@@ -10,15 +10,9 @@ import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Field (Title)
-import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 
-data Channel = Channel Int64 Title deriving Show
-
-instance Identifiable Channel where
-	type Identificator Channel = Int64
-	ident (Channel i _) = i
+data Channel = Channel Title deriving Show
 
 instance FromJSON Channel where
-	parseJSON = withObject "Channel" $ \chat -> chat .: "type" >>= \case
-		("channel" :: Text) -> Channel <$> chat .: "id" <*> chat .: "title"
-		_ -> fail "Not a channel chat!"
+	parseJSON = withObject "Channel" $
+		\chat -> Channel <$> chat .: "title"
