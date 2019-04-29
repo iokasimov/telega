@@ -1,11 +1,11 @@
-module Network.API.Telegram.Bot.Object.Update.Message (module Exports, Message (..)
+module Network.API.Telegram.Bot.Object.Update.Message (module Exports, Message (..), ID
 	, Send (..), Reply (..), Forward (..), Edit (..), Delete (..), Silently (..)) where
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Keyboard as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Origin as Exports
 
-import "aeson" Data.Aeson (FromJSON (parseJSON), Value (Object), withObject, (.:))
+import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), Value (Object), withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser)
 import "base" Control.Applicative ((<*>), (<|>))
 import "base" Control.Monad (Monad ((>>=)), fail)
@@ -27,9 +27,9 @@ import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, Retu
 import Network.API.Telegram.Bot.Utils (field)
 
 data Message
-	= Direct Int Origin Content
-	| Forwarded Int Origin Content
-	| Replied Int Origin Content Message
+	= Direct (ID Message) Origin Content
+	| Forwarded (ID Message) Origin Content
+	| Replied (ID Message) Origin Content Message
 	deriving Show
 
 instance Eq Message where
@@ -51,7 +51,7 @@ instance Accessible (ID Chat) Message where
 	access f (Replied msg_id origin content msg) = Replied msg_id origin content <$> access f msg
 
 instance Identifiable Message where
-	type Identificator Message = Int
+	type Identificator Message = ID Message
 	ident (Direct i _ _) = i
 	ident (Forwarded i _ _) = i
 	ident (Replied i _ _ _) = i
@@ -279,3 +279,11 @@ instance Persistable (Reply obj) => Persistable (Silently Reply obj) where
 	type Returning (Silently Reply obj) = Message
 	payload (Silently x) = payload x <> field "disable_notification" True
 	endpoint (Silently x) = endpoint x
+
+data instance ID Message = MSG Int
+
+deriving instance Eq (ID Message)
+deriving instance Show (ID Message)
+
+instance FromJSON (ID Message) where parseJSON o = MSG <$> parseJSON o
+instance ToJSON (ID Message) where toJSON (MSG i) = toJSON i
