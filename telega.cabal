@@ -32,8 +32,6 @@ library
     Network.API.Telegram.Bot.Field.URI
     Network.API.Telegram.Bot.Field.Height
     Network.API.Telegram.Bot.Field.Width
-    Network.API.Telegram.Bot.Identifier
-    Network.API.Telegram.Bot.Identifier.Chat
     Network.API.Telegram.Bot.Object
     Network.API.Telegram.Bot.Object.Chat
     Network.API.Telegram.Bot.Object.Chat.Channel

@@ -11,8 +11,7 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int)
 import "base" Text.Show (Show)
 
-import Network.API.Telegram.Bot.Identifier.Chat (ID)
-import Network.API.Telegram.Bot.Object.Chat (Chat)
+import Network.API.Telegram.Bot.Object.Chat (Chat, ID)
 import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Identificator, ident))
 
 data Update

@@ -2,15 +2,14 @@ module Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin (..)) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser, Value (Object))
-import "base" Control.Applicative ((<*>), (<|>))
+import "base" Control.Applicative ((<*>))
 import "base" Control.Monad (Monad ((>>=)))
-import "base" Data.Function (flip, ($))
+import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
-import Network.API.Telegram.Bot.Identifier.Chat (ID)
-import Network.API.Telegram.Bot.Object.Chat (Chat, Channel, Group)
+import Network.API.Telegram.Bot.Object.Chat (Chat, ID,Channel, Group)
 import Network.API.Telegram.Bot.Object.Sender (Sender)
 import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Identificator, ident))
 
