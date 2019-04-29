@@ -88,7 +88,7 @@ instance FromJSON Message where
 		direct v = Direct <$> v .: "message_id"
 			<*> parseJSON (Object v) <*> parseJSON (Object v)
 
-data Forward a = Forward Int (ID Chat) (ID Chat)
+data Forward a = Forward (ID Message) (ID Chat) (ID Chat)
 
 instance Persistable (Forward Message) where
 	type Payload (Forward Message) = Forward Message
@@ -203,7 +203,7 @@ instance Persistable (Send Poll) where
 		<> field "question" question <> field "options" options
 	endpoint _ = "sendPoll"
 
-data Reply a = Reply Int a
+data Reply a = Reply (ID Message) a
 
 instance Persistable (Send a) => Persistable (Reply a) where
 	type Payload (Reply a) = Reply (Payload (Send a))
@@ -212,7 +212,7 @@ instance Persistable (Send a) => Persistable (Reply a) where
 		"reply_to_message_id" reply_to_message_id
 	endpoint (Reply _ x) = endpoint x
 
-data Edit b = Edit (ID Chat) Int b
+data Edit b = Edit (ID Chat) (ID Message) b
 
 instance Persistable (Edit Text) where
 	type Payload (Edit Text) = Edit Text
@@ -236,7 +236,7 @@ instance Persistable (Edit (Live Location)) where
 		<> field "latitude" latitude <> field "longitude" longitude
 	endpoint _ = "editMessageLiveLocation"
 
-data Delete a = Delete (ID Chat) Int
+data Delete a = Delete (ID Chat) (ID Message)
 
 instance Persistable (Delete Message) where
 	type Payload (Delete Message) = Delete Message
@@ -245,7 +245,7 @@ instance Persistable (Delete Message) where
 		<> field "message_id" message_id
 	endpoint _ = "deleteMessage"
 
-data Stop a = Stop (ID Chat) Int
+data Stop a = Stop (ID Chat) (ID Message)
 
 instance Persistable (Stop (Live Location)) where
 	type Payload (Stop (Live Location)) = Stop (Live Location)
