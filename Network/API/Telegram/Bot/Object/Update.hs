@@ -20,11 +20,6 @@ data Update
 	| Incoming Int Message
 	deriving Show
 
-instance Accessible (ID Chat) Update where
-	access f (Query i callback) = Query i <$> access f callback
-	access f (Membership i moving) = Membership i <$> access f moving
-	access f (Incoming i message) = Incoming i <$> access f message
-
 instance Identifiable Update where
 	type Identificator Update = Int
 	ident (Query i _) = i

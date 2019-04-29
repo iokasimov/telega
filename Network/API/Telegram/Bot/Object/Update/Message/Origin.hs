@@ -8,16 +8,11 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int64)
 import "base" Text.Show (Show)
 
-import Network.API.Telegram.Bot.Object.Chat (Chat, ID, Channel, Conversation, Group)
+import Network.API.Telegram.Bot.Object.Chat (Chat, Channel, Conversation, Group)
 import Network.API.Telegram.Bot.Object.Sender (Sender)
 import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Identificator, ident))
 
 data Origin = Private Conversation Sender | Group Group Sender | Blog Channel deriving Show
-
-instance Accessible (ID Chat) Origin where
-	access f (Private conversation sender) = flip Private sender <$> access f conversation
-	access f (Group group sender) = flip Group sender <$> access f group
-	access f (Blog channel) = Blog <$> access f channel
 
 instance Identifiable Origin where
 	type Identificator Origin = Int64
