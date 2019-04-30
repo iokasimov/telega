@@ -159,3 +159,4 @@
 * Replace `Int` in `Forward`, `Edit`, `Delete`, `Stop` message's `Persistable` methods on `ID Message`
 * Replace identifiers in `Callback`, `Message`, `Sender`, `Update` on specified `ID` data family instances
 * Move chat identifiers from `Channel` and `Group` to `Origin` and `Moving`, delete `Conversation` module
+* Define `Persistable` instances for leaving `Group`, `Supergroup` or `Channel` chats
