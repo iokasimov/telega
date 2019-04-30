@@ -1,6 +1,6 @@
 module Network.API.Telegram.Bot.Object.Update.Message (module Exports
 	, Message (..), ID (MSG), Send (..), Reply (..), Forward (..)
-	, Edit (..), Delete (..), Silently (..)) where
+	, Edit (..), Delete (..), Pin (..), Silently (..)) where
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Keyboard as Exports
@@ -21,7 +21,7 @@ import "text" Data.Text (Text)
 import "with" Data.With (type (:&:)((:&:)))
 
 import Network.API.Telegram.Bot.Field (Caption, URI)
-import Network.API.Telegram.Bot.Object.Chat (Chat, ID)
+import Network.API.Telegram.Bot.Object.Chat (Chat, Group, Channel, ID)
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, Returning, payload, endpoint))
@@ -255,11 +255,28 @@ instance Persistable (Stop (Live Location)) where
 	endpoint _ = "stopMessageLiveLocation"
 
 instance Persistable (Stop Poll) where
-	type Payload (Stop Poll) = Stop (Stop Poll)
+	type Payload (Stop Poll) = Stop Poll
 	type Returning (Stop Poll) = Poll
 	payload (Stop chat_id message_id) = field "chat_id" chat_id
 		<> field "message_id" message_id
 	endpoint _ = "stopPoll"
+
+data Pin chat msg where
+	Pin :: ID Message -> ID Chat -> Pin b Message
+
+instance Persistable (Pin Group Message) where
+	type Payload (Pin Group Message) = Pin Group Message
+	type Returning (Pin Group Message) = ()
+	payload (Pin chat_id message_id) = field "chat_id" chat_id
+		<> field "message_id" message_id
+	endpoint _ = "pinChatMessage"
+
+instance Persistable (Pin Channel Message) where
+	type Payload (Pin Channel Message) = Pin Channel Message
+	type Returning (Pin Channel Message) = ()
+	payload (Pin chat_id message_id) = field "chat_id" chat_id
+		<> field "message_id" message_id
+	endpoint _ = "pinChatMessage"
 
 data Silently (todo :: * -> *) a = Silently a
 
@@ -278,6 +295,12 @@ instance Persistable (Send obj) => Persistable (Silently Send obj) where
 instance Persistable (Reply obj) => Persistable (Silently Reply obj) where
 	type Payload (Silently Reply obj) = Silently Reply (Payload (Reply obj))
 	type Returning (Silently Reply obj) = Message
+	payload (Silently x) = payload x <> field "disable_notification" True
+	endpoint (Silently x) = endpoint x
+
+instance Persistable (Pin chat Message) => Persistable (Silently (Pin chat) Message) where
+	type Payload (Silently (Pin chat) Message) = Silently (Pin chat) (Payload (Pin chat Message))
+	type Returning (Silently (Pin chat) Message) = ()
 	payload (Silently x) = payload x <> field "disable_notification" True
 	endpoint (Silently x) = endpoint x
 
