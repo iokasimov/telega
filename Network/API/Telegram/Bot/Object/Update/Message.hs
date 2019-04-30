@@ -1,6 +1,6 @@
 module Network.API.Telegram.Bot.Object.Update.Message (module Exports
 	, Message (..), ID (MSG), Send (..), Reply (..), Forward (..)
-	, Edit (..), Delete (..), Pin (..), Silently (..)) where
+	, Edit (..), Delete (..), Pin (..), Unpin (..), Silently (..)) where
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Keyboard as Exports
@@ -278,6 +278,21 @@ instance Persistable (Pin Channel Message) where
 		<> field "message_id" message_id
 	endpoint _ = "pinChatMessage"
 
+data Unpin chat msg where
+	Unpin :: ID Chat -> Unpin b Message
+
+instance Persistable (Unpin Group Message) where
+	type Payload (Unpin Group Message) = Unpin Group Message
+	type Returning (Unpin Group Message) = ()
+	payload (Unpin chat_id) = field "chat_id" chat_id
+	endpoint _ = "unpinChatMessage"
+
+instance Persistable (Unpin Channel Message) where
+	type Payload (Unpin Channel Message) = Unpin Channel Message
+	type Returning (Unpin Channel Message) = ()
+	payload (Unpin chat_id) = field "chat_id" chat_id
+	endpoint _ = "unpinChatMessage"
+
 data Silently (todo :: * -> *) a = Silently a
 
 instance Persistable (Forward obj) => Persistable (Silently Forward obj) where
@@ -301,6 +316,12 @@ instance Persistable (Reply obj) => Persistable (Silently Reply obj) where
 instance Persistable (Pin chat Message) => Persistable (Silently (Pin chat) Message) where
 	type Payload (Silently (Pin chat) Message) = Silently (Pin chat) (Payload (Pin chat Message))
 	type Returning (Silently (Pin chat) Message) = ()
+	payload (Silently x) = payload x <> field "disable_notification" True
+	endpoint (Silently x) = endpoint x
+
+instance Persistable (Unpin chat Message) => Persistable (Silently (Unpin chat) Message) where
+	type Payload (Silently (Unpin chat) Message) = Silently (Unpin chat) (Payload (Unpin chat Message))
+	type Returning (Silently (Unpin chat) Message) = ()
 	payload (Silently x) = payload x <> field "disable_notification" True
 	endpoint (Silently x) = endpoint x
 
