@@ -6,14 +6,13 @@ import "base" Data.Eq (Eq ((==)))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (Maybe)
-import "base" Text.Show (Show)
 
 import Network.API.Telegram.Bot.Field (Height, Width, Filesize, URI)
 import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Identificator, ident))
 
 data Photo
 
-data Photosize = Photosize URI Height Width (Maybe Filesize) deriving Show
+data Photosize = Photosize URI Height Width (Maybe Filesize)
 
 instance Eq Photosize where
 	s == s' = ident s == ident s'

@@ -5,11 +5,10 @@ import "base" Control.Applicative ((<*>))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int)
-import "base" Text.Show (Show)
 
 import Network.API.Telegram.Bot.Field (Title)
 
-data Option = Option Title Int deriving Show
+data Option = Option Title Int
 
 instance FromJSON Option where
 	parseJSON = withObject "Option" $ \v -> Option

@@ -11,7 +11,6 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (Maybe (Just, Nothing))
 import "base" Data.Tuple (fst)
 import "base" System.IO (IO)
-import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 import "transformers" Control.Monad.Trans.Reader (ReaderT (runReaderT), ask)
 import "transformers" Control.Monad.Trans.Except (ExceptT, runExceptT)
@@ -26,7 +25,7 @@ telegram token env = runExceptT . flip runReaderT (env, token)
 ask' :: Telegram e e
 ask' = fst <$> ask
 
-data Ok a = Ok Bool a deriving Show
+data Ok a = Ok Bool a
 
 result :: Ok a -> Maybe a
 result (Ok True x) = Just x

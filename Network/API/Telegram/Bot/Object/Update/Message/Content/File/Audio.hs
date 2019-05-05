@@ -5,13 +5,12 @@ import "base" Control.Applicative ((<*>))
 import "base" Data.Maybe (Maybe)
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
-import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Field (Duration, Filesize, MIME, Title, URI)
 import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Identificator, ident))
 
-data Audio = Audio URI Duration (Maybe Text) (Maybe Title) (Maybe MIME) (Maybe Filesize) deriving Show
+data Audio = Audio URI Duration (Maybe Text) (Maybe Title) (Maybe MIME) (Maybe Filesize)
 
 instance Accessible Duration Audio where
 	access f (Audio uri duration performer title mime fs) =

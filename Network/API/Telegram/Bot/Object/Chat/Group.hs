@@ -5,18 +5,12 @@ import "base" Control.Applicative ((<*>))
 import "base" Control.Monad ((>>=), fail)
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
-import "base" Data.Int (Int64)
 import "base" Data.Maybe (Maybe)
-import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Field (Title)
-import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 
-data Group
-	= Basic Title
-	| Super Title (Maybe Text)
-	deriving Show
+data Group = Basic Title | Super Title (Maybe Text)
 
 instance FromJSON Group where
 	parseJSON = withObject "Group" $ \chat -> chat .: "type" >>= \case

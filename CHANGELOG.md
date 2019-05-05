@@ -163,3 +163,6 @@
 * Define `Persistable` instances for leaving `Group`, `Supergroup` or `Channel` chats
 * Change type of `Persistable`'s `endpoint` method to `Text`
 * Replace `wreq` on `req` as HTTP library
+
+# 0.3.0
+* Remove all `Show` deriving instances (library users can use standalone deriving)

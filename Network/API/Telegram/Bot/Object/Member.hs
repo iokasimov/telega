@@ -13,7 +13,6 @@ import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int, Int64)
 import "base" Data.Semigroup ((<>))
-import "base" Text.Show (Show)
 import "data-default" Data.Default (Default (def))
 import "text" Data.Text (Text)
 
@@ -30,7 +29,6 @@ data Member
 	| Restricted Sender Restrictions Int
 	| Left Sender
 	| Kicked Sender Int
-	deriving Show
 
 instance Accessible Sender Member where
 	access f (Creator sender) = (\sender' -> Creator sender') <$> f sender

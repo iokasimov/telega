@@ -8,13 +8,11 @@ import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Control.Applicative ((<|>))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
-import "base" Text.Show (Show)
 
 data Info
 	= Point Location
 	| User Contact
 	| Meeting Venue
-	deriving Show
 
 instance FromJSON Info where
 	parseJSON = withObject "Info" $ \v ->

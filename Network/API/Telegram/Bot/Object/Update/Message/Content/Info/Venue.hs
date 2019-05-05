@@ -5,13 +5,12 @@ import "base" Control.Applicative ((<*>))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (Maybe)
-import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Field (Title)
 import Network.API.Telegram.Bot.Object.Update.Message.Content.Info.Location (Location)
 
-data Venue = Venue Title Text Location (Maybe Text) (Maybe Text) deriving Show
+data Venue = Venue Title Text Location (Maybe Text) (Maybe Text)
 
 instance FromJSON Venue where
 	parseJSON = withObject "Venue" $ \i -> Venue

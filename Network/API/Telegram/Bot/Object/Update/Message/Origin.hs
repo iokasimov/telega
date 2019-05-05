@@ -6,7 +6,6 @@ import "base" Control.Applicative ((<*>))
 import "base" Control.Monad (Monad ((>>=)))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
-import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Object.Chat (Chat, ID,Channel, Group)
@@ -17,7 +16,6 @@ data Origin
 	= Private (ID Chat) Sender
 	| Group (ID Chat) Group Sender
 	| Blog (ID Chat) Channel
-	deriving Show
 
 instance Accessible (ID Chat) Origin where
 	access f (Private i sender) = (\i' -> Private i' sender) <$> f i

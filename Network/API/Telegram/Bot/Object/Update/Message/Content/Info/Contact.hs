@@ -6,13 +6,12 @@ import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int)
 import "base" Data.Maybe (Maybe)
-import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Field (Name, First, Last)
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 
-data Contact = Contact (First Name) (Maybe (Last Name)) (Maybe Int) Text (Maybe Text) deriving Show
+data Contact = Contact (First Name) (Maybe (Last Name)) (Maybe Int) Text (Maybe Text)
 
 instance Accessible (First Name) Contact where
 	access f (Contact fn ln uid pn vc) = (\fn' -> Contact fn' ln uid pn vc) <$> f fn

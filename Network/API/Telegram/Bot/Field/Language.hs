@@ -5,12 +5,11 @@ import "aeson" Data.Aeson (FromJSON (parseJSON)
 import "base" Control.Applicative (pure)
 import "base" Data.Function ((.))
 import "base" Data.Functor ((<$>))
-import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 
-newtype Language = Language Text deriving Show
+newtype Language = Language Text
 
 instance Accessible Text Language where
 	access f (Language txt) = (\txt' -> Language txt') <$> f txt

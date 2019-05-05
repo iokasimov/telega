@@ -5,9 +5,8 @@ import "base" Data.Bool (Bool)
 import "base" Control.Applicative ((<*>))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
-import "base" Text.Show (Show)
 
-data Restrictions = Restrictions Bool Bool Bool Bool deriving Show
+data Restrictions = Restrictions Bool Bool Bool Bool
 
 instance FromJSON Restrictions where
 	parseJSON = withObject "Restrictions" $ \v -> Restrictions

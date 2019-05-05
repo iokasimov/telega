@@ -6,7 +6,6 @@ import "base" Control.Applicative ((<*>), (<|>))
 import "base" Control.Monad ((>>=))
 import "base" Data.Function (flip, ($))
 import "base" Data.Functor ((<$>))
-import "base" Text.Show (Show)
 
 import Network.API.Telegram.Bot.Object.Chat (Chat, ID)
 import Network.API.Telegram.Bot.Object.Chat.Group (Group)
@@ -16,7 +15,6 @@ import Network.API.Telegram.Bot.Property (Accessible (access))
 data Moving
 	= Gone Sender (ID Chat) Group
 	| Joined [Sender] (ID Chat) Group
-	deriving Show
 
 instance Accessible Group Moving where
 	access f (Gone sender i group) = Gone sender i <$> f group

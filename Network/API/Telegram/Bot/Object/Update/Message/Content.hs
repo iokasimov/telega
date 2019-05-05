@@ -15,14 +15,12 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Foldable (Foldable (foldr))
 import "base" Data.Int (Int)
 import "base" Data.Maybe (Maybe)
-import "base" Text.Show (Show)
 import "base" Prelude ((+))
 import "text" Data.Text (Text, drop, take)
 
 import Network.API.Telegram.Bot.Field (Caption)
 
 data Status = Opened | Closed
-	deriving Show
 
 data Content
 	= Textual Text
@@ -30,7 +28,6 @@ data Content
 	| Attachment (Maybe Caption) File
 	| Polling Text Status Poll
 	| Information Info
-	deriving Show
 
 instance FromJSON Content where
 	parseJSON = withObject "Content" $ \v -> command v <|> attachment v <|> information v <|> polling v <|> textual v where

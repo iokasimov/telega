@@ -3,11 +3,10 @@ module Network.API.Telegram.Bot.Field.Duration (Duration) where
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int)
-import "base" Text.Show (Show)
 
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 
-newtype Duration = Duration Int deriving Show
+newtype Duration = Duration Int
 
 instance Accessible Int Duration where
 	access f (Duration int) = (\int' -> Duration int') <$> f int

@@ -5,12 +5,11 @@ import "aeson" Data.Aeson (FromJSON (parseJSON)
 import "base" Control.Applicative (pure)
 import "base" Data.Function ((.), ($))
 import "base" Data.Functor ((<$>))
-import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 
-newtype Name = Name Text deriving Show
+newtype Name = Name Text
 
 instance Accessible Text Name where
 	access f (Name txt) = (\txt' -> Name txt') <$> f txt
@@ -23,8 +22,6 @@ instance ToJSON Name where
 
 data First a where First :: Name -> First Name
 
-deriving instance Show a => Show (First a)
-
 instance Accessible Text (First Name) where
 	access f (First (Name txt)) = (\txt' -> First $ Name txt') <$> f txt
 
@@ -36,8 +33,6 @@ instance ToJSON (First Name) where
 
 data Last a where Last :: Name -> Last Name
 
-deriving instance Show a => Show (Last a)
-
 instance Accessible Text (Last Name) where
 	access f (Last (Name txt)) = (\txt' -> Last $ Name txt') <$> f txt
 
@@ -48,8 +43,6 @@ instance ToJSON (Last Name) where
 	toJSON (Last name) = toJSON name
 
 data Nick a where Nick :: Name -> Nick Name
-
-deriving instance Show a => Show (Nick a)
 
 instance Accessible Text (Nick Name) where
 	access f (Nick (Name txt)) = (\txt' -> Nick $ Name txt') <$> f txt

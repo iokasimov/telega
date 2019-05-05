@@ -6,10 +6,8 @@ import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int)
 import "base" GHC.Float (Float)
-import "base" Text.Show (Show)
 
 data Location = Location Float Float
-	deriving Show
 
 instance FromJSON Location where
 	parseJSON = withObject "Location" $ \v -> Location

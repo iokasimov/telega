@@ -10,7 +10,6 @@ import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Control.Applicative ((<|>))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
-import "base" Text.Show (Show)
 
 data File
 	= Audiofile Audio
@@ -18,7 +17,6 @@ data File
 	| General Document
 	| Voicerecord Voice
 	| Photography [Photosize]
-	deriving Show
 
 instance FromJSON File where
 	parseJSON = withObject "Message" $ \v ->
