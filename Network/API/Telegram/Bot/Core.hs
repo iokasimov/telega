@@ -15,14 +15,13 @@ import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 import "transformers" Control.Monad.Trans.Reader (ReaderT (runReaderT), ask)
 import "transformers" Control.Monad.Trans.Except (ExceptT, runExceptT)
-import "wreq" Network.Wreq.Session (Session)
 
 newtype Token = Token Text deriving Eq
 
-type Telegram e a = ReaderT (e, (Session, Token)) (ExceptT SomeException IO) a
+type Telegram e a = ReaderT (e, Token) (ExceptT SomeException IO) a
 
-telegram :: Session -> Token -> e -> Telegram e a -> IO (Either SomeException a)
-telegram session token env = runExceptT . flip runReaderT (env, (session, token))
+telegram :: Token -> e -> Telegram e a -> IO (Either SomeException a)
+telegram token env = runExceptT . flip runReaderT (env, token)
 
 ask' :: Telegram e e
 ask' = fst <$> ask
