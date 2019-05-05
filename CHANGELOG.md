@@ -161,3 +161,5 @@
 * Move chat identifiers from `Channel` and `Group` to `Origin` and `Moving`, delete `Conversation` module
 * Define `Persistable` instances for pinning and unpinning messages in `Group`, `Supergroup` or `Channel` chats
 * Define `Persistable` instances for leaving `Group`, `Supergroup` or `Channel` chats
+* Change type of `Persistable`'s `endpoint` method to `Text`
+* Replace `wreq` on `req` as HTTP library

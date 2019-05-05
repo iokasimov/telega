@@ -7,10 +7,9 @@ import "base" Data.Function ((.), ($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (fromJust)
 import "base" Data.Monoid (mempty)
-import "base" Data.String (String)
 import "base" Data.Tuple (snd)
 import "data-default" Data.Default (def)
-import "text" Data.Text (Text, pack)
+import "text" Data.Text (Text)
 import "transformers" Control.Monad.Trans.Class (lift)
 import "transformers" Control.Monad.Trans.Except (ExceptT (ExceptT))
 import "transformers" Control.Monad.Trans.Reader (ask)
@@ -24,13 +23,13 @@ class Persistable action where
 	type Payload action = payload | payload -> action
 	type Returning action :: *
 	payload :: Payload action -> Object
-	endpoint :: Payload action -> String
+	endpoint :: Payload action -> Text
 
 	persist :: FromJSON (Returning action) => Payload action -> Telegram e (Returning action)
-	persist x = request (pack $ endpoint x) (Object $ payload x)
+	persist x = request (endpoint x) (Object $ payload x)
 
 	persist_ :: Payload action -> Telegram e ()
-	persist_ x = request @() @_ (pack $ endpoint x) (Object $ payload x)
+	persist_ x = request @() @_ (endpoint x) (Object $ payload x)
 
 request :: forall a e . FromJSON a => Text -> Value -> Telegram e a
 request e p = snd <$> ask >>= \(Token token) -> lift . ExceptT . try .
