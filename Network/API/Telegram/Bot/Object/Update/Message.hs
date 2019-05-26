@@ -9,7 +9,7 @@ import Network.API.Telegram.Bot.Object.Update.Message.Origin as Exports
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), Value (Object), withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser)
 import "base" Control.Applicative ((<*>), (<|>))
-import "base" Control.Monad (Monad ((>>=)), fail)
+import "base" Control.Monad (fail, (>>=))
 import "base" Data.Bool (Bool (True))
 import "base" Data.Eq (Eq ((==)))
 import "base" Data.Function (flip, ($))

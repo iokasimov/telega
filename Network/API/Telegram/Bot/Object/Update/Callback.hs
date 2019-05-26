@@ -4,7 +4,7 @@ module Network.API.Telegram.Bot.Object.Update.Callback
 import Network.API.Telegram.Bot.Object.Update.Callback.Notification as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), withObject, (.:))
-import "base" Control.Applicative (Applicative ((<*>)))
+import "base" Control.Applicative ((<*>))
 import "base" Data.Eq (Eq ((==)))
 import "base" Data.Function (flip, ($))
 import "base" Data.Functor ((<$>))

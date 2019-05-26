@@ -7,8 +7,8 @@ import Network.API.Telegram.Bot.Object.Update.Message.Content.Poll as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withArray, withObject, (.:), (.:?))
 import "aeson" Data.Aeson.Types (Object, Parser, Value (Object))
-import "base" Control.Applicative (Applicative ((<*>)), Alternative (empty, (<|>)))
-import "base" Control.Monad (Monad ((>>=)), fail)
+import "base" Control.Applicative (empty, (<*>), (<|>))
+import "base" Control.Monad (fail, (>>=))
 import "base" Data.Bool (bool)
 import "base" Data.Function ((.), ($))
 import "base" Data.Functor ((<$>))

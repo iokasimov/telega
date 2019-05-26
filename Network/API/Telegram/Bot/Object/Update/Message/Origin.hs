@@ -3,7 +3,7 @@ module Network.API.Telegram.Bot.Object.Update.Message.Origin (Origin (..)) where
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "aeson" Data.Aeson.Types (Object, Parser, Value (Object))
 import "base" Control.Applicative ((<*>))
-import "base" Control.Monad (Monad ((>>=)))
+import "base" Control.Monad ((>>=))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "text" Data.Text (Text)
