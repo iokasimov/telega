@@ -17,14 +17,13 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int)
 import "base" Data.Semigroup ((<>))
 import "text" Data.Text (Text)
-import "with" Data.With (type (:&:)((:&:)))
 
 import Network.API.Telegram.Bot.Field (Caption, URI)
 import Network.API.Telegram.Bot.Object.Chat (Chat, Group, Channel, ID)
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
 import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
 import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, Returning, payload, endpoint))
-import Network.API.Telegram.Bot.Utils (field)
+import Network.API.Telegram.Bot.Utils (type (:*:)((:*:)), field)
 
 data Message
 	= Direct (ID Message) Origin Content
@@ -103,10 +102,10 @@ instance Persistable (Send Text) where
 	payload (Send chat_id text) = field "chat_id" chat_id <> field "text" text
 	endpoint _ = "sendMessage"
 
-instance Persistable (Send (Text :&: Keyboard)) where
-	type Payload (Send (Text :&: Keyboard)) = Send (Text :&: Keyboard)
-	type Returning (Send (Text :&: Keyboard)) = Message
-	payload (Send chat_id (text :&: reply_markup)) = field "chat_id" chat_id
+instance Persistable (Send (Text :*: Keyboard)) where
+	type Payload (Send (Text :*: Keyboard)) = Send (Text :*: Keyboard)
+	type Returning (Send (Text :*: Keyboard)) = Message
+	payload (Send chat_id (text :*: reply_markup)) = field "chat_id" chat_id
 		<> field "text" text <> field "reply_markup" reply_markup
 	endpoint _ = "sendMessage"
 
@@ -118,10 +117,10 @@ instance Persistable (Send Audio) where
 		<> field "title" title <> field "mime_type" mime_type <> field "file_size" file_size
 	endpoint _ = "sendAudio"
 
-instance Persistable (Send (Caption :&: Audio)) where
-	type Payload (Send (Caption :&: Audio)) = Send (Caption :&: Audio)
-	type Returning (Send (Caption :&: Audio)) = Message
-	payload (Send chat_id (caption :&: audio)) = payload (Send chat_id audio) <> field "caption" caption
+instance Persistable (Send (Caption :*: Audio)) where
+	type Payload (Send (Caption :*: Audio)) = Send (Caption :*: Audio)
+	type Returning (Send (Caption :*: Audio)) = Message
+	payload (Send chat_id (caption :*: audio)) = payload (Send chat_id audio) <> field "caption" caption
 	endpoint _ = "sendAudio"
 
 instance Persistable (Send Document) where
@@ -132,10 +131,10 @@ instance Persistable (Send Document) where
 		<> field "mime_type" mime_type <> field "file_size" file_size
 	endpoint _ = "sendDocument"
 
-instance Persistable (Send (Caption :&: Document)) where
-	type Payload (Send (Caption :&: Document)) = Send (Caption :&: Document)
-	type Returning (Send (Caption :&: Document)) = Message
-	payload (Send chat_id (caption :&: document)) = payload (Send chat_id document) <> field "caption" caption
+instance Persistable (Send (Caption :*: Document)) where
+	type Payload (Send (Caption :*: Document)) = Send (Caption :*: Document)
+	type Returning (Send (Caption :*: Document)) = Message
+	payload (Send chat_id (caption :*: document)) = payload (Send chat_id document) <> field "caption" caption
 	endpoint _ = "sendDocument"
 
 instance Persistable (Send Video) where
@@ -146,10 +145,10 @@ instance Persistable (Send Video) where
 		<> field "height" height <> field "mime_type" mime_type <> field "file_size" file_size
 	endpoint _ = "sendVideo"
 
-instance Persistable (Send (Caption :&: Video)) where
-	type Payload (Send (Caption :&: Video)) = Send (Caption :&: Video)
-	type Returning (Send (Caption :&: Video)) = Message
-	payload (Send chat_id (caption :&: video)) = payload (Send chat_id video) <> field "caption" caption
+instance Persistable (Send (Caption :*: Video)) where
+	type Payload (Send (Caption :*: Video)) = Send (Caption :*: Video)
+	type Returning (Send (Caption :*: Video)) = Message
+	payload (Send chat_id (caption :*: video)) = payload (Send chat_id video) <> field "caption" caption
 	endpoint _ = "sendVideo"
 
 instance Persistable (Send Voice) where
@@ -160,10 +159,10 @@ instance Persistable (Send Voice) where
 		<> field "mime_type" mime_type <> field "file_size" file_size
 	endpoint _ = "sendVoice"
 
-instance Persistable (Send (Caption :&: Voice)) where
-	type Payload (Send (Caption :&: Voice)) = Send (Caption :&: Voice)
-	type Returning (Send (Caption :&: Voice)) = Message
-	payload (Send chat_id (caption :&: voice)) = payload (Send chat_id voice) <> field "caption" caption
+instance Persistable (Send (Caption :*: Voice)) where
+	type Payload (Send (Caption :*: Voice)) = Send (Caption :*: Voice)
+	type Returning (Send (Caption :*: Voice)) = Message
+	payload (Send chat_id (caption :*: voice)) = payload (Send chat_id voice) <> field "caption" caption
 	endpoint _ = "sendVoice"
 
 instance Persistable (Send Photo) where
@@ -172,10 +171,10 @@ instance Persistable (Send Photo) where
 	payload (Send chat_id uri) = field "chat_id" chat_id <> field "photo" uri
 	endpoint _ = "sendPhoto"
 
-instance Persistable (Send (Caption :&: Photo)) where
-	type Payload (Send (Caption :&: Photo)) = Send (Caption :&: URI)
-	type Returning (Send (Caption :&: Photo)) = Message
-	payload (Send chat_id (caption :&: uri)) = field "chat_id" chat_id
+instance Persistable (Send (Caption :*: Photo)) where
+	type Payload (Send (Caption :*: Photo)) = Send (Caption :*: URI)
+	type Returning (Send (Caption :*: Photo)) = Message
+	payload (Send chat_id (caption :*: uri)) = field "chat_id" chat_id
 		<> field "photo" uri <> field "caption" caption
 	endpoint _ = "sendPhoto"
 

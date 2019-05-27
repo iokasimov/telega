@@ -1,7 +1,6 @@
 resolver: lts-13.13
 packages:
 - '.'
-extra-deps:
-- with-0.1.0
+extra-deps: []
 flags: {}
 extra-package-dbs: []

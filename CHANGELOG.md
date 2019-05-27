@@ -167,3 +167,4 @@
 # 0.3.0
 * Remove all `Show` deriving instances (library users can use standalone deriving)
 * Rename `ask'` to `environment` for access user defined read-only environment
+* Remove `with` package from `extra-deps`, put open product to `Utils` module
