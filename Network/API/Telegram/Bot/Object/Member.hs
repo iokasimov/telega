@@ -11,14 +11,15 @@ import "base" Control.Monad (fail, (>>=))
 import "base" Data.Bool (Bool (True, False))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
-import "base" Data.Int (Int, Int64)
+import "base" Data.Int (Int)
 import "base" Data.Semigroup ((<>))
 import "data-default" Data.Default (Default (def))
 import "text" Data.Text (Text)
 
+import Network.API.Telegram.Bot.Object.Chat (Chat)
 import Network.API.Telegram.Bot.Object.Sender (Sender)
 import Network.API.Telegram.Bot.Property.Accessible (Accessible (access))
-import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident))
+import Network.API.Telegram.Bot.Property.Identifiable (Identifiable (Identificator, ident), ID)
 import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, Returning, payload, endpoint))
 import Network.API.Telegram.Bot.Utils (field)
 
@@ -77,7 +78,7 @@ instance Default (Cannot Powers) where
 data Until = Forever | Until Int
 
 data Kick a where
-	Kick :: Int64 -> Int -> Until -> Kick Member
+	Kick :: ID Chat -> ID Sender -> Until -> Kick Member
 
 instance Persistable (Kick Member) where
 	type Payload (Kick Member) = Kick Member
@@ -89,7 +90,7 @@ instance Persistable (Kick Member) where
 	endpoint _ = "kickChatMember"
 
 data Unban a where
-	Unban :: Int64 -> Int -> Unban Member
+	Unban :: ID Chat -> ID Sender -> Unban Member
 
 instance Persistable (Unban Member) where
 	type Payload (Unban Member) = Unban Member
@@ -100,7 +101,7 @@ instance Persistable (Unban Member) where
 	endpoint _ = "unbanChatMember"
 
 data Restrict a where
-	Restrict :: Int64 -> Int -> Until -> Restrictions -> Restrict Member
+	Restrict :: ID Chat -> ID Sender -> Until -> Restrictions -> Restrict Member
 
 instance Persistable (Restrict Member) where
 	type Payload (Restrict Member) = Restrict Member
@@ -116,7 +117,7 @@ instance Persistable (Restrict Member) where
 	endpoint _ = "restrictChatMember"
 
 data Promote a where
-	Promote :: Int64 -> Int -> Until -> Powers -> Promote Member
+	Promote :: ID Chat -> ID Sender -> Until -> Powers -> Promote Member
 
 instance Persistable (Promote Member) where
 	type Payload (Promote Member) = Promote Member
