@@ -1,4 +1,4 @@
-module Network.API.Telegram.Bot.Core (Telegram, telegram, environment, Token (..), Ok, result) where
+module Network.API.Telegram.Bot.Core (Telegram, Telegram, environment, Token (..), Ok, result) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Control.Applicative ((<*>))
@@ -11,19 +11,18 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (Maybe (Just, Nothing))
 import "base" Data.Tuple (fst)
 import "base" System.IO (IO)
+import "joint" Control.Joint (Reader, run, lift, get, (:>))
 import "text" Data.Text (Text)
-import "transformers" Control.Monad.Trans.Reader (ReaderT (runReaderT), ask)
-import "transformers" Control.Monad.Trans.Except (ExceptT, runExceptT)
 
 newtype Token = Token Text deriving Eq
 
-type Telegram e a = ReaderT (e, Token) (ExceptT SomeException IO) a
+type Telegram e = Reader (e, Token) :> Either SomeException :> IO
 
 telegram :: Token -> e -> Telegram e a -> IO (Either SomeException a)
-telegram token env = runExceptT . flip runReaderT (env, token)
+telegram token env = run . flip run (env, token)
 
-environment :: Telegram e e
-environment = fst <$> ask
+environment :: forall e . Telegram e e
+environment = fst <$> lift @(Reader (e, Token)) get
 
 data Ok a = Ok Bool a
 
