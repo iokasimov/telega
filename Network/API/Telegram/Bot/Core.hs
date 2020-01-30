@@ -1,4 +1,4 @@
-module Network.API.Telegram.Bot.Core (Telegram, Telegram, environment, Token (..), Ok, result) where
+module Network.API.Telegram.Bot.Core (Telegram, telegram, environment, Token (..), Ok, result) where
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withObject, (.:))
 import "base" Control.Applicative ((<*>))
