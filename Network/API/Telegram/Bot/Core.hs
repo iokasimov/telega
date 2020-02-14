@@ -11,7 +11,7 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (Maybe (Just, Nothing))
 import "base" Data.Tuple (fst)
 import "base" System.IO (IO)
-import "joint" Control.Joint (Reader, run, lift, get, (:>))
+import "joint" Control.Joint (Reader, run, get, (:>))
 import "text" Data.Text (Text)
 
 newtype Token = Token Text deriving Eq
@@ -22,7 +22,7 @@ telegram :: Token -> e -> Telegram e a -> IO (Either SomeException a)
 telegram token env = run . flip run (env, token)
 
 environment :: forall e . Telegram e e
-environment = fst <$> lift @(Reader (e, Token)) get
+environment = fst <$> get @(e, Token)
 
 data Ok a = Ok Bool a
 

@@ -3,6 +3,6 @@ packages:
 - '.'
 extra-deps:
 - git: git://github.com/iokasimov/joint
-  commit: 377a8bfb68d72e78215537cce0b56e31400fd611
+  commit: 4d6c71c4544f55ff894b83bef931f2ec611061bc
 flags: {}
 extra-package-dbs: []
