@@ -9,8 +9,7 @@ import "base" Data.Maybe (fromJust)
 import "base" Data.Monoid (mempty)
 import "base" Data.Tuple (snd)
 import "base" System.IO (IO)
--- import "data-default" Data.Default (def)
-import "joint" Control.Joint (get, lift)
+import "joint" Control.Joint (get, adapt)
 import "text" Data.Text (Text)
 import "req" Network.HTTP.Req (POST (POST), ReqBodyJson (ReqBodyJson)
 	, https, jsonResponse, req, responseBody, runReq, (/:), defaultHttpConfig)
@@ -31,7 +30,7 @@ class Persistable action where
 	persist_ x = request @() @_ (endpoint x) (Object $ payload x)
 
 request :: forall a e . FromJSON a => Text -> Value -> Telegram e a
-request e p = snd <$> get @(e, Token) >>= lift . try @SomeException . send >>= lift where
+request e p = snd <$> get @(e, Token) >>= adapt . try @SomeException . send >>= adapt where
 
 	send :: FromJSON a => Token -> IO a
 	send (Token token) = (<$>) (fromJust . result . responseBody) . runReq defaultHttpConfig
