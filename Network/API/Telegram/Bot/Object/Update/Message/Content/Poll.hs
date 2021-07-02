@@ -7,8 +7,10 @@ import "base" Control.Applicative ((<*>))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "text" Data.Text (Text)
+import "base" Text.Show (Show)
 
 data Poll = Poll Text [Option]
+	deriving Show
 
 instance FromJSON Poll where
 	parseJSON = withObject "Pool" $ \v ->

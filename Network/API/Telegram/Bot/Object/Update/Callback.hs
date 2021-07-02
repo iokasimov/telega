@@ -9,6 +9,7 @@ import "base" Data.Eq (Eq ((==)))
 import "base" Data.Function (flip, ($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Semigroup ((<>))
+import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Object.Chat (Chat)
@@ -19,6 +20,7 @@ import Network.API.Telegram.Bot.Property.Persistable (Persistable (Payload, Retu
 import Network.API.Telegram.Bot.Utils (field)
 
 data Callback = Datatext (ID Callback) Sender Message Text
+	deriving Show
 
 instance Eq Callback where
 	c == c' = ident c == ident c'
@@ -55,6 +57,7 @@ instance Persistable (Trigger Notification) where
 data instance ID Callback = CB Text
 
 deriving instance Eq (ID Callback)
+deriving instance Show (ID Callback)
 
 instance FromJSON (ID Callback) where parseJSON o = CB <$> parseJSON o
 instance ToJSON (ID Callback) where toJSON (CB i) = toJSON i

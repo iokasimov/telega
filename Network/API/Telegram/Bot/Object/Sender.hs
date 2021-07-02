@@ -11,6 +11,7 @@ import "base" Data.Int (Int)
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (Maybe)
+import "base" Text.Show (Show)
 
 import Network.API.Telegram.Bot.Field (Language, Name, First, Last, Nick)
 import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Identificator, ident), ID)
@@ -18,6 +19,7 @@ import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Ide
 data Sender
 	= Bot (ID Sender) (Maybe (Nick Name)) (First Name) (Maybe (Last Name)) (Maybe Language)
 	| Human (ID Sender) (Maybe (Nick Name)) (First Name) (Maybe (Last Name)) (Maybe Language)
+	deriving Show 
 
 instance Eq Sender where
 	Bot i _ _ _ _ == Bot i' _ _ _ _ = i == i'
@@ -60,6 +62,7 @@ instance FromJSON Sender where
 data instance ID Sender = SNDR Int
 
 deriving instance Eq (ID Sender)
+deriving instance Show (ID Sender)
 
 instance FromJSON (ID Sender) where parseJSON o = SNDR <$> parseJSON o
 instance ToJSON (ID Sender) where toJSON (SNDR i) = toJSON i

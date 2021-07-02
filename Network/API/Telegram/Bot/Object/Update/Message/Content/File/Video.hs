@@ -5,11 +5,13 @@ import "base" Control.Applicative ((<*>))
 import "base" Data.Maybe (Maybe)
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
+import "base" Text.Show (Show)
 
 import Network.API.Telegram.Bot.Field (Duration, Filesize, MIME, Height, Width, URI)
 import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Identificator, ident))
 
 data Video = Video URI Duration Height Width (Maybe MIME) (Maybe Filesize)
+	deriving Show
 
 instance Accessible Duration Video where
 	access f (Video uri duration height width mime fs) =

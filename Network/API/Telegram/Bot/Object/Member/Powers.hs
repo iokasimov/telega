@@ -5,8 +5,10 @@ import "base" Data.Bool (Bool)
 import "base" Control.Applicative ((<*>))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
+import "base" Text.Show (Show)
 
 data Powers = Powers Bool Bool Bool Bool Bool Bool Bool Bool
+	deriving Show
 
 instance FromJSON Powers where
 	parseJSON = withObject "Powers" $ \v -> Powers

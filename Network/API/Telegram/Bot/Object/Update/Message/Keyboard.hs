@@ -5,6 +5,7 @@ import Network.API.Telegram.Bot.Object.Update.Message.Keyboard.Button as Exports
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), object, withObject, (.:), (.=))
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
+import "base" Text.Show (Show)
 
 data Keyboard = Inline [[Button]]
 

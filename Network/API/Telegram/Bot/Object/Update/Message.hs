@@ -16,6 +16,7 @@ import "base" Data.Function (flip, ($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int)
 import "base" Data.Semigroup ((<>))
+import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
 import Network.API.Telegram.Bot.Field (Caption, URI)
@@ -29,6 +30,7 @@ data Message
 	= Direct (ID Message) Origin Content
 	| Forwarded (ID Message) Origin Content
 	| Replied (ID Message) Origin Content Message
+	deriving Show
 
 instance Eq Message where
 	m == m' = ident m == ident m'
@@ -325,6 +327,7 @@ instance Persistable (Unpin chat Message) => Persistable (Silently (Unpin chat) 
 data instance ID Message = MSG Int
 
 deriving instance Eq (ID Message)
+deriving instance Show (ID Message)
 
 instance FromJSON (ID Message) where parseJSON o = MSG <$> parseJSON o
 instance ToJSON (ID Message) where toJSON (MSG i) = toJSON i

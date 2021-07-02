@@ -8,9 +8,11 @@ import "base" Control.Monad (fail, (>>=))
 import "base" Data.Function ((.), ($))
 import "base" Data.Functor (Functor (fmap), (<$>))
 import "base" Data.Maybe (Maybe, maybe)
+import "base" Text.Show (Show)
 import "text" Data.Text (Text)
 
 data Button = Button Text Pressed
+	deriving Show
 
 instance FromJSON Button where
 	parseJSON = withObject "Button" $ \v ->
@@ -23,6 +25,7 @@ instance ToJSON Button where
 		["text" .= text, "callback_data" .= cbd]
 
 data Pressed = Open Text | Callback Text
+	deriving Show
 
 instance FromJSON Pressed where
 	parseJSON = withObject "Pressed" $ \v ->

@@ -7,6 +7,7 @@ import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON))
 import "base" Data.Eq (Eq)
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int64)
+import "base" Text.Show (Show)
 
 import Network.API.Telegram.Bot.Property
 	(Persistable (Payload, Returning, payload, endpoint), ID)
@@ -31,6 +32,7 @@ instance Persistable (Leave Channel) where
 data instance ID Chat = CHAT Int64
 
 deriving instance Eq (ID Chat)
+deriving instance Show (ID Chat)
 
 instance FromJSON (ID Chat) where
 	parseJSON o = CHAT <$> parseJSON o
