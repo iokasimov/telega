@@ -170,3 +170,4 @@
 * Remove `with` package from `extra-deps`, put open product to `Utils` module
 * Replace raw `Int` and `Int 64` on `ID Sender` and `ID Chat` in `Kick`, `Unban`, `Restrict` and `Promote` methods
 * Use `joint` instead of `transformers`
+* Define `Order` constructor in `Update` to represent member status changes by powered users

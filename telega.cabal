@@ -61,6 +61,7 @@ library
     Network.API.Telegram.Bot.Object.Update.Message.Keyboard.Button
     Network.API.Telegram.Bot.Object.Update.Message.Origin
     Network.API.Telegram.Bot.Object.Update.Moving
+    Network.API.Telegram.Bot.Object.Update.Order
     Network.API.Telegram.Bot.Property
     Network.API.Telegram.Bot.Property.Accessible
     Network.API.Telegram.Bot.Property.Identifiable

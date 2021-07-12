@@ -3,6 +3,7 @@ module Network.API.Telegram.Bot.Object.Update (module Exports, Update (..), ID (
 import Network.API.Telegram.Bot.Object.Update.Callback as Exports
 import Network.API.Telegram.Bot.Object.Update.Message as Exports
 import Network.API.Telegram.Bot.Object.Update.Moving as Exports
+import Network.API.Telegram.Bot.Object.Update.Order as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), ToJSON (toJSON), withObject, (.:))
 import "base" Control.Applicative ((<*>), (<|>))
@@ -19,12 +20,14 @@ data Update
 	= Query (ID Update) Callback
 	| Membership (ID Update) Moving
 	| Incoming (ID Update) Message
+	| Reassignment (ID Update) Order
 	deriving Show
 
 instance Accessible (ID Chat) Update where
 	access f (Query i callback) = Query i <$> access f callback
 	access f (Membership i moving) = Membership i <$> access f moving
 	access f (Incoming i message) = Incoming i <$> access f message
+	access f (Reassignment i order) = Reassignment i <$> access f order
 
 instance Identifiable Update where
 	type Identificator Update = ID Update
@@ -36,7 +39,8 @@ instance FromJSON Update where
 	parseJSON = withObject "Update" $ \v ->
 		(Query <$> v .: "update_id" <*> v .: "callback_query") <|>
 		(Membership <$> v .: "update_id" <*> v .: "message") <|>
-		(Incoming <$> v .: "update_id" <*> v .: "message")
+		(Incoming <$> v .: "update_id" <*> v .: "message") <|>
+		(Reassignment <$> v .: "update_id" <*> v .: "my_chat_member")
 
 data instance ID Update = UPD Int
 
