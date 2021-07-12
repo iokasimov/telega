@@ -14,6 +14,7 @@ import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int)
 import "base" Data.Semigroup ((<>))
 import "base" Text.Show (Show)
+import "base" Data.Maybe (Maybe (Just))
 import "data-default" Data.Default (Default (def))
 import "text" Data.Text (Text)
 
@@ -66,7 +67,7 @@ instance Default (Can Restrictions) where
 	def = Can $ Restrictions True True True True
 
 instance Default (Can Powers) where
-	def = Can $ Powers True True True True True True True True
+	def = Can $ Powers True (Just True) (Just True) True True True (Just True) True
 
 newtype Cannot a = Cannot a
 
@@ -74,7 +75,7 @@ instance Default (Cannot Restrictions) where
 	def = Cannot $ Restrictions False False False False
 
 instance Default (Cannot Powers) where
-	def = Cannot $ Powers False False False False False False False False
+	def = Cannot $ Powers False (Just False) (Just False) False False False (Just False) False
 
 -- | Ban forever or until some date (between 30 seconds and 366 days)
 data Until = Forever | Until Int
