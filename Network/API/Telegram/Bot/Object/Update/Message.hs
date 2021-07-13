@@ -239,7 +239,7 @@ data Delete a = Delete (ID Chat) (ID Message)
 
 instance Persistable (Delete Message) where
 	type Payload (Delete Message) = Delete Message
-	type Returning (Delete Message) = ()
+	type Returning (Delete Message) = Bool
 	payload (Delete chat_id message_id) = field "chat_id" chat_id
 		<> field "message_id" message_id
 	endpoint _ = "deleteMessage"
