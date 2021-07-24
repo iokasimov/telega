@@ -172,3 +172,4 @@
 * Use `joint` instead of `transformers`
 * Define `Reassignment` constructor in `Update` to represent member status changes by powered users
 * Make some fields in `Powers` object optional
+* `Delete Message` method should return `True` on success

@@ -1,4 +1,4 @@
-module Network.API.Telegram.Bot.Object.Update.Message.Content.Poll (Poll (..)) where
+module Network.API.Telegram.Bot.Object.Update.Message.Content.Poll (module Exports, Poll (..)) where
 
 import Network.API.Telegram.Bot.Object.Update.Message.Content.Poll.Option as Exports
 

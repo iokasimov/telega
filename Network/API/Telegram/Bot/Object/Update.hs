@@ -11,7 +11,7 @@ import "base" Data.Eq (Eq)
 import "base" Data.Function (($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Int (Int)
-import "base" Text.Show (Show (show))
+import "base" Text.Show (Show)
 
 import Network.API.Telegram.Bot.Object.Chat (Chat)
 import Network.API.Telegram.Bot.Property (Accessible (access), Identifiable (Identificator, ident))
@@ -34,6 +34,7 @@ instance Identifiable Update where
 	ident (Query i _) = i
 	ident (Membership i _) = i
 	ident (Incoming i _) = i
+	ident (Reassignment i _) = i
 
 instance FromJSON Update where
 	parseJSON = withObject "Update" $ \v ->
