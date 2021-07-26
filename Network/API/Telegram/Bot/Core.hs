@@ -14,6 +14,8 @@ import "base" System.IO (IO)
 import "joint" Control.Joint (Reader, run, get, (:>))
 import "text" Data.Text (Text)
 
+import "base" Debug.Trace (traceShow)
+
 newtype Token = Token Text deriving Eq
 
 type Telegram e = Reader (e, Token) :> Either SomeException :> IO

@@ -14,7 +14,7 @@ data Option = Option Title Int
 
 instance FromJSON Option where
 	parseJSON = withObject "Option" $ \v -> Option
-		<$> v .: "text" <*> v .: "voter_counter"
+		<$> v .: "text" <*> v .: "voter_count"
 
 instance ToJSON Option where
 	toJSON (Option title _) = toJSON title

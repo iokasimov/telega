@@ -197,7 +197,7 @@ instance Persistable (Send (Live Location)) where
 
 instance Persistable (Send Poll) where
 	type Payload (Send Poll) = Send Poll
-	type Returning (Send Poll) = Message
+	type Returning (Send Poll) = Poll
 	payload (Send chat_id (Poll question options)) = field "chat_id" chat_id
 		<> field "question" question <> field "options" options
 	endpoint _ = "sendPoll"

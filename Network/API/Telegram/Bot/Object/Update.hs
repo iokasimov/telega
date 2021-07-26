@@ -21,13 +21,15 @@ data Update
 	| Membership (ID Update) Moving
 	| Incoming (ID Update) Message
 	| Reassignment (ID Update) Order
+	| Polling (ID Update) Poll
 	deriving Show
 
-instance Accessible (ID Chat) Update where
-	access f (Query i callback) = Query i <$> access f callback
-	access f (Membership i moving) = Membership i <$> access f moving
-	access f (Incoming i message) = Incoming i <$> access f message
-	access f (Reassignment i order) = Reassignment i <$> access f order
+-- FIXME: Poll doesn't contain information about chat
+--instance Accessible (ID Chat) Update where
+--	access f (Query i callback) = Query i <$> access f callback
+--	access f (Membership i moving) = Membership i <$> access f moving
+--	access f (Incoming i message) = Incoming i <$> access f message
+--	access f (Reassignment i order) = Reassignment i <$> access f order
 
 instance Identifiable Update where
 	type Identificator Update = ID Update
@@ -41,7 +43,8 @@ instance FromJSON Update where
 		(Query <$> v .: "update_id" <*> v .: "callback_query") <|>
 		(Membership <$> v .: "update_id" <*> v .: "message") <|>
 		(Incoming <$> v .: "update_id" <*> v .: "message") <|>
-		(Reassignment <$> v .: "update_id" <*> v .: "my_chat_member")
+		(Reassignment <$> v .: "update_id" <*> v .: "my_chat_member") <|>
+		(Polling <$> v .: "update_id" <*> v .: "poll")
 
 data instance ID Update = UPD Int
 

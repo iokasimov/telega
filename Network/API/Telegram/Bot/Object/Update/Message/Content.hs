@@ -28,12 +28,11 @@ data Content
 	= Textual Text
 	| Command Text
 	| Attachment (Maybe Caption) File
-	| Polling Text Status Poll
 	| Information Info
 	deriving Show
 
 instance FromJSON Content where
-	parseJSON = withObject "Content" $ \v -> command v <|> attachment v <|> information v <|> polling v <|> textual v where
+	parseJSON = withObject "Content" $ \v -> command v <|> attachment v <|> information v <|> textual v where
 
 		command :: Object -> Parser Content
 		command v = Command <$> (v .: "entities" >>= command_entity >>= extract_command v)
@@ -55,17 +54,6 @@ instance FromJSON Content where
 
 		information :: Object -> Parser Content
 		information v = Information <$> parseJSON (Object v)
-
-		polling :: Object -> Parser Content
-		polling v = Polling <$> (v .: "poll" >>= poll_id)
-			<*> (v .: "poll" >>= poll_status) <*> v .: "poll" where
-
-			poll_id :: Value -> Parser Text
-			poll_id = withObject "Poll" $ \p -> p .: "id"
-
-			poll_status :: Value -> Parser Status
-			poll_status = withObject "Poll" $ \p ->
-				bool Opened Closed <$> p .: "is_closed"
 
 		textual :: Object -> Parser Content
 		textual v = Textual <$> v .: "text"
