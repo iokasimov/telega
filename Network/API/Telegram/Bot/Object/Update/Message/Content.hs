@@ -4,6 +4,7 @@ module Network.API.Telegram.Bot.Object.Update.Message.Content
 import Network.API.Telegram.Bot.Object.Update.Message.Content.File as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.Info as Exports
 import Network.API.Telegram.Bot.Object.Update.Message.Content.Poll as Exports
+import Network.API.Telegram.Bot.Object.Update.Message.Content.WebApp as Exports
 
 import "aeson" Data.Aeson (FromJSON (parseJSON), withArray, withObject, (.:), (.:?))
 import "aeson" Data.Aeson.Types (Object, Parser, Value (Object))
