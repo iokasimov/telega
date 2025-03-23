@@ -6,7 +6,7 @@ import "base" Control.Monad ((>>=))
 import "base" Data.Function ((.), ($))
 import "base" Data.Functor ((<$>))
 import "base" Data.Maybe (fromJust)
-import "base" Data.Monoid (mempty)
+import "base" Data.Monoid (mempty, (<>))
 import "base" Data.Tuple (snd)
 import "base" System.IO (IO)
 import "text" Data.Text (Text)
@@ -37,5 +37,5 @@ request e p = snd <$> ask >>= lift . ExceptT . try @SomeException . send where
 
 	send :: FromJSON a => Token -> IO a
 	send (Token token) = (<$>) (fromJust . result . responseBody) . runReq defaultHttpConfig
-		$ req POST (https "api.telegram.org" /: token /: e)
+		$ req POST (https "api.telegram.org" /: ("bot" <> token) /: e)
 			(ReqBodyJson p) (jsonResponse @(Ok a)) mempty
