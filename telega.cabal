@@ -1,5 +1,5 @@
 name:                telega
-version:             0.3.0
+version:             0.3.1
 synopsis:            Telegram Bot API binding
 description:         High-level bindings, typed entities, inline mode only
 homepage:            https://github.com/iokasimov/telega
@@ -67,7 +67,7 @@ library
     Network.API.Telegram.Bot.Property.Identifiable
     Network.API.Telegram.Bot.Property.Persistable
     Network.API.Telegram.Bot.Utils
-  build-depends: base == 4.*, data-default, joint, lens, aeson, text, unordered-containers, http-client, req
+  build-depends: base == 4.*, data-default, lens, aeson, text, transformers, unordered-containers, http-client, req
   default-extensions: DataKinds, LambdaCase, OverloadedStrings, NoImplicitPrelude, PackageImports, GADTs,
     FlexibleContexts, FlexibleInstances, MultiParamTypeClasses, UndecidableInstances, StandaloneDeriving
     TypeApplications, TypeFamilies, TypeFamilyDependencies, TypeOperators, ScopedTypeVariables
